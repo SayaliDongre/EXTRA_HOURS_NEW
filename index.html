@@ -95,7 +95,7 @@ input[type=time]{width:auto;min-width:110px;padding:8px 10px;border:1px solid va
 .trot .sprite-wrap{animation:trot .24s ease-in-out infinite alternate}
 .hop-crit .sprite-wrap{animation:hop-squash .36s ease-in-out infinite}
 .chew-crit .sprite-wrap{animation:chew .18s ease-in-out infinite alternate}
-.roll-crit .sprite-wrap{animation:roll .5s linear infinite}
+.roll-crit .sprite-wrap{animation:roll .75s ease-in-out infinite}
 .peck-crit .sprite-wrap{animation:peck .18s ease-in-out infinite}
 .stomp-crit .sprite-wrap{animation:stomp .32s ease-in-out infinite}
 .wobble-crit .sprite-wrap{animation:wobble .25s ease-in-out infinite alternate}
@@ -104,7 +104,7 @@ input[type=time]{width:auto;min-width:110px;padding:8px 10px;border:1px solid va
 @keyframes trot{0%{transform:translateY(0) rotate(-4deg)}100%{transform:translateY(-10px) rotate(4deg)}}
 @keyframes hop-squash{0%,100%{transform:scale(1,1) translateY(0)}30%{transform:scale(.86,1.14) translateY(-24px)}60%{transform:scale(1.14,.86) translateY(0)}}
 @keyframes chew{0%{transform:scale(1,1) rotate(0deg)}50%{transform:scale(1.09,.92) rotate(5deg)}100%{transform:scale(.94,1.06) rotate(-4deg)}}
-@keyframes roll{0%{transform:rotate(0deg) translateY(0)}50%{transform:rotate(180deg) translateY(-14px)}100%{transform:rotate(360deg) translateY(0)}}
+@keyframes roll{0%{transform:rotate(0deg) scale(1,1) translateY(0)}25%{transform:rotate(90deg) scale(1.15,.85) translateY(-14px)}50%{transform:rotate(180deg) scale(1,1) translateY(0)}75%{transform:rotate(270deg) scale(1.15,.85) translateY(-14px)}100%{transform:rotate(360deg) scale(1,1) translateY(0)}}
 @keyframes peck{0%,100%{transform:rotate(0deg) translateY(0)}50%{transform:rotate(-28deg) translateY(10px) scale(1.06,.94)}}
 @keyframes stomp{0%,100%{transform:scale(1,1) translateY(0)}35%{transform:scale(.92,1.12) translateY(-18px)}70%{transform:scale(1.18,.82) translateY(0)}}
 @keyframes wobble{0%{transform:rotate(-7deg)}100%{transform:rotate(7deg)}}
@@ -679,7 +679,7 @@ const CRITTERS = {
 };
 const CAST_KEYS = ["goat", "rabbit", "frog", "chicken", "pig", "monkey", "elephant"];
 
-const TARGETS = ".logo,.header h1,.hint,.day,.toggle,.cluster,.right,.btn,#total,.plant,.cap";
+const TARGETS = ".logo,.header h1,.hint,.day,.toggle,.cluster,.right,.btn,#total,.plant,.cap,.row";
 const rnd = (a, b) => a + Math.random() * (b - a);
 const pick = a => a[Math.floor(Math.random() * a.length)];
 const shuffle = a => a.slice().sort(() => Math.random() - .5);
@@ -820,11 +820,16 @@ function fixer(cx, cy) {
 }
 
 function restore() {
-  document.querySelectorAll(TARGETS).forEach((e, i) => {
-    if (!e.style.transform) return;
-    e.style.transition = `transform .7s cubic-bezier(.34,1.56,.64,1) ${i * 12}ms`;
-    e.style.transform = "";
-    setTimeout(() => { e.style.transition = ""; }, 1500);
+  const elements = document.querySelectorAll(".app, .app *");
+  let count = 0;
+  elements.forEach((e) => {
+    if (e.style && (e.style.transform || e.style.opacity)) {
+      e.style.transition = `transform .7s cubic-bezier(.34,1.56,.64,1) ${Math.min(count * 15, 250)}ms, opacity .7s`;
+      e.style.transform = "";
+      e.style.opacity = "";
+      count++;
+      setTimeout(() => { if (e.style) e.style.transition = ""; }, 1500);
+    }
   });
 }
 
@@ -1204,7 +1209,7 @@ async function doChickenMischief(tok) {
   await gardenerGeneralFix(chook, "Shoo, chook! Go back to the coop! 🌾");
 }
 
-/* 5. PIG: rolls in center, pushes rows askew */
+/* 5. PIG: rolls across cards in mud, pushes rows askew */
 async function doPigMischief(tok) {
   const alive = () => S.on && S.tok === tok && !S.mom;
   const cfg = CRITTERS.pig;
@@ -1215,27 +1220,63 @@ async function doPigMischief(tok) {
   const [sx, sy] = off(randEdge(), cfg.w, cfg.h);
   set(pig, sx, sy);
 
-  const cx = W / 2 - cfg.w / 2;
-  const cy = H / 2 - cfg.h / 2;
+  // Position near the rows card area
+  const rowsEl = document.getElementById("rows") || document.querySelector(".rows");
+  const rowsRect = rowsEl ? rowsEl.getBoundingClientRect() : { left: W / 2 - 140, top: H / 2 - 50, right: W / 2 + 140, width: 280, height: 180 };
+
+  const startX = clamp(rowsRect.left + 15, 10, W - cfg.w - 10);
+  const startY = clamp(rowsRect.top + 20, 44, H - cfg.h - 10);
+
+  // 1. Slow, cute trot into the garden (950ms)
+  face(pig, startX < sx ? -1 : 1);
   pig.classList.add("trot");
-  await go(pig, cx, cy, 600, "ease-out");
+  say(pig, "Oink! Mud puddle ahead! 🐽", 850);
+  await go(pig, startX, startY, 950, "ease-out");
   pig.classList.remove("trot");
   if (!alive()) return;
 
-  pig.classList.add("roll-crit");
-  say(pig, "Oink oink! Love this dirt! 🐽", 800);
-  for (let c = 0; c < 14; c++) crumb(cx + cfg.w / 2, cy + cfg.h / 2, "#8a6645");
+  await nap(350);
+  if (!alive()) return;
 
-  document.querySelectorAll(".row").forEach((row, idx) => {
-    if (idx < 3) {
-      row.style.transition = "transform .4s";
-      row.style.transform = `rotate(${idx % 2 === 0 ? 3 : -3}deg) translate(${rnd(-12, 12)}px, ${rnd(-6, 6)}px)`;
+  // 2. Playful wallowing dive! Mud splatters
+  pig.classList.add("roll-crit");
+  say(pig, "Wheee! Rolling in the dirt! 🐷", 1200);
+  for (let c = 0; c < 12; c++) crumb(startX + cfg.w / 2, startY + cfg.h / 2 + 10, "#8a6645");
+
+  // 3. Rolls across the tracker rows from left to right (1300ms)
+  const endX = clamp(rowsRect.right - cfg.w - 15, 10, W - cfg.w - 10);
+  face(pig, 1);
+
+  // Progressively tilt each row with visible timing and mud particles
+  const rows = Array.from(document.querySelectorAll(".row"));
+  rows.forEach((row, idx) => {
+    if (idx < 5) {
+      setTimeout(() => {
+        if (!S.on) return;
+        row.style.transition = "transform .55s cubic-bezier(.34,1.56,.64,1)";
+        const rot = idx % 2 === 0 ? rnd(3.5, 5.5) : rnd(-5.5, -3.5);
+        const shiftX = idx % 2 === 0 ? rnd(8, 16) : rnd(-16, -8);
+        const shiftY = rnd(-5, 6);
+        row.style.transform = `rotate(${rot}deg) translate(${shiftX}px, ${shiftY}px)`;
+        const rRect = row.getBoundingClientRect();
+        crumb(rRect.left + rnd(50, Math.max(60, rRect.width - 50)), rRect.top + 16, "#7d5838");
+      }, 180 + idx * 240);
     }
   });
-  await nap(700);
-  pig.classList.remove("roll-crit");
 
-  await gardenerGeneralFix(pig, "Hey, no mud in the flowerbeds! 🧹");
+  await go(pig, endX, startY + 12, 1300, "ease-in-out");
+  if (!alive()) return;
+
+  // 4. Joyful wallow on the other side with mud splashing (900ms)
+  for (let c = 0; c < 14; c++) crumb(endX + cfg.w / 2, startY + cfg.h / 2 + 10, "#8a6645");
+  say(pig, "Oink oink! So squishy & fun! 🐽✨", 1000);
+  await nap(900);
+
+  pig.classList.remove("roll-crit");
+  if (!alive()) return;
+
+  // 5. Gardener arrives, sweeps up mud, and restores everything to pristine condition
+  await gardenerGeneralFix(pig, "Hey, out of the flowerbeds, little piggy! 🧹");
 }
 
 /* 6. MONKEY: swings in from top, steals logo badge */
