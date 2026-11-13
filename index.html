@@ -118,6 +118,54 @@ input[type=time]{width:auto;min-width:110px;padding:8px 10px;border:1px solid va
 .ring{position:fixed;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(255,244,160,.95),rgba(130,225,255,.5) 60%,transparent 72%);pointer-events:none;z-index:75}
 .sp,.crit,.particle{position:fixed;left:0;top:0;pointer-events:none;z-index:80}
 @media(prefers-reduced-motion:reduce){.sw,.lf,.leafbg span,.shake,.trot .sprite-wrap,.hop-crit .sprite-wrap,.chew-crit .sprite-wrap,.roll-crit .sprite-wrap,.peck-crit .sprite-wrap,.stomp-crit .sprite-wrap{animation:none}}
+
+/* ===== Arcade & Mini Games ===== */
+.arcade-pill{margin-left:auto;display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#243242,#151f2b);color:#fff;border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:8px 16px;font-family:inherit;font-size:.85rem;font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(20,30,42,.3),0 0 0 1px rgba(255,255,255,.08) inset;transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s,background .2s;user-select:none;position:relative;overflow:hidden}
+.arcade-pill:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 8px 24px rgba(93,154,79,.4);background:linear-gradient(135deg,#2e4155,#1c2938)}
+.arcade-pill:active{transform:scale(.96)}
+.arcade-glow{position:absolute;top:-8px;right:-8px;width:24px;height:24px;background:radial-gradient(circle,rgba(93,154,79,.85),transparent 70%);border-radius:50%;pointer-events:none}
+.arcade-icon{font-size:1.15rem;line-height:1}
+
+.game-modal-overlay{position:fixed;inset:0;background:rgba(10,15,22,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);z-index:150;display:flex;align-items:center;justify-content:center;padding:14px;opacity:0;pointer-events:none;transition:opacity .25s ease-out}
+.game-modal-overlay.open{opacity:1;pointer-events:auto}
+.game-modal{width:100%;max-width:440px;background:#131a24;color:#f1f5f9;border:1px solid rgba(255,255,255,.12);border-radius:24px;box-shadow:0 25px 60px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.08) inset;display:flex;flex-direction:column;overflow:hidden;transform:scale(.93) translateY(14px);transition:transform .26s cubic-bezier(.34,1.56,.64,1)}
+.game-modal-overlay.open .game-modal{transform:scale(1) translateY(0)}
+.game-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.07)}
+.game-title-wrap{display:flex;align-items:center;gap:10px}
+.game-title-icon{font-size:1.6rem;line-height:1}
+.game-title{font-size:1.05rem;font-weight:800;margin:0;line-height:1.2;color:#f8fafc}
+.game-sub{font-size:.74rem;color:#94a3b8;font-weight:600}
+.game-header-actions{display:flex;align-items:center;gap:8px}
+.game-btn-subtle{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#e2e8f0;border-radius:999px;padding:5px 12px;font:inherit;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .15s,transform .15s}
+.game-btn-subtle:hover{background:rgba(255,255,255,.16);transform:scale(1.04)}
+.game-btn-close{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#e2e8f0;border-radius:50%;width:32px;height:32px;display:grid;place-items:center;font:inherit;font-weight:800;cursor:pointer;transition:background .15s,transform .15s}
+.game-btn-close:hover{background:rgba(239,68,68,.35);border-color:rgba(239,68,68,.5);transform:scale(1.08)}
+.game-stats-bar{display:flex;align-items:center;gap:14px;padding:9px 18px;background:rgba(8,12,18,.6);border-bottom:1px solid rgba(255,255,255,.05)}
+.game-stat{display:flex;align-items:baseline;gap:5px}
+.game-stat-lbl{font-size:.68rem;color:#64748b;font-weight:800;letter-spacing:.5px}
+.game-stat-val{font-size:1.1rem;color:#38bdf8;font-weight:900}
+.game-help-pill{margin-left:auto;font-size:.72rem;color:#94a3b8;background:rgba(255,255,255,.06);padding:3px 9px;border-radius:6px;font-weight:600}
+.game-canvas-wrap{position:relative;width:100%;background:#090d14;display:flex;justify-content:center;align-items:center;overflow:hidden}
+#gameCanvas{display:block;width:100%;height:auto;max-height:410px;touch-action:none}
+.game-over-overlay{position:absolute;inset:0;background:rgba(8,12,18,.88);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .22s}
+.game-over-overlay.show{opacity:1;pointer-events:auto}
+.game-over-box{text-align:center;padding:22px;max-width:300px;animation:pop .28s cubic-bezier(.34,1.56,.64,1)}
+.game-over-title{font-size:1.35rem;font-weight:900;color:#f43f5e;letter-spacing:1.5px;margin-bottom:8px}
+.game-over-score-wrap{display:flex;flex-direction:column;gap:3px;margin:10px 0 14px}
+.game-over-lbl{font-size:.72rem;font-weight:800;color:#64748b;letter-spacing:1px}
+.game-over-num{font-size:2.2rem;font-weight:900;color:#38bdf8;line-height:1}
+.new-best-badge{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-size:.72rem;font-weight:900;padding:3px 10px;border-radius:999px;display:inline-block;margin-bottom:12px;box-shadow:0 4px 12px rgba(245,158,11,.4)}
+.game-over-btns{display:flex;gap:8px;justify-content:center}
+.game-action-btn{padding:9px 15px;border-radius:12px;font:inherit;font-size:.84rem;font-weight:800;cursor:pointer;border:0;transition:transform .15s,opacity .15s}
+.game-action-btn.primary{background:#10b981;color:#064e3b}
+.game-action-btn.secondary{background:rgba(255,255,255,.1);color:#e2e8f0}
+.game-action-btn:hover{transform:scale(1.04)}
+.game-controls-touch{display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 16px;background:#0d131c;border-top:1px solid rgba(255,255,255,.06);min-height:54px}
+.touch-btn{flex:1;max-width:140px;padding:10px 14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#f1f5f9;border-radius:12px;font:inherit;font-size:.92rem;font-weight:800;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:manipulation;transition:background .1s,transform .1s;display:flex;align-items:center;justify-content:center;gap:6px}
+.touch-btn:active{background:rgba(255,255,255,.2);transform:scale(.96)}
+.touch-dpad{display:grid;grid-template-columns:repeat(3,44px);gap:6px;margin:0 auto}
+.touch-dpad button{height:40px;padding:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:8px;font-size:1.1rem;cursor:pointer;display:grid;place-items:center}
+.touch-dpad button:active{background:rgba(255,255,255,.25)}
 </style>
 </head>
 <body>
@@ -127,10 +175,15 @@ input[type=time]{width:auto;min-width:110px;padding:8px 10px;border:1px solid va
 <main class="app">
   <header class="header">
     <div class="logo">🌱</div>
-    <div>
+    <div style="flex:1">
       <h1>Weekly Extra Hours Tracker</h1>
       <div class="hint">Track Monday–Friday, lunch break auto-applied, Friday auto-out supported.</div>
     </div>
+    <button id="arcadeBtn" class="arcade-pill" title="Play Algorithmic Endless Mini Games">
+      <span class="arcade-glow"></span>
+      <span class="arcade-icon">🎮</span>
+      <span class="arcade-label">Arcade</span>
+    </button>
   </header>
 
   <section class="card garden">
@@ -152,6 +205,57 @@ input[type=time]{width:auto;min-width:110px;padding:8px 10px;border:1px solid va
   </section>
 </main>
 <div id="stage"></div>
+
+<!-- Mini Games Modal -->
+<div id="gameModal" class="game-modal-overlay">
+  <div class="game-modal">
+    <div class="game-header">
+      <div class="game-title-wrap">
+        <span id="gameIcon" class="game-title-icon">🏎️</span>
+        <div>
+          <h2 id="gameTitle" class="game-title">End of the Track</h2>
+          <div id="gameSubtitle" class="game-sub">Pure algorithmic endless track</div>
+        </div>
+      </div>
+      <div class="game-header-actions">
+        <button id="gameRandomBtn" class="game-btn-subtle" title="Roll New Random Game">🎲 New</button>
+        <button id="gameCloseBtn" class="game-btn-close" title="Close Arcade">✕</button>
+      </div>
+    </div>
+
+    <div class="game-stats-bar">
+      <div class="game-stat">
+        <span class="game-stat-lbl">SCORE</span>
+        <span id="gameScore" class="game-stat-val">0</span>
+      </div>
+      <div class="game-stat">
+        <span class="game-stat-lbl">BEST</span>
+        <span id="gameBest" class="game-stat-val">0</span>
+      </div>
+      <div id="gameHelpPill" class="game-help-pill">← → or Tap to steer</div>
+    </div>
+
+    <div class="game-canvas-wrap">
+      <canvas id="gameCanvas" width="400" height="420"></canvas>
+      <div id="gameOverScreen" class="game-over-overlay">
+        <div class="game-over-box">
+          <div class="game-over-title">GAME OVER</div>
+          <div class="game-over-score-wrap">
+            <span class="game-over-lbl">FINAL SCORE</span>
+            <span id="finalScoreVal" class="game-over-num">0</span>
+          </div>
+          <div id="newBestBadge" class="new-best-badge" style="display:none">🏆 NEW RECORD!</div>
+          <div class="game-over-btns">
+            <button id="gameRestartBtn" class="game-action-btn primary">🔄 Play Again</button>
+            <button id="gameSwitchBtn" class="game-action-btn secondary">🎲 Next Game</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-controls-touch" id="touchControls"></div>
+  </div>
+</div>
 
 <script>
 /* =====================================================================
@@ -1243,6 +1347,900 @@ function critter() {
   c.animate(pts.map(([x, y]) => ({ transform: `translate(${x}px,${y}px) scaleX(${L ? -1 : 1}) rotate(${snail ? 0 : rnd(-20, 20)}deg)` })), { duration: snail ? 16000 : 9000, easing: "ease-in-out" }).onfinish = () => c.remove();
 }
 (function loop() { setTimeout(() => { if (!S.on) critter(); loop(); }, rnd(12000, 30000)); })();
+
+/* =====================================================================
+   PART 4 — ARCADE: Endless Algorithmic Mini-Games
+   Pure procedural algorithms & physics, zero levels, infinite survival.
+   ===================================================================== */
+const ARCADE_GAMES = {
+  track: {
+    id: "track",
+    name: "End of the Track",
+    icon: "🏎️",
+    sub: "Harmonic procedural curving track",
+    help: "← → or Tap sides to steer",
+    touch: `
+      <button class="touch-btn" id="tLeft">◀ Steer Left</button>
+      <button class="touch-btn" id="tRight">Steer Right ▶</button>
+    `
+  },
+  canyon: {
+    id: "canyon",
+    name: "Canyon Flight",
+    icon: "🚀",
+    sub: "Aerodynamic gravity impulse runner",
+    help: "Space or Tap screen to fly",
+    touch: `
+      <button class="touch-btn" id="tFly" style="max-width:240px">🚀 Tap to Fly (or Space)</button>
+    `
+  },
+  orbit: {
+    id: "orbit",
+    name: "Orbit Slingshot",
+    icon: "🪐",
+    sub: "Celestial gravity & inertia simulation",
+    help: "Hold to orbit · Release to sling",
+    touch: `
+      <button class="touch-btn" id="tOrbit" style="max-width:240px">🧲 Hold to Orbit / Sling</button>
+    `
+  },
+  snake: {
+    id: "snake",
+    name: "Endless Grid Snake",
+    icon: "🐍",
+    sub: "Pure algorithmic grid path survival",
+    help: "Arrow keys or D-Pad to turn",
+    touch: `
+      <div class="touch-dpad">
+        <div></div><button id="sUp">▲</button><div></div>
+        <button id="sLeft">◀</button><button id="sDown">▼</button><button id="sRight">▶</button>
+      </div>
+    `
+  }
+};
+const ARCADE_KEYS = ["track", "canyon", "orbit", "snake"];
+
+class TrackGame {
+  constructor(canvas, onScore, onGameOver) {
+    this.cvs = canvas;
+    this.ctx = canvas.getContext("2d");
+    this.onScore = onScore;
+    this.onGameOver = onGameOver;
+    this.dist = 0;
+    this.speed = 4.2;
+    this.px = 200;
+    this.py = 350;
+    this.vx = 0;
+    this.keys = { left: false, right: false };
+    this.obstacles = [];
+    this.particles = [];
+    this.nextObs = 300;
+    this.over = false;
+  }
+  curve(y) {
+    const d = this.dist + y;
+    return 200 + Math.sin(d * 0.0035) * 85 + Math.sin(d * 0.008) * 45;
+  }
+  update() {
+    if (this.over) return;
+    const score = Math.floor(this.dist / 20);
+    this.speed = 4.2 + Math.min(8.5, score * 0.015);
+    this.dist += this.speed;
+    this.onScore(score);
+
+    if (this.keys.left) this.vx -= 1.6;
+    if (this.keys.right) this.vx += 1.6;
+    this.px += this.vx;
+    this.vx *= 0.86;
+
+    const roadW = Math.max(115, 185 - score * 0.18);
+    const rc = this.curve(this.py);
+    if (this.px - 14 < rc - roadW / 2 || this.px + 14 > rc + roadW / 2) {
+      this.crash();
+      return;
+    }
+
+    if (this.dist + 600 > this.nextObs) {
+      const xOff = (Math.random() - 0.5) * (roadW - 50);
+      this.obstacles.push({
+        d: this.nextObs,
+        xOff,
+        type: Math.random() < 0.5 ? "cone" : "boulder"
+      });
+      this.nextObs += 180 + Math.random() * 140;
+    }
+
+    for (let i = this.obstacles.length - 1; i >= 0; i--) {
+      const obs = this.obstacles[i];
+      const oy = this.py - (obs.d - this.dist);
+      if (oy > 450) {
+        this.obstacles.splice(i, 1);
+        continue;
+      }
+      const ox = this.curve(oy) + obs.xOff;
+      if (Math.hypot(this.px - ox, this.py - oy) < 22) {
+        this.crash();
+        return;
+      }
+    }
+
+    if (Math.random() < 0.4) {
+      this.particles.push({
+        x: this.px + (Math.random() - 0.5) * 12,
+        y: this.py + 16,
+        r: 3 + Math.random() * 4,
+        alpha: 0.6
+      });
+    }
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      const p = this.particles[i];
+      p.y += this.speed * 0.5;
+      p.r += 0.3;
+      p.alpha -= 0.04;
+      if (p.alpha <= 0) this.particles.splice(i, 1);
+    }
+  }
+  render() {
+    const ctx = this.ctx, W = 400, H = 420;
+    ctx.fillStyle = "#0b1118";
+    ctx.fillRect(0, 0, W, H);
+
+    const step = 8;
+    const score = Math.floor(this.dist / 20);
+    const roadW = Math.max(115, 185 - score * 0.18);
+    for (let y = 0; y < H; y += step) {
+      const cx = this.curve(y);
+      const isAlt = Math.floor((this.dist + y) / 24) % 2 === 0;
+
+      ctx.fillStyle = isAlt ? "#102318" : "#0d1d14";
+      ctx.fillRect(0, y, W, step);
+
+      ctx.fillStyle = isAlt ? "#1e293b" : "#1a2434";
+      ctx.fillRect(cx - roadW / 2, y, roadW, step);
+
+      ctx.fillStyle = isAlt ? "#ef4444" : "#f8fafc";
+      ctx.fillRect(cx - roadW / 2 - 5, y, 5, step);
+      ctx.fillRect(cx + roadW / 2, y, 5, step);
+
+      if (isAlt) {
+        ctx.fillStyle = "#facc15";
+        ctx.fillRect(cx - 2, y, 4, step);
+      }
+    }
+
+    for (const obs of this.obstacles) {
+      const oy = this.py - (obs.d - this.dist);
+      if (oy < -30 || oy > H + 30) continue;
+      const ox = this.curve(oy) + obs.xOff;
+      ctx.save();
+      ctx.translate(ox, oy);
+      if (obs.type === "cone") {
+        ctx.fillStyle = "#ea580c";
+        ctx.beginPath();
+        ctx.moveTo(0, -14);
+        ctx.lineTo(9, 9);
+        ctx.lineTo(-9, 9);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(-5, -2, 10, 4);
+      } else {
+        ctx.fillStyle = "#64748b";
+        ctx.beginPath();
+        ctx.arc(0, 0, 11, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#94a3b8";
+        ctx.beginPath();
+        ctx.arc(-3, -3, 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    for (const p of this.particles) {
+      ctx.fillStyle = `rgba(148, 163, 184, ${p.alpha})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.save();
+    ctx.translate(this.px, this.py);
+    ctx.rotate(this.vx * 0.05);
+
+    ctx.fillStyle = "rgba(0,0,0,0.4)";
+    ctx.beginPath();
+    ctx.ellipse(0, 4, 16, 8, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = "#10b981";
+    ctx.beginPath();
+    ctx.roundRect(-13, -18, 26, 34, 6);
+    ctx.fill();
+
+    ctx.fillStyle = "#38bdf8";
+    ctx.beginPath();
+    ctx.roundRect(-9, -9, 18, 10, 3);
+    ctx.fill();
+
+    ctx.fillStyle = "#fef08a";
+    ctx.fillRect(-10, -18, 5, 3);
+    ctx.fillRect(5, -18, 5, 3);
+
+    ctx.fillStyle = "#065f46";
+    ctx.fillRect(-12, 12, 24, 4);
+    ctx.restore();
+  }
+  crash() {
+    this.over = true;
+    this.onGameOver(Math.floor(this.dist / 20));
+  }
+}
+
+class CanyonGame {
+  constructor(canvas, onScore, onGameOver) {
+    this.cvs = canvas;
+    this.ctx = canvas.getContext("2d");
+    this.onScore = onScore;
+    this.onGameOver = onGameOver;
+    this.py = 200;
+    this.vy = 0;
+    this.px = 80;
+    this.score = 0;
+    this.pillars = [];
+    this.particles = [];
+    this.over = false;
+    this.spawnTimer = 0;
+    this.gapTarget = 200;
+    this.gapCurrent = 200;
+  }
+  jump() {
+    if (this.over) return;
+    this.vy = -6.5;
+    for (let i = 0; i < 5; i++) {
+      this.particles.push({
+        x: this.px - 6,
+        y: this.py + 4,
+        vx: -2 - Math.random() * 2,
+        vy: (Math.random() - 0.5) * 3,
+        r: 3 + Math.random() * 3,
+        c: "#38bdf8",
+        alpha: 0.9
+      });
+    }
+  }
+  update() {
+    if (this.over) return;
+    this.vy += 0.42;
+    this.py += this.vy;
+
+    if (this.py < 12 || this.py > 408) {
+      this.crash();
+      return;
+    }
+
+    const speed = 3.2 + Math.min(5, this.score * 0.04);
+    const gapH = Math.max(105, 150 - this.score * 0.6);
+
+    this.spawnTimer += speed;
+    if (this.spawnTimer > 130) {
+      this.spawnTimer = 0;
+      this.gapTarget = 90 + Math.random() * 220;
+      this.gapCurrent += (this.gapTarget - this.gapCurrent) * 0.7;
+      this.pillars.push({
+        x: 420,
+        gapY: this.gapCurrent,
+        gapH,
+        passed: false
+      });
+    }
+
+    for (let i = this.pillars.length - 1; i >= 0; i--) {
+      const p = this.pillars[i];
+      p.x -= speed;
+
+      if (!p.passed && p.x + 35 < this.px) {
+        p.passed = true;
+        this.score++;
+        this.onScore(this.score);
+      }
+
+      if (this.px + 12 > p.x && this.px - 12 < p.x + 35) {
+        if (this.py - 12 < p.gapY - p.gapH / 2 || this.py + 12 > p.gapY + p.gapH / 2) {
+          this.crash();
+          return;
+        }
+      }
+
+      if (p.x < -50) this.pillars.splice(i, 1);
+    }
+
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      const pt = this.particles[i];
+      pt.x += pt.vx;
+      pt.y += pt.vy;
+      pt.alpha -= 0.03;
+      if (pt.alpha <= 0) this.particles.splice(i, 1);
+    }
+  }
+  render() {
+    const ctx = this.ctx, W = 400, H = 420;
+    ctx.fillStyle = "#0c1524";
+    ctx.fillRect(0, 0, W, H);
+
+    for (let i = 0; i < 20; i++) {
+      ctx.fillStyle = "rgba(255,255,255,0.25)";
+      ctx.fillRect((i * 47) % W, (i * 29) % H, 2, 2);
+    }
+
+    for (const p of this.pillars) {
+      const topH = p.gapY - p.gapH / 2;
+      const botY = p.gapY + p.gapH / 2;
+
+      ctx.fillStyle = "#1e293b";
+      ctx.fillRect(p.x, 0, 35, topH);
+      ctx.fillStyle = "#38bdf8";
+      ctx.fillRect(p.x - 2, topH - 12, 39, 12);
+
+      ctx.fillStyle = "#1e293b";
+      ctx.fillRect(p.x, botY, 35, H - botY);
+      ctx.fillStyle = "#38bdf8";
+      ctx.fillRect(p.x - 2, botY, 39, 12);
+    }
+
+    for (const pt of this.particles) {
+      ctx.fillStyle = pt.c;
+      ctx.globalAlpha = Math.max(0, pt.alpha);
+      ctx.beginPath();
+      ctx.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    ctx.save();
+    ctx.translate(this.px, this.py);
+    ctx.rotate(Math.min(Math.PI / 4, Math.max(-Math.PI / 4, this.vy * 0.08)));
+
+    ctx.fillStyle = "rgba(56, 189, 248, 0.25)";
+    ctx.beginPath();
+    ctx.arc(0, 0, 18, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = "#f59e0b";
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 14, 11, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = "#fff";
+    ctx.beginPath();
+    ctx.arc(6, -4, 4.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#0f172a";
+    ctx.beginPath();
+    ctx.arc(7.5, -4, 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    const wingY = Math.sin(Date.now() * 0.02) * 5;
+    ctx.fillStyle = "#fbbf24";
+    ctx.beginPath();
+    ctx.ellipse(-4, wingY, 7, 5, -0.4, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = "#ea580c";
+    ctx.beginPath();
+    ctx.moveTo(11, -1);
+    ctx.lineTo(19, 2);
+    ctx.lineTo(11, 5);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+  crash() {
+    this.over = true;
+    this.onGameOver(this.score);
+  }
+}
+
+class OrbitGame {
+  constructor(canvas, onScore, onGameOver) {
+    this.cvs = canvas;
+    this.ctx = canvas.getContext("2d");
+    this.onScore = onScore;
+    this.onGameOver = onGameOver;
+    this.px = 60;
+    this.py = 210;
+    this.vx = 2.8;
+    this.vy = -1.2;
+    this.score = 0;
+    this.planets = [];
+    this.stars = [];
+    this.tethering = false;
+    this.tetherPlanet = null;
+    this.over = false;
+    this.camX = 0;
+    this.nextPlanetX = 180;
+    this.trail = [];
+
+    this.planets.push({ x: 200, y: 210, r: 24, c: "#8b5cf6" });
+    this.planets.push({ x: 380, y: 150, r: 28, c: "#ec4899" });
+    this.planets.push({ x: 560, y: 270, r: 22, c: "#06b6d4" });
+    this.nextPlanetX = 740;
+  }
+  setTether(active) {
+    if (this.over) return;
+    this.tethering = active;
+    if (active) {
+      let closest = null, minD = 150;
+      for (const pl of this.planets) {
+        const d = Math.hypot(pl.x - this.px, pl.y - this.py);
+        if (d < minD) { minD = d; closest = pl; }
+      }
+      this.tetherPlanet = closest;
+    } else {
+      this.tetherPlanet = null;
+    }
+  }
+  update() {
+    if (this.over) return;
+
+    if (this.tethering && this.tetherPlanet) {
+      const pl = this.tetherPlanet;
+      const dx = pl.x - this.px, dy = pl.y - this.py;
+      const d = Math.hypot(dx, dy);
+
+      if (d < pl.r + 8) {
+        this.crash();
+        return;
+      }
+
+      const speed = Math.max(4.2, Math.hypot(this.vx, this.vy));
+      const nx = dx / d, ny = dy / d;
+      const tx = -ny, ty = nx;
+      const dot = this.vx * tx + this.vy * ty;
+      const dir = dot >= 0 ? 1 : -1;
+
+      this.vx = (tx * dir * speed * 0.95) + (nx * 1.2);
+      this.vy = (ty * dir * speed * 0.95) + (ny * 1.2);
+    } else {
+      this.vx = Math.min(8, Math.max(1.8, this.vx * 0.998));
+      this.vy = Math.min(6, Math.max(-6, this.vy * 0.998));
+    }
+
+    this.px += this.vx;
+    this.py += this.vy;
+
+    this.trail.push({ x: this.px, y: this.py });
+    if (this.trail.length > 25) this.trail.shift();
+
+    this.camX = this.px - 100;
+
+    const distScore = Math.max(0, Math.floor(this.px / 25));
+    if (distScore > this.score) {
+      this.score = distScore;
+      this.onScore(this.score);
+    }
+
+    if (this.py < -60 || this.py > 480) {
+      this.crash();
+      return;
+    }
+
+    if (this.camX + 600 > this.nextPlanetX) {
+      const py = 90 + Math.random() * 240;
+      const pr = 18 + Math.random() * 16;
+      const cols = ["#8b5cf6", "#ec4899", "#06b6d4", "#10b981", "#f59e0b"];
+      this.planets.push({
+        x: this.nextPlanetX,
+        y: py,
+        r: pr,
+        c: cols[Math.floor(Math.random() * cols.length)]
+      });
+
+      this.stars.push({
+        x: this.nextPlanetX + (Math.random() - 0.5) * 80,
+        y: py + (Math.random() - 0.5) * 80,
+        taken: false
+      });
+
+      this.nextPlanetX += 160 + Math.random() * 100;
+    }
+
+    for (const st of this.stars) {
+      if (!st.taken && Math.hypot(st.x - this.px, st.y - this.py) < 22) {
+        st.taken = true;
+        this.score += 5;
+        this.onScore(this.score);
+      }
+    }
+
+    this.planets = this.planets.filter(pl => pl.x > this.camX - 100);
+    this.stars = this.stars.filter(st => st.x > this.camX - 100 && !st.taken);
+  }
+  render() {
+    const ctx = this.ctx, W = 400, H = 420;
+    ctx.fillStyle = "#070b12";
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.save();
+    ctx.translate(-this.camX, 0);
+
+    for (let x = Math.floor(this.camX / 60) * 60; x < this.camX + W + 60; x += 60) {
+      ctx.strokeStyle = "rgba(255,255,255,0.03)";
+      ctx.strokeRect(x, 0, 60, H);
+    }
+
+    for (const pl of this.planets) {
+      ctx.fillStyle = pl.c + "33";
+      ctx.beginPath();
+      ctx.arc(pl.x, pl.y, pl.r + 14, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = pl.c;
+      ctx.beginPath();
+      ctx.arc(pl.x, pl.y, pl.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = "rgba(255,255,255,0.4)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.ellipse(pl.x, pl.y, pl.r + 8, pl.r / 3, -0.3, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    for (const st of this.stars) {
+      ctx.fillStyle = "#facc15";
+      ctx.beginPath();
+      ctx.arc(st.x, st.y, 5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    if (this.tethering && this.tetherPlanet) {
+      ctx.strokeStyle = "#38bdf8";
+      ctx.lineWidth = 2.5;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(this.px, this.py);
+      ctx.lineTo(this.tetherPlanet.x, this.tetherPlanet.y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    for (let i = 0; i < this.trail.length; i++) {
+      const tr = this.trail[i];
+      ctx.fillStyle = `rgba(56, 189, 248, ${(i / this.trail.length) * 0.5})`;
+      ctx.beginPath();
+      ctx.arc(tr.x, tr.y, (i / this.trail.length) * 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.save();
+    ctx.translate(this.px, this.py);
+    ctx.rotate(Math.atan2(this.vy, this.vx));
+
+    ctx.fillStyle = "#38bdf8";
+    ctx.beginPath();
+    ctx.moveTo(12, 0);
+    ctx.lineTo(-8, -7);
+    ctx.lineTo(-4, 0);
+    ctx.lineTo(-8, 7);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+
+    ctx.restore();
+  }
+  crash() {
+    this.over = true;
+    this.onGameOver(this.score);
+  }
+}
+
+class SnakeGame {
+  constructor(canvas, onScore, onGameOver) {
+    this.cvs = canvas;
+    this.ctx = canvas.getContext("2d");
+    this.onScore = onScore;
+    this.onGameOver = onGameOver;
+    this.grid = 18;
+    this.size = 400 / 18;
+    this.snake = [{ x: 9, y: 9 }, { x: 8, y: 9 }, { x: 7, y: 9 }];
+    this.dir = { x: 1, y: 0 };
+    this.nextDir = { x: 1, y: 0 };
+    this.food = this.spawnFood();
+    this.score = 0;
+    this.lastStep = 0;
+    this.over = false;
+  }
+  spawnFood() {
+    let p;
+    while (!p || this.snake.some(s => s.x === p.x && s.y === p.y)) {
+      p = { x: Math.floor(Math.random() * this.grid), y: Math.floor(Math.random() * this.grid) };
+    }
+    return p;
+  }
+  setDir(dx, dy) {
+    if (dx !== -this.dir.x || dy !== -this.dir.y) {
+      this.nextDir = { x: dx, y: dy };
+    }
+  }
+  update(t) {
+    if (this.over) return;
+    const interval = Math.max(75, 160 - this.snake.length * 3);
+    if (t - this.lastStep < interval) return;
+    this.lastStep = t;
+
+    this.dir = this.nextDir;
+    const head = { x: this.snake[0].x + this.dir.x, y: this.snake[0].y + this.dir.y };
+
+    if (head.x < 0 || head.x >= this.grid || head.y < 0 || head.y >= this.grid) {
+      this.crash();
+      return;
+    }
+
+    if (this.snake.some(s => s.x === head.x && s.y === head.y)) {
+      this.crash();
+      return;
+    }
+
+    this.snake.unshift(head);
+
+    if (head.x === this.food.x && head.y === this.food.y) {
+      this.score += 10;
+      this.onScore(this.score);
+      this.food = this.spawnFood();
+    } else {
+      this.snake.pop();
+    }
+  }
+  render() {
+    const ctx = this.ctx, W = 400, H = 420;
+    ctx.fillStyle = "#0c131d";
+    ctx.fillRect(0, 0, W, H);
+
+    for (let x = 0; x < this.grid; x++) {
+      for (let y = 0; y < this.grid; y++) {
+        ctx.fillStyle = "rgba(255,255,255,0.02)";
+        ctx.fillRect(x * this.size + 10, y * this.size + 10, 2, 2);
+      }
+    }
+
+    ctx.fillStyle = "#ef4444";
+    ctx.beginPath();
+    ctx.arc((this.food.x + 0.5) * this.size, (this.food.y + 0.5) * this.size, this.size * 0.4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#84cc16";
+    ctx.fillRect((this.food.x + 0.4) * this.size, (this.food.y + 0.1) * this.size, 3, 5);
+
+    this.snake.forEach((s, idx) => {
+      ctx.fillStyle = idx === 0 ? "#10b981" : "#059669";
+      ctx.beginPath();
+      ctx.roundRect(s.x * this.size + 1, s.y * this.size + 1, this.size - 2, this.size - 2, 5);
+      ctx.fill();
+
+      if (idx === 0) {
+        ctx.fillStyle = "#fff";
+        const cx = (s.x + 0.5) * this.size, cy = (s.y + 0.5) * this.size;
+        ctx.beginPath();
+        ctx.arc(cx - 3, cy - 3, 2.5, 0, Math.PI * 2);
+        ctx.arc(cx + 3, cy - 3, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    });
+  }
+  crash() {
+    this.over = true;
+    this.onGameOver(this.score);
+  }
+}
+
+/* Arcade Manager */
+const ARCADE = {
+  instance: null,
+  gameKey: null,
+  raf: null,
+  score: 0,
+  best: 0,
+  isOpen: false
+};
+
+const gModal = document.getElementById("gameModal");
+const gCanvas = document.getElementById("gameCanvas");
+const gScoreEl = document.getElementById("gameScore");
+const gBestEl = document.getElementById("gameBest");
+const gTitleEl = document.getElementById("gameTitle");
+const gIconEl = document.getElementById("gameIcon");
+const gSubEl = document.getElementById("gameSubtitle");
+const gHelpEl = document.getElementById("gameHelpPill");
+const gOverScreen = document.getElementById("gameOverScreen");
+const gFinalScoreEl = document.getElementById("finalScoreVal");
+const gNewBestBadge = document.getElementById("newBestBadge");
+const gTouchControls = document.getElementById("touchControls");
+
+function initCanvasDPR() {
+  const dpr = window.devicePixelRatio || 1;
+  gCanvas.width = 400 * dpr;
+  gCanvas.height = 420 * dpr;
+  const ctx = gCanvas.getContext("2d");
+  ctx.scale(dpr, dpr);
+}
+
+function openRandomGame(forceNew = false) {
+  let choices = ARCADE_KEYS;
+  if (forceNew && ARCADE.gameKey) {
+    choices = ARCADE_KEYS.filter(k => k !== ARCADE.gameKey);
+  }
+  const nextKey = choices[Math.floor(Math.random() * choices.length)];
+  launchArcadeGame(nextKey);
+}
+
+function launchArcadeGame(key) {
+  if (ARCADE.raf) cancelAnimationFrame(ARCADE.raf);
+  ARCADE.gameKey = key;
+  ARCADE.isOpen = true;
+  ARCADE.score = 0;
+  ARCADE.best = parseInt(localStorage.getItem("arcade_best_" + key) || "0", 10);
+
+  const cfg = ARCADE_GAMES[key];
+  gTitleEl.textContent = cfg.name;
+  gIconEl.textContent = cfg.icon;
+  gSubEl.textContent = cfg.sub;
+  gHelpEl.textContent = cfg.help;
+  gScoreEl.textContent = "0";
+  gBestEl.textContent = ARCADE.best;
+  gTouchControls.innerHTML = cfg.touch;
+  gOverScreen.classList.remove("show");
+  gModal.classList.add("open");
+
+  initCanvasDPR();
+  wireTouchControls(key);
+
+  const onScore = (sc) => {
+    ARCADE.score = sc;
+    gScoreEl.textContent = sc;
+    if (sc > ARCADE.best) {
+      ARCADE.best = sc;
+      gBestEl.textContent = sc;
+      localStorage.setItem("arcade_best_" + key, sc);
+    }
+  };
+
+  const onGameOver = (finalScore) => {
+    gFinalScoreEl.textContent = finalScore;
+    const isNewRecord = finalScore > 0 && finalScore >= ARCADE.best;
+    gNewBestBadge.style.display = isNewRecord ? "inline-block" : "none";
+    gOverScreen.classList.add("show");
+  };
+
+  if (key === "track") {
+    ARCADE.instance = new TrackGame(gCanvas, onScore, onGameOver);
+  } else if (key === "canyon") {
+    ARCADE.instance = new CanyonGame(gCanvas, onScore, onGameOver);
+  } else if (key === "orbit") {
+    ARCADE.instance = new OrbitGame(gCanvas, onScore, onGameOver);
+  } else if (key === "snake") {
+    ARCADE.instance = new SnakeGame(gCanvas, onScore, onGameOver);
+  }
+
+  const loop = (t) => {
+    if (!ARCADE.isOpen) return;
+    if (ARCADE.instance) {
+      ARCADE.instance.update(t);
+      ARCADE.instance.render();
+    }
+    ARCADE.raf = requestAnimationFrame(loop);
+  };
+  ARCADE.raf = requestAnimationFrame(loop);
+}
+
+function wireTouchControls(key) {
+  if (key === "track") {
+    const l = document.getElementById("tLeft"), r = document.getElementById("tRight");
+    if (l && r) {
+      const setL = (v) => { if (ARCADE.instance) ARCADE.instance.keys.left = v; };
+      const setR = (v) => { if (ARCADE.instance) ARCADE.instance.keys.right = v; };
+      l.onpointerdown = () => setL(true); l.onpointerup = () => setL(false); l.onpointerleave = () => setL(false);
+      r.onpointerdown = () => setR(true); r.onpointerup = () => setR(false); r.onpointerleave = () => setR(false);
+    }
+  } else if (key === "canyon") {
+    const b = document.getElementById("tFly");
+    if (b) b.onclick = () => { if (ARCADE.instance) ARCADE.instance.jump(); };
+  } else if (key === "orbit") {
+    const b = document.getElementById("tOrbit");
+    if (b) {
+      b.onpointerdown = () => { if (ARCADE.instance) ARCADE.instance.setTether(true); };
+      b.onpointerup = () => { if (ARCADE.instance) ARCADE.instance.setTether(false); };
+      b.onpointerleave = () => { if (ARCADE.instance) ARCADE.instance.setTether(false); };
+    }
+  } else if (key === "snake") {
+    const u = document.getElementById("sUp"), d = document.getElementById("sDown"),
+          l = document.getElementById("sLeft"), r = document.getElementById("sRight");
+    if (u) u.onclick = () => { if (ARCADE.instance) ARCADE.instance.setDir(0, -1); };
+    if (d) d.onclick = () => { if (ARCADE.instance) ARCADE.instance.setDir(0, 1); };
+    if (l) l.onclick = () => { if (ARCADE.instance) ARCADE.instance.setDir(-1, 0); };
+    if (r) r.onclick = () => { if (ARCADE.instance) ARCADE.instance.setDir(1, 0); };
+  }
+}
+
+function closeGameModal() {
+  ARCADE.isOpen = false;
+  if (ARCADE.raf) cancelAnimationFrame(ARCADE.raf);
+  ARCADE.instance = null;
+  gModal.classList.remove("open");
+  gOverScreen.classList.remove("show");
+}
+
+function restartCurrentGame() {
+  if (ARCADE.gameKey) launchArcadeGame(ARCADE.gameKey);
+}
+
+// Global Arcade Event Listeners
+document.getElementById("arcadeBtn").addEventListener("click", () => openRandomGame());
+document.getElementById("gameCloseBtn").addEventListener("click", closeGameModal);
+document.getElementById("gameRandomBtn").addEventListener("click", () => openRandomGame(true));
+document.getElementById("gameRestartBtn").addEventListener("click", restartCurrentGame);
+document.getElementById("gameSwitchBtn").addEventListener("click", () => openRandomGame(true));
+gModal.addEventListener("click", (e) => { if (e.target === gModal) closeGameModal(); });
+
+// Canvas Pointer Interaction
+gCanvas.addEventListener("pointerdown", (e) => {
+  if (!ARCADE.instance || !ARCADE.isOpen) return;
+  const rect = gCanvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const w = rect.width;
+
+  if (ARCADE.gameKey === "track") {
+    if (x < w / 2) ARCADE.instance.keys.left = true;
+    else ARCADE.instance.keys.right = true;
+  } else if (ARCADE.gameKey === "canyon") {
+    ARCADE.instance.jump();
+  } else if (ARCADE.gameKey === "orbit") {
+    ARCADE.instance.setTether(true);
+  }
+});
+
+gCanvas.addEventListener("pointerup", (e) => {
+  if (!ARCADE.instance || !ARCADE.isOpen) return;
+  if (ARCADE.gameKey === "track") {
+    ARCADE.instance.keys.left = false;
+    ARCADE.instance.keys.right = false;
+  } else if (ARCADE.gameKey === "orbit") {
+    ARCADE.instance.setTether(false);
+  }
+});
+
+// Keyboard Controls
+window.addEventListener("keydown", (e) => {
+  if (!ARCADE.isOpen) return;
+  if (e.key === "Escape") { closeGameModal(); return; }
+
+  const inst = ARCADE.instance;
+  if (!inst) return;
+
+  if (ARCADE.gameKey === "track") {
+    if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") inst.keys.left = true;
+    if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") inst.keys.right = true;
+  } else if (ARCADE.gameKey === "canyon") {
+    if (e.key === " " || e.key === "ArrowUp") { e.preventDefault(); inst.jump(); }
+  } else if (ARCADE.gameKey === "orbit") {
+    if (e.key === " " || e.key === "ArrowDown") { e.preventDefault(); inst.setTether(true); }
+  } else if (ARCADE.gameKey === "snake") {
+    if (e.key === "ArrowUp" || e.key === "w" || e.key === "W") { e.preventDefault(); inst.setDir(0, -1); }
+    if (e.key === "ArrowDown" || e.key === "s" || e.key === "S") { e.preventDefault(); inst.setDir(0, 1); }
+    if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") { e.preventDefault(); inst.setDir(-1, 0); }
+    if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") { e.preventDefault(); inst.setDir(1, 0); }
+  }
+});
+
+window.addEventListener("keyup", (e) => {
+  if (!ARCADE.isOpen || !ARCADE.instance) return;
+  const inst = ARCADE.instance;
+  if (ARCADE.gameKey === "track") {
+    if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") inst.keys.left = false;
+    if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") inst.keys.right = false;
+  } else if (ARCADE.gameKey === "orbit") {
+    if (e.key === " " || e.key === "ArrowDown") inst.setTether(false);
+  }
+});
 
 /* ===== Init ===== */
 load();
