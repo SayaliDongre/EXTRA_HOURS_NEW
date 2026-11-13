@@ -15,39 +15,44 @@ body.busy .app{pointer-events:none}
 .logo{width:38px;height:38px;border-radius:12px;background:var(--accent);display:grid;place-items:center;font-size:1.3rem;box-shadow:0 8px 18px rgba(93,154,79,.3)}
 h1{font-size:1.15rem;margin:0;line-height:1.2;font-weight:800}
 .hint{color:var(--muted);font-size:.9rem}
-.card{background:var(--card);border:1px solid var(--sep);border-radius:16px;padding:12px;box-shadow:0 6px 18px rgba(80,90,40,.06)}
-.rows{display:flex;flex-direction:column;gap:8px;max-height:65vh;overflow:auto;padding-right:4px}
-.row{display:grid;grid-template-columns:1fr auto;gap:8px;padding:10px 10px 10px 14px;border:1px solid var(--sep);border-radius:14px;background:#fff;border-left:5px solid var(--accent-strong)}
+.card{background:var(--card);border:1px solid var(--sep);border-radius:16px;padding:14px;box-shadow:0 6px 18px rgba(80,90,40,.06)}
+.glabel{color:var(--muted);font-size:.85rem;text-align:center;margin-bottom:8px}
+.rows{display:flex;flex-direction:column;gap:10px;max-height:72vh;overflow:auto;padding-right:4px}
+.row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:10px 12px 10px 14px;border:1px solid var(--sep);border-radius:14px;background:#fff;border-left:5px solid var(--accent-strong)}
+.row-main{display:flex;flex-direction:column;gap:8px;min-width:0}
 .row-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.day{font-weight:800;background:var(--chip);padding:6px 10px;border-radius:999px}
-.toggle{display:inline-flex;align-items:center;gap:6px;background:var(--chip);padding:6px 10px;border-radius:999px}
+.day{font-weight:800;background:var(--chip);padding:5px 12px;border-radius:999px;font-size:.88rem}
+.toggle{display:inline-flex;align-items:center;gap:6px;background:var(--chip);padding:5px 10px;border-radius:999px;font-size:.82rem}
 .toggle input{accent-color:var(--accent-strong)}
-.row-body{grid-column:1/-1;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.cluster{display:flex;align-items:center;gap:8px}
-.lbl{color:var(--muted);font-size:.95rem;min-width:32px;text-align:right}
-input[type=time]{width:auto;min-width:110px;padding:8px 10px;border:1px solid var(--sep);border-radius:10px;background:#fff;color:var(--ink);font:inherit}
-.pick{padding:8px 10px;border-radius:10px;border:1px solid var(--sep);background:var(--accent);color:#1f2a1a;font-weight:700;cursor:pointer}
+.row-inputs{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.cluster{display:flex;align-items:center;gap:6px}
+.lbl{color:var(--muted);font-size:.88rem;min-width:24px;text-align:right;font-weight:700}
+input[type=time]{width:auto;min-width:105px;padding:6px 8px;border:1px solid var(--sep);border-radius:10px;background:#fff;color:var(--ink);font:inherit;font-size:.88rem}
+.pick{padding:6px 10px;border-radius:10px;border:1px solid var(--sep);background:var(--accent);color:#1f2a1a;font-weight:700;cursor:pointer;font-size:.82rem}
 .subtle{background:#f4f3e8;color:#333}
-.placeholder{color:var(--muted);font-style:italic;padding:8px 0}
-.right{margin-left:auto;display:flex;align-items:center;justify-content:flex-end;font-weight:700;min-width:160px}
-.over.ok{color:var(--ok)}.over.bad{color:var(--bad)}
+.placeholder{color:var(--muted);font-style:italic;padding:6px 0;font-size:.85rem}
+
+/* Right-side plant panel */
+.row-plant-box{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;width:82px;min-width:82px;text-align:center}
+.plant{position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;height:84px;width:100%;display:flex;align-items:flex-end;justify-content:center}
+.plant svg{width:100%;max-width:76px;height:84px;display:block;margin:0 auto;overflow:visible}
+.row-over{margin-top:2px;font-size:.76rem;font-weight:800;color:var(--muted);white-space:nowrap;line-height:1.2;text-align:center}
+.row-over.ok{color:var(--ok)}
+.row-over.bad{color:var(--bad)}
+
 .controls{display:flex;gap:10px;flex-wrap:wrap}
 .btn{padding:10px 14px;border-radius:12px;border:1px solid var(--sep);background:var(--accent);color:#1f2a1a;font:inherit;font-weight:800;cursor:pointer}
 .btn.secondary{background:#f1efe0}
 .footer{display:grid;gap:8px}
-@media(max-width:740px){.rows{max-height:62vh}.right{min-width:auto}}
+@media(max-width:740px){
+  .rows{max-height:68vh}
+  .row{padding:8px 10px 8px 12px;gap:8px}
+  .row-plant-box{width:74px;min-width:74px}
+  .plant{height:78px}
+  .plant svg{max-width:68px;height:78px}
+}
 
-/* ===== Garden ===== */
-.garden{background:linear-gradient(180deg,#eef7e3,#fff 70%);padding-bottom:6px;overflow:hidden}
-.glabel{color:var(--muted);font-size:.85rem;text-align:center;margin-bottom:4px}
-#plants{display:flex;justify-content:space-between;align-items:flex-end;width:100%;gap:4px}
-.pw{flex:1 1 0;min-width:0;max-width:115px;text-align:center}
-.plant{position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.plant svg{width:100%;max-width:92px;height:auto;display:block;margin:0 auto;overflow:visible}
-.cap{padding:4px 0 2px;line-height:1.2}
-.c-day{font-size:.82rem;font-weight:800;color:var(--ink)}
-.c-time{font-size:.72rem;font-weight:700;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pbub{position:absolute;top:-4px;left:50%;transform:translateX(-50%);font-size:.8rem;font-weight:800;background:#fff;border:1px solid var(--sep);border-radius:10px;padding:2px 8px;opacity:0;pointer-events:none;white-space:nowrap;z-index:3}
+.pbub{position:absolute;top:-6px;left:50%;transform:translateX(-50%);font-size:.78rem;font-weight:800;background:#fff;border:1px solid var(--sep);border-radius:10px;padding:2px 7px;opacity:0;pointer-events:none;white-space:nowrap;z-index:10;box-shadow:0 3px 8px rgba(0,0,0,.12)}
 .pbub.on{animation:bub 1.1s}
 .plant.hop{animation:hop .6s}
 .drop{position:absolute;top:0;width:4px;height:12px;border-radius:50%;background:#7cc4ff;opacity:0;animation:fall .6s ease-in forwards;pointer-events:none}
@@ -187,12 +192,10 @@ input[type=time]{width:auto;min-width:110px;padding:8px 10px;border:1px solid va
     </button>
   </header>
 
-  <section class="card garden">
-    <div class="glabel">Press “Calculate” to water your garden — taller plants mean more extra time that day</div>
-    <div id="plants"></div>
+  <section class="card">
+    <div class="glabel">Press “Calculate” to water your plants — taller plants mean more extra time that day</div>
+    <div class="rows" id="rows"></div>
   </section>
-
-  <section class="card"><div class="rows" id="rows"></div></section>
 
   <section class="controls">
     <button id="calc" class="btn">Calculate Extra Hours</button>
@@ -329,14 +332,20 @@ function render(){
   rowsModel.forEach((r, idx)=>{
     const row = document.createElement("div");
     row.className = "row";
+    row.dataset.idx = idx;
+
+    const main = document.createElement("div");
+    main.className = "row-main";
+
     const head = document.createElement("div");
     head.className = "row-head";
     head.innerHTML = `
       <div class="day">${r.day}</div>
       <label class="toggle"><input type="checkbox" class="work" ${r.work ? "checked":""}><span>Work</span></label>
       ${r.isFriday ? `<label class="toggle"><input type="checkbox" class="manual" ${r.manualOut && r.work ? "checked":""} ${!r.work ? "disabled":""}><span>Manual OUT</span></label>`:""}`;
-    const body = document.createElement("div");
-    body.className = "row-body";
+
+    const inputs = document.createElement("div");
+    inputs.className = "row-inputs";
 
     const inCluster = document.createElement("div");
     inCluster.className = "cluster";
@@ -365,12 +374,26 @@ function render(){
       outTime.disabled = !r.work;
       outCluster.append(outTime,outPick);
     }
+    inputs.append(inCluster, outCluster);
+    main.append(head, inputs);
 
-    const over = document.createElement("div");
-    over.className = "right over";
-    over.textContent = "Over: +0h 0m";
-    over.dataset.idx = idx;
-    body.append(inCluster, outCluster, over);
+    // Right side: Plant on top, Over / time info below
+    const plantSide = document.createElement("div");
+    plantSide.className = "row-plant-box";
+    plantSide.innerHTML = `
+      <div class="plant" data-i="${idx}">
+        <div class="sv"></div>
+        <div class="pbub"></div>
+      </div>
+      <div class="row-over" data-idx="${idx}">--</div>
+    `;
+
+    row.append(main, plantSide);
+    rowsEl.appendChild(row);
+
+    // Draw plant with its current state
+    const svEl = plantSide.querySelector(".sv");
+    if(svEl && PS[idx]) svEl.innerHTML = plantSVG(PS[idx].h, PS[idx].m);
 
     head.querySelector(".work").addEventListener("change", (e)=>{
       r.work = e.target.checked;
@@ -386,10 +409,6 @@ function render(){
     inPick.addEventListener("click", ()=> inTime.showPicker ? inTime.showPicker() : inTime.focus());
     outTime.addEventListener("change", ()=>{ r.out = outTime.value || r.out; save(); });
     outPick.addEventListener("click", ()=> outTime.showPicker ? outTime.showPicker() : outTime.focus());
-
-    row.appendChild(head);
-    row.appendChild(body);
-    rowsEl.appendChild(row);
   });
 }
 
@@ -398,14 +417,13 @@ function calculate(){
   const dayVals = [null,null,null,null,null]; // garden: per-day result in minutes (null = not working)
 
   rowsModel.forEach((r, i)=>{
-    const overEl = rowsEl.querySelector(`.over[data-idx="${i}"]`);
     if(!r.work){
-      if(overEl){ overEl.textContent = "Over: +0h 0m"; overEl.classList.remove("bad"); overEl.classList.add("ok"); }
+      setOver(i, "Off", false, false);
       return;
     }
     if(r.isFriday && !r.manualOut){
       dayVals[i] = DEFAULT_START_MIN - toMinutes(r.in); // garden: Friday auto = arrival adjustment
-      if(overEl){ overEl.textContent = "Over: (auto)"; overEl.classList.remove("bad","ok"); }
+      setOver(i, "(auto)", false, false);
       return;
     }
     const inMin = toMinutes(r.in);
@@ -420,11 +438,7 @@ function calculate(){
     const sign = daily>=0 ? "+" : "-";
     const dh = Math.floor(Math.abs(daily)/60);
     const dm = Math.abs(daily)%60;
-    if(overEl){
-      overEl.textContent = `Over: ${sign}${dh}h ${dm}m`;
-      overEl.classList.toggle("ok", daily>=0);
-      overEl.classList.toggle("bad", daily<0);
-    }
+    setOver(i, `Over: ${sign}${dh}h ${dm}m`, daily>=0, daily<0);
   });
 
   const fri = rowsModel[4];
@@ -435,6 +449,7 @@ function calculate(){
       total += arrivalAdjust;
       const leaveMin = DEFAULT_END_MIN - total;
       friLeaveMin = ((leaveMin % (24*60)) + (24*60)) % (24*60);
+      setOver(4, `leave ${toHHMM(friLeaveMin)}`, total>=0, total<0);
     } else {
       friLeaveMin = toMinutes(fri.out);
     }
@@ -490,8 +505,9 @@ function resetAll(){
      18:00 - 19:00 (6-7 PM) -> cry (sad)
      >= 19:00 (7 PM or later) -> dead (withered stem & leaves, X_X face)
    ===================================================================== */
-const plantsEl = document.getElementById("plants");
 const PS = [];
+DAYS.forEach((d, i) => { PS[i] = { h: 26, m: "idle", raf: 0 }; });
+
 let currentDayVals = [0, 0, 0, 0, 0];
 let currentFriLeaveMin = null;
 const fmtMin = d => `${d>=0?"+":"-"}${Math.floor(Math.abs(d)/60)}h ${Math.abs(d)%60}m`;
@@ -520,7 +536,7 @@ function plantSVG(h, m){
   const vein  = isDead ? "#5a4a38" : m==="cry" ? "#8a9c72" : "#3d9a45";
   const stem  = isDead ? "#6b5844" : "#4a8f4a";
   const leaf = (x,y,side,ang,sc,delay)=>`<g transform="translate(${x} ${y}) scale(${side} 1) rotate(${ang}) scale(${sc})"><path class="lf" style="${isDead?'animation:none;':`animation-delay:${delay}s`}" d="${LEAF}" fill="${green}"/><path d="M3 0H30" stroke="${vein}" stroke-width="1.6" fill="none" stroke-linecap="round"/></g>`;
-  let s = `<svg viewBox="0 0 100 195" class="sw ${m}"><path d="M50 152V${top}" stroke="${stem}" stroke-width="5" stroke-linecap="round"/>`;
+  let s = `<svg viewBox="0 0 100 195" preserveAspectRatio="xMidYMax meet" class="sw ${m}"><path d="M50 152V${top}" stroke="${stem}" stroke-width="5" stroke-linecap="round"/>`;
   for(let k=0;k<n;k++){
     const y = 146 - (k+.6)*(h-10)/(n+.2), side = k%2?-1:1;
     const ang = isDead ? 82 : m==="cry" ? 55 : m==="idle" ? 15 : -28 - (k%3)*5;
@@ -555,31 +571,39 @@ function plantSVG(h, m){
   return s + face + "</svg>";
 }
 
-DAYS.forEach((d,i)=>{
-  plantsEl.insertAdjacentHTML("beforeend",`<div class="pw"><div class="plant" data-i="${i}"><div class="sv"></div><div class="pbub"></div></div><div class="cap"><div class="c-day">${d.slice(0,3)}</div><div class="c-time">--</div></div></div>`);
-  PS[i] = {h:26, m:"idle", raf:0};
-});
-const sv = i => plantsEl.children[i].querySelector(".sv");
-const setCap = (i, dayText, timeText) => {
-  const c = plantsEl.children[i].querySelector(".cap");
-  if(!c) return;
-  const dEl = c.querySelector(".c-day");
-  const tEl = c.querySelector(".c-time");
-  if(dEl) dEl.textContent = dayText;
-  if(tEl) tEl.textContent = timeText;
+const plantBox = i => {
+  const r = rowsEl.children[i];
+  return r ? r.querySelector(".plant") : null;
 };
-const drawP = (i,h,m)=>{ sv(i).innerHTML = plantSVG(h,m); };
-function hop(el){ el.classList.remove("hop"); void el.offsetWidth; el.classList.add("hop"); }
+const sv = i => {
+  const r = rowsEl.children[i];
+  return r ? r.querySelector(".sv") : null;
+};
+const drawP = (i,h,m)=>{
+  const el = sv(i);
+  if(el) el.innerHTML = plantSVG(h,m);
+};
+const setOver = (i, text, isOk, isBad) => {
+  const r = rowsEl.children[i];
+  if(!r) return;
+  const el = r.querySelector(`.row-over[data-idx="${i}"]`) || r.querySelector(".row-over");
+  if(!el) return;
+  el.textContent = text;
+  el.classList.toggle("ok", !!isOk);
+  el.classList.toggle("bad", !!isBad);
+};
+function hop(el){ if(el){ el.classList.remove("hop"); void el.offsetWidth; el.classList.add("hop"); } }
 function resetGarden(){
   PS.forEach((st,i)=>{
     cancelAnimationFrame(st.raf);
     st.h=26; st.m="idle";
     drawP(i,26,"idle");
-    setCap(i, DAYS[i].slice(0,3), "--");
+    setOver(i, "--", false, false);
   });
 }
 function rain(i, delay){
-  const box = plantsEl.children[i].firstChild;
+  const box = plantBox(i);
+  if(!box) return;
   for(let k=0;k<7;k++){
     const d = document.createElement("i"); d.className="drop";
     d.style.left = (25+Math.random()*50)+"%"; d.style.animationDelay = (delay+Math.random()*500)+"ms";
@@ -594,20 +618,17 @@ function growGarden(vals, friLeaveMin){
     cancelAnimationFrame(st.raf); rain(i, delay);
     const t0 = performance.now() + delay + 600;
 
-    const timeLabel = d==null
-      ? "off"
-      : (rowsModel[i].isFriday && !rowsModel[i].manualOut && friLeaveMin != null)
-        ? `leave ${toHHMM(friLeaveMin)}`
-        : fmtMin(d);
-    setCap(i, DAYS[i].slice(0,3), timeLabel);
-
     const step = t=>{
       if(t < t0){ st.raf = requestAnimationFrame(step); return; }
       const p = Math.min(1,(t-t0)/1100), c1=1.70158, c3=c1+1;
       const e = 1 + c3*Math.pow(p-1,3) + c1*Math.pow(p-1,2);   // ease-out-back
       st.h = h0 + (h1-h0)*e; st.m = m; drawP(i, st.h, m);
       if(p<1) st.raf = requestAnimationFrame(step);
-      else { st.h = h1; drawP(i,h1,m); hop(plantsEl.children[i].firstChild); }
+      else {
+        st.h = h1; drawP(i,h1,m);
+        const pb = plantBox(i);
+        if(pb) hop(pb);
+      }
     };
     st.raf = requestAnimationFrame(step);
   });
@@ -920,22 +941,24 @@ async function doGoatMischief(tok) {
   const [sx, sy] = off(randEdge(), cfg.w, cfg.h);
   set(goat, sx, sy);
 
-  const p0 = plantsEl.children[0].getBoundingClientRect();
+  const pb0 = plantBox(0);
+  const p0 = pb0 ? pb0.getBoundingClientRect() : { left: W / 2, top: 120 };
   const tx = clamp(p0.left - 20, 10, W - cfg.w - 10);
-  const ty = clamp(p0.top + 30, 44, H - cfg.h - 10);
+  const ty = clamp(p0.top + 10, 44, H - cfg.h - 10);
   face(goat, tx < sx ? -1 : 1);
   goat.classList.add("trot");
   await go(goat, tx, ty, 600, "ease-out");
   goat.classList.remove("trot");
   if (!alive()) return;
 
-  const eatCount = Math.min(3, plantsEl.children.length);
+  const eatCount = Math.min(3, rowsModel.length);
   for (let i = 0; i < eatCount; i++) {
     if (!alive()) break;
-    const pBox = plantsEl.children[i];
+    const pBox = plantBox(i);
+    if (!pBox) continue;
     const r = pBox.getBoundingClientRect();
     const px = clamp(r.left - 24, 0, W - cfg.w);
-    const py = clamp(r.top + 28, 44, H - cfg.h);
+    const py = clamp(r.top + 10, 44, H - cfg.h);
 
     face(goat, px < goat._x ? -1 : 1);
     goat.classList.add("trot");
@@ -1026,16 +1049,17 @@ async function gardenerFixGoat(goat, eatCount) {
   // Regrow eaten plants
   for (let i = 0; i < eatCount; i++) {
     if (!S.on) break;
-    const pBox = plantsEl.children[i];
+    const pBox = plantBox(i);
+    if (!pBox) continue;
     const r = pBox.getBoundingClientRect();
     const wx = clamp(r.left - 45, 10, W - 90);
-    const wy = clamp(r.top + 10, 44, H - 125);
+    const wy = clamp(r.top - 10, 44, H - 125);
 
     await goGardener(rd, wx, wy, 350, "ease-out");
     if (img) img.src = "assets/gardener/hold.png";
     face(rd, 1);
 
-    await pourWater(rd, r.left + 50, r.top + 70);
+    await pourWater(rd, r.left + 35, r.top + 40);
 
     const target = getPlantState(i, currentDayVals[i], currentFriLeaveMin);
     const targetH = target.h;
@@ -1051,7 +1075,7 @@ async function gardenerFixGoat(goat, eatCount) {
     PS[i].h = targetH;
     PS[i].m = targetM;
     drawP(i, targetH, targetM);
-    hop(pBox.firstChild);
+    hop(pBox);
     const bub = pBox.querySelector(".pbub");
     if (bub) { bub.textContent = SAY[targetM] || "yay!"; bub.classList.add("on"); }
     S.eatenPlants.delete(i);
@@ -1134,7 +1158,7 @@ async function doFrogMischief(tok) {
 
   const stations = [
     document.querySelector(".header"),
-    document.querySelector(".garden"),
+    document.querySelector(".card"),
     document.getElementById("total")
   ].filter(Boolean);
 
@@ -1419,15 +1443,17 @@ document.getElementById("bx").addEventListener("click", finish);
 
 // Plant taps: giggle. Tapping plants 5× summons a random animal!
 let mc = 0, mt = 0;
-plantsEl.addEventListener("click", e => {
+rowsEl.addEventListener("click", e => {
   const p = e.target.closest(".plant");
   if (!p) return;
   const i = +p.dataset.i, b = p.querySelector(".pbub");
   hop(p);
-  b.textContent = SAY[PS[i].m];
-  b.classList.remove("on");
-  void b.offsetWidth;
-  b.classList.add("on");
+  if (b) {
+    b.textContent = SAY[PS[i].m];
+    b.classList.remove("on");
+    void b.offsetWidth;
+    b.classList.add("on");
+  }
   mc++;
   clearTimeout(mt);
   mt = setTimeout(() => mc = 0, 2500);
