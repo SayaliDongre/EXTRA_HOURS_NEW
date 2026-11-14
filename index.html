@@ -173,6 +173,62 @@ input[type=time]{width:auto;min-width:105px;padding:6px 8px;border:1px solid var
 .touch-dpad{display:grid;grid-template-columns:repeat(3,44px);gap:6px;margin:0 auto}
 .touch-dpad button{height:40px;padding:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:8px;font-size:1.1rem;cursor:pointer;display:grid;place-items:center}
 .touch-dpad button:active{background:rgba(255,255,255,.25)}
+
+/* ===== v2 UI polish (overrides) ===== */
+body{background:radial-gradient(900px 400px at 10% -5%,#e6f4d8 0,transparent 60%),radial-gradient(800px 380px at 100% 0,#fff0d6 0,transparent 55%),linear-gradient(180deg,#fffaf0,#f3f8e8) fixed}
+.app{max-width:960px;padding:26px 18px 56px;gap:18px}
+.header{gap:14px;padding:4px 2px}
+.logo{width:50px;height:50px;border-radius:16px;font-size:1.7rem;animation:logoBob 3.6s ease-in-out infinite}
+@keyframes logoBob{50%{transform:translateY(-3px) rotate(-4deg)}}
+h1{font-size:1.45rem;letter-spacing:-.01em}
+.hint{margin-top:3px;line-height:1.45}
+.card{padding:20px;border-radius:22px;border-color:rgba(93,154,79,.18);box-shadow:0 12px 32px rgba(60,80,30,.08);animation:cardIn .5s ease-out both}
+.card+.controls+.footer,.footer{animation-delay:.15s}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px)}}
+.glabel{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 auto 16px;padding:8px 14px;border-radius:999px;background:#eef7e3;color:#4d6a3e;font-weight:700;font-size:.84rem;text-align:center;width:fit-content;max-width:100%}
+.rows{max-height:none;overflow:visible;padding:0;gap:14px}
+.row{grid-template-columns:minmax(0,1fr) 116px;gap:18px;padding:16px 16px 16px 20px;border-radius:18px;background:linear-gradient(135deg,#fff,#fbfdf6);transition:box-shadow .25s,border-color .25s}
+.row:hover{box-shadow:0 10px 24px rgba(60,80,30,.1);border-color:#cfe3bf}
+.row-main{gap:12px}
+.row-head{gap:8px 10px}
+.row-inputs{gap:12px 24px}
+.day{padding:6px 14px;font-size:.92rem}
+input[type=time]{padding:9px 10px;border-radius:12px;font-size:.92rem}
+input[type=time]:focus{outline:2px solid var(--accent-strong);outline-offset:1px}
+.pick{padding:8px 12px;border-radius:11px;transition:transform .15s,filter .15s}
+.pick:hover{filter:brightness(.96);transform:translateY(-1px)}
+.row-plant-box{width:116px;min-width:116px;padding:6px 4px 10px;border-radius:16px;background:radial-gradient(ellipse at 50% 100%,#e4f2d6,transparent 72%)}
+.plant{height:104px}
+.plant svg{max-width:96px;height:104px}
+.row-over{margin-top:8px;padding:3px 10px;border-radius:999px;background:var(--chip);font-size:.76rem}
+.row-over.ok{background:#e1f3dc}
+.row-over.bad{background:#fbe4de}
+.controls{gap:12px}
+.btn{padding:12px 22px;border-radius:14px;box-shadow:0 6px 16px rgba(60,80,30,.12);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(60,80,30,.18)}
+.btn:active{transform:translateY(0)}
+.btn:not(.secondary){background:linear-gradient(135deg,#b6dca6,#8fc77d)}
+.footer{gap:10px}
+#total{font-size:1.4rem;font-weight:900;letter-spacing:-.01em}
+#suggest:empty{display:none}
+#suggest{color:var(--muted);font-weight:700}
+@media(max-width:640px){
+  .app{padding:18px 12px 44px;gap:14px}
+  h1{font-size:1.2rem}
+  .card{padding:14px;border-radius:18px}
+  .row{grid-template-columns:minmax(0,1fr) 90px;gap:10px;padding:12px 10px 12px 14px}
+  .row-plant-box{width:90px;min-width:90px}
+  .plant{height:88px}.plant svg{max-width:80px;height:88px}
+  .row-inputs{gap:10px 14px}
+  input[type=time]{min-width:96px}
+}
+/* critters & props */
+.sprite-wrap{animation:breathe 2.6s ease-in-out infinite}
+@keyframes breathe{50%{transform:scale(1.015,1.045)}}
+.prop{position:absolute;right:-16px;top:30px;font-size:34px;line-height:1;transform-origin:80% 90%;animation:propWave .5s ease-in-out infinite alternate;pointer-events:none}
+.prop.sweep{animation:propSweep .3s ease-in-out infinite alternate}
+@keyframes propWave{to{transform:rotate(-18deg) translateY(-4px)}}
+@keyframes propSweep{from{transform:rotate(-30deg)}to{transform:rotate(20deg)}}
 </style>
 </head>
 <body>
@@ -840,603 +896,311 @@ function fixer(cx, cy) {
   document.querySelectorAll(".plant").forEach((p, i) => setTimeout(() => hop(p), i * 80));
 }
 
-function restore() {
-  const elements = document.querySelectorAll(".app, .app *");
-  let count = 0;
-  elements.forEach((e) => {
-    if (e.style && (e.style.transform || e.style.opacity)) {
-      e.style.transition = `transform .7s cubic-bezier(.34,1.56,.64,1) ${Math.min(count * 15, 250)}ms, opacity .7s`;
-      e.style.transform = "";
-      e.style.opacity = "";
-      count++;
-      setTimeout(() => { if (e.style) e.style.transition = ""; }, 1500);
-    }
+function restore(mode = "stagger") {
+  const W = innerWidth;
+  [...document.querySelectorAll(".app, .app *")].filter(e => e.style && (e.style.transform || e.style.opacity)).forEach((e, i) => {
+    const d = mode === "sweep" ? clamp(e.getBoundingClientRect().left / W * 2200, 0, 2200) : mode === "pop" ? rnd(0, 450) : Math.min(i * 18, 350);
+    e.style.transition = `transform .75s cubic-bezier(.34,1.56,.64,1) ${d}ms, opacity .6s ${d}ms`;
+    e.style.transform = ""; e.style.opacity = "";
+    setTimeout(() => { e.style.transition = ""; }, d + 1000);
   });
 }
 
 function finish() {
   if (!S.on) return;
-  S.on = false;
-  S.tok++;
-  clearTimeout(S.hard);
-  S.anims.forEach(a => a.cancel());
-  S.anims.clear();
-  restore();
-  document.body.classList.remove("busy", "shake");
+  S.on = false; S.tok++; clearTimeout(S.hard);
+  S.anims.forEach(a => a.cancel()); S.anims.clear();
+  restore("pop");
   banner.classList.remove("show");
+  document.body.classList.remove("busy");
+  document.querySelector(".app").classList.remove("shake");
+  Object.entries(S.look || {}).forEach(([i, l]) => { cancelAnimationFrame(PS[i].raf); PS[i].h = l.h; PS[i].m = l.m; drawP(+i, l.h, l.m); });
+  S.look = {}; S.eatenPlants.clear(); S.cast = []; stage.innerHTML = "";
+}
 
-  // Regrow any plants that were chewed
-  S.eatenPlants.forEach(i => {
-    const target = getPlantState(i, currentDayVals[i], currentFriLeaveMin);
-    const targetH = target.h;
-    const targetM = target.m;
-    PS[i].h = targetH;
-    PS[i].m = targetM;
-    drawP(i, targetH, targetM);
+/* ---- v2: episode engine (replaces the single-animal mischief) ---- */
+const PAD = 46, vw = () => innerWidth, vh = () => innerHeight;
+const ok = t => S.on && S.tok === t && !S.mom;      // critters keep playing
+const live = t => S.on && S.tok === t;              // gardener phase
+const BAG = {};
+const nextOf = (k, list) => (BAG[k] && BAG[k].length ? BAG[k] : (BAG[k] = shuffle(list))).pop();   // shuffled bag: no repeats until all used
+const fitX = (x, w) => clamp(x, 6, vw() - w - 6), fitY = (y, h) => clamp(y, PAD, vh() - h - 6);
+
+const anim = (el, kf, o) => new Promise(r => { const a = el.animate(kf, o); S.anims.add(a); const d = () => { S.anims.delete(a); r(); }; a.onfinish = d; a.oncancel = d; });
+function arc(el, x, y, ms, h) {
+  return new Promise(res => {
+    const x0 = el._x, y0 = el._y;
+    const a = el.animate([
+      { transform: `translate(${x0}px,${y0}px)`, easing: "ease-out" },
+      { transform: `translate(${(x0 + x) / 2}px,${Math.min(y0, y) - h}px)`, easing: "ease-in" },
+      { transform: `translate(${x}px,${y}px)` }], { duration: ms, fill: "forwards" });
+    S.anims.add(a);
+    const d = () => { S.anims.delete(a); res(); };
+    a.onfinish = () => { set(el, x, y); a.cancel(); d(); }; a.oncancel = d;
   });
-  S.eatenPlants.clear();
+}
+async function trot(el, x, y, ms) {
+  face(el, x < el._x ? -1 : 1);
+  el.classList.add("trot");
+  await go(el, x, y, ms ?? clamp(Math.hypot(x - el._x, y - el._y) / 0.28, 450, 2600), "ease-in-out");
+  el.classList.remove("trot");
+}
+async function hopTo(el, x, y, ms = 540, h = 58) {
+  face(el, x < el._x ? -1 : 1);
+  const w = el.querySelector(".sprite-wrap"), sh = el.querySelector(".shadow");
+  await anim(w, [{ transform: "scale(1,1)" }, { transform: "scale(1.18,.78)" }], { duration: 150 });
+  anim(w, [{ transform: "scale(.86,1.2)" }, { transform: "scale(1,1)", offset: .5 }, { transform: "scale(1.16,.82)", offset: .92 }, { transform: "scale(1,1)" }], { duration: ms });
+  anim(sh, [{ transform: "scale(1)", opacity: .8 }, { transform: "scale(.5)", opacity: .35, offset: .5 }, { transform: "scale(1)", opacity: .8 }], { duration: ms });
+  await arc(el, x, y, ms, h);
+}
+const startle = c => { anim(c.querySelector(".sprite-wrap"), [{ transform: "translateY(0) scale(1)" }, { transform: "translateY(-26px) scale(.92,1.15)", offset: .45 }, { transform: "translateY(0) scale(1.12,.88)", offset: .8 }, { transform: "scale(1)" }], { duration: 520 }); say(c, "!?", 700); };
+function shake() { const a = document.querySelector(".app"); a.classList.remove("shake"); void a.offsetWidth; a.classList.add("shake"); setTimeout(() => a.classList.remove("shake"), 350); }
 
-  stage.innerHTML = "";
+/* UI mess: six different ways an element can get messed up */
+const MESS = [
+  () => `rotate(${pick([-1, 1]) * rnd(8, 22)}deg) translateY(${rnd(6, 20)}px)`,
+  () => `translate(${rnd(-70, 70)}px,${rnd(-30, 50)}px) rotate(${rnd(-25, 25)}deg)`,
+  () => `scale(${pick([.45, 1.35])}) rotate(${rnd(-10, 10)}deg)`,
+  () => `rotate(${pick([-1, 1]) * rnd(160, 200)}deg)`,
+  r => `translateY(${vh() - r.bottom - rnd(6, 30)}px) rotate(${rnd(-40, 40)}deg)`,
+  () => `skew(${rnd(-18, 18)}deg) scale(1.05)`
+];
+function mess(e, i) { const r = e.getBoundingClientRect(); e.style.transition = "transform .55s cubic-bezier(.34,1.56,.64,1)"; e.style.transform = (i == null ? pick(MESS) : MESS[i])(r); }
+function take() {
+  if (!S.pool || !S.pool.length) S.pool = shuffle([...document.querySelectorAll(".logo,.hint,.day,.toggle,.cluster,.row-over,.btn,#total,.glabel")].filter(e => { const r = e.getBoundingClientRect(); return r.width && r.bottom > PAD && r.top < vh() - 20; }));
+  return S.pool.pop() || document.getElementById("total");
 }
 
-function callGardener() {
-  if (S.mom || !S.on) return;
-  S.mom = true;
-  S.anims.forEach(a => a.cancel());
+function mkCrit(key) {
+  const c = CRITTERS[key], el = mkPuppet("critter-" + key, c.img, c.w, c.h);
+  el._k = key; el._c = c; el.onclick = () => onCritterClick(el);
+  const [x, y] = off(randEdge(), c.w, c.h); set(el, x, y); S.cast.push(el); return el;
 }
-
-function onCritterClick(critter) {
-  S.clicks++;
-  say(critter, pick(["Baa!", "Hey!", "Boop!", "Hehe!"]), 500);
+function onCritterClick(c) {
+  S.clicks++; say(c, pick(["Hey!", "Boop!", "Hehe!", "Eek!"]), 500);
   if (S.clicks >= 3) callGardener();
 }
+function callGardener() {
+  if (S.mom || !S.on) return;
+  S.cast.forEach(c => { if (c.isConnected) { const r = c.getBoundingClientRect(); set(c, r.left, r.top); } });
+  S.mom = true; S.anims.forEach(a => a.cancel()); S.anims.clear();
+}
+function regrow(i, delay = 0) {
+  const l = S.look[i]; if (!l) return;
+  const st = PS[i], h0 = st.h, t0 = performance.now() + delay; cancelAnimationFrame(st.raf);
+  const step = n => {
+    if (n < t0) { st.raf = requestAnimationFrame(step); return; }
+    const p = Math.min(1, (n - t0) / 1100), c1 = 1.70158, c3 = c1 + 1, e = 1 + c3 * Math.pow(p - 1, 3) + c1 * Math.pow(p - 1, 2);
+    st.h = h0 + (l.h - h0) * e; drawP(i, st.h, l.m);
+    if (p < 1) st.raf = requestAnimationFrame(step);
+    else { st.h = l.h; st.m = l.m; drawP(i, l.h, l.m); hop(plantBox(i)); S.eatenPlants.delete(i); }
+  };
+  st.raf = requestAnimationFrame(step);
+}
+const regrowEaten = (d = 0) => [...S.eatenPlants].forEach((i, k) => regrow(i, d + k * 300));
 
-/* Gardener locomotion & watering */
+/* gardener locomotion (same as before) */
 function walkGardener(rd) {
-  let frame = 0;
-  const img = rd.querySelector(".p-img");
-  const iv = setInterval(() => {
-    if (!S.on) { clearInterval(iv); return; }
-    frame = (frame + 1) % 8;
-    if (img) img.src = `assets/gardener/walk${frame}.png`;
-  }, 85);
+  let f = 0; const img = rd.querySelector(".p-img");
+  const iv = setInterval(() => { if (!S.on) { clearInterval(iv); return; } f = (f + 1) % 8; if (img) img.src = `assets/gardener/walk${f}.png`; }, 85);
   return iv;
 }
-
 async function goGardener(rd, x, y, ms, ease = "ease-in-out") {
   face(rd, x < rd._x ? -1 : 1);
-  const iv = walkGardener(rd);
-  await go(rd, x, y, ms, ease);
-  clearInterval(iv);
-  const img = rd.querySelector(".p-img");
-  if (img) img.src = "assets/gardener/idle.png";
+  const iv = walkGardener(rd); await go(rd, x, y, ms, ease); clearInterval(iv);
+  const img = rd.querySelector(".p-img"); if (img) img.src = "assets/gardener/idle.png";
 }
-
 function pourWater(rd, x, y) {
-  const can = rd.querySelector(".gardener-can");
-  if (can) can.classList.add("pour");
-  for (let k = 0; k < 12; k++) {
-    setTimeout(() => {
-      if (!S.on) return;
-      waterDrop(x + rnd(-8, 8), y - 20);
-    }, k * 35);
-  }
-  return sleep(450).then(() => {
-    if (can) can.classList.remove("pour");
-  });
+  const can = rd.querySelector(".gardener-can"); if (can) can.classList.add("pour");
+  for (let k = 0; k < 12; k++) setTimeout(() => { if (S.on) waterDrop(x + rnd(-8, 8), y - 20); }, k * 35);
+  return sleep(450).then(() => { if (can) can.classList.remove("pour"); });
 }
+function addProp(gd, emoji) { const p = document.createElement("div"); p.className = "prop"; p.textContent = emoji; gd.querySelector(".sprite-wrap").appendChild(p); return p; }
 
-/* -------------------------------------------------------------
-   SPECIFIC CRITTER MISCHIEFS
-   ------------------------------------------------------------- */
-
-/* 1. GOAT (the special one): trots in, eats plants, worried plants, burp, watering can regrowth */
-async function doGoatMischief(tok) {
-  const alive = () => S.on && S.tok === tok && !S.mom;
-  const cfg = CRITTERS.goat;
-  const goat = mkPuppet("critter", cfg.img, cfg.w, cfg.h);
-  goat.onclick = () => onCritterClick(goat);
-
-  const W = innerWidth, H = innerHeight;
-  const [sx, sy] = off(randEdge(), cfg.w, cfg.h);
-  set(goat, sx, sy);
-
-  const pb0 = plantBox(0);
-  const p0 = pb0 ? pb0.getBoundingClientRect() : { left: W / 2, top: 120 };
-  const tx = clamp(p0.left - 20, 10, W - cfg.w - 10);
-  const ty = clamp(p0.top + 10, 44, H - cfg.h - 10);
-  face(goat, tx < sx ? -1 : 1);
-  goat.classList.add("trot");
-  await go(goat, tx, ty, 600, "ease-out");
-  goat.classList.remove("trot");
-  if (!alive()) return;
-
-  const eatCount = Math.min(3, rowsModel.length);
-  for (let i = 0; i < eatCount; i++) {
-    if (!alive()) break;
-    const pBox = plantBox(i);
-    if (!pBox) continue;
-    const r = pBox.getBoundingClientRect();
-    const px = clamp(r.left - 24, 0, W - cfg.w);
-    const py = clamp(r.top + 10, 44, H - cfg.h);
-
-    face(goat, px < goat._x ? -1 : 1);
-    goat.classList.add("trot");
-    await go(goat, px, py, 400, "ease-in-out");
-    goat.classList.remove("trot");
-    if (!alive()) break;
-
-    // Chewing animation
-    face(goat, 1);
-    goat.classList.add("chew-crit");
-    say(goat, pick(cfg.sfx), 650);
-
-    const plantCenterX = r.left + r.width / 2;
-    const plantCenterY = r.top + 50;
-    for (let c = 0; c < 10; c++) {
-      setTimeout(() => {
-        if (!alive()) return;
-        crumb(plantCenterX + rnd(-10, 10), plantCenterY + rnd(-15, 15), pick(["#4a8f4a", "#62b353", "#2e6628"]));
-      }, c * 35);
-    }
-
-    // Shrink plant stem and set mood to crying
-    S.eatenPlants.add(i);
-    const currentH = PS[i].h;
-    const chewedH = 16;
-    for (let step = 0; step <= 5; step++) {
-      await sleep(40);
-      if (!alive()) break;
-      const sh = currentH - (currentH - chewedH) * (step / 5);
-      PS[i].h = sh;
-      drawP(i, sh, "cry");
-    }
-    drawP(i, chewedH, "cry");
-    const bub = pBox.querySelector(".pbub");
-    if (bub) { bub.textContent = "sniff…"; bub.classList.add("on"); }
-
-    await nap(400);
-    goat.classList.remove("chew-crit");
+/* ---------- critter behaviours ---------- */
+async function eatPlant(el, i, t) {
+  const pb = plantBox(i); if (!el || !pb) return;
+  const c = el._c; S.look[i] ??= { h: PS[i].h, m: PS[i].m }; S.eatenPlants.add(i);
+  const r = pb.getBoundingClientRect(), h0 = S.look[i].h, w = el.querySelector(".sprite-wrap");
+  await trot(el, fitX(r.left - c.w * .6, c.w), fitY(r.bottom - c.h + 8, c.h)); if (!ok(t)) return;
+  face(el, 1);
+  for (let b = 1; b <= 3 && ok(t); b++) {
+    await anim(w, [{ transform: "rotate(0) translateY(0)" }, { transform: "rotate(13deg) translateY(10px) scale(1.05,.93)", offset: .5 }, { transform: "rotate(0) translateY(0)" }], { duration: 520, easing: "ease-in-out" });
+    if (!ok(t)) return;
+    el.classList.add("chew-crit"); say(el, pick(c.sfx), 800);
+    for (let k = 0; k < 8; k++) setTimeout(() => crumb(r.left + r.width / 2 + rnd(-12, 12), r.top + r.height * .45 + rnd(-12, 12), pick(["#4a8f4a", "#62b353", "#2e6628"])), k * 40);
+    const nh = Math.max(14, h0 * (1 - b / 3)), from = PS[i].h;
+    for (let s = 1; s <= 5; s++) { await nap(45); PS[i].h = from + (nh - from) * s / 5; drawP(i, PS[i].h, "cry"); }
+    const bb = pb.querySelector(".pbub"); if (bb) { bb.textContent = ["sniff…", "my leaves!", "noo!!"][b - 1]; bb.classList.remove("on"); void bb.offsetWidth; bb.classList.add("on"); }
+    await nap(650); el.classList.remove("chew-crit");
   }
-
-  if (!alive()) return;
-
-  // Goat burp!
-  goat.classList.add("hop-crit");
-  say(goat, "BURRRRRP!! 💨🌿", 1100);
-  dustPuff(goat._x + cfg.w / 2, goat._y + cfg.h - 10);
-  for (let c = 0; c < 8; c++) crumb(goat._x + cfg.w / 2, goat._y + 30, "#55aa44");
-  await sleep(700);
-  goat.classList.remove("hop-crit");
-
-  if (!S.on || S.tok !== tok) return;
-
-  // Gardener arrives with watering can!
-  await gardenerFixGoat(goat, eatCount);
 }
-
-async function gardenerFixGoat(goat, eatCount) {
-  if (!S.on) return;
-  setBanner("🧑‍🌾 The gardener is here with his watering can!");
-  const W = innerWidth, H = innerHeight;
-  const rd = mkPuppet("gardener", "assets/gardener/idle.png", 88, 120, true);
-  const [rx0, ry0] = off(randEdge(), 88, 120);
-  set(rd, rx0, ry0);
-
-  const side = (rx0 < goat._x) ? -1 : 1;
-  const gx = clamp(side === -1 ? goat._x - 70 : goat._x + 90, 10, W - 90);
-  const gy = clamp(goat._y - 15, 44, H - 125);
-  await goGardener(rd, gx, gy, 500, "ease-out");
-  if (!S.on) return;
-
-  say(rd, "Hey! Don't eat my garden! 🧑‍🌾", 900);
-  const img = rd.querySelector(".p-img");
-  if (img) img.src = "assets/gardener/talk.png";
-  await sleep(400);
-
-  // Goat flees
-  say(goat, "Baaaa! 🐐", 500);
-  goat.classList.add("trot");
-  const [ex, ey] = off(randEdge(), 104, 96);
-  face(goat, ex < goat._x ? -1 : 1);
-  go(goat, ex, ey, 600, "ease-in").then(() => goat.remove());
-
-  // Gardener equips watering can
-  if (img) img.src = "assets/gardener/hold.png";
-  const can = rd.querySelector(".gardener-can");
-  if (can) can.classList.add("show");
-
-  // Regrow eaten plants
-  for (let i = 0; i < eatCount; i++) {
-    if (!S.on) break;
-    const pBox = plantBox(i);
-    if (!pBox) continue;
-    const r = pBox.getBoundingClientRect();
-    const wx = clamp(r.left - 45, 10, W - 90);
-    const wy = clamp(r.top - 10, 44, H - 125);
-
-    await goGardener(rd, wx, wy, 350, "ease-out");
-    if (img) img.src = "assets/gardener/hold.png";
-    face(rd, 1);
-
-    await pourWater(rd, r.left + 35, r.top + 40);
-
-    const target = getPlantState(i, currentDayVals[i], currentFriLeaveMin);
-    const targetH = target.h;
-    const targetM = target.m;
-    const startH = PS[i].h;
-    for (let step = 0; step <= 6; step++) {
-      await sleep(35);
-      if (!S.on) break;
-      const sh = startH + (targetH - startH) * (step / 6);
-      PS[i].h = sh;
-      drawP(i, sh, targetM);
-    }
-    PS[i].h = targetH;
-    PS[i].m = targetM;
-    drawP(i, targetH, targetM);
-    hop(pBox);
-    const bub = pBox.querySelector(".pbub");
-    if (bub) { bub.textContent = SAY[targetM] || "yay!"; bub.classList.add("on"); }
-    S.eatenPlants.delete(i);
+async function peck(el, t) {
+  if (!el || !ok(t)) return; const e = take(), r = e.getBoundingClientRect(), c = el._c;
+  await trot(el, fitX(r.left + r.width / 2 - c.w / 2, c.w), fitY(r.top - c.h * .55, c.h)); if (!ok(t)) return;
+  el.classList.add("peck-crit"); say(el, pick(c.sfx), 800);
+  for (let k = 0; k < 6; k++) { crumb(r.left + r.width / 2 + rnd(-12, 12), r.top + 10, "#e0b84a"); await nap(150); }
+  el.classList.remove("peck-crit"); mess(e); await nap(400);
+}
+async function steal(el, t) {
+  if (!el || !ok(t)) return; const e = take(), r = e.getBoundingClientRect(), c = el._c, W = vw(), H = vh();
+  await trot(el, fitX(r.left + r.width / 2 - c.w / 2, c.w), fitY(r.top + r.height / 2 - c.h / 2, c.h)); if (!ok(t)) return;
+  say(el, "Mine! 🍌", 800); await anim(el.querySelector(".sprite-wrap"), [{ transform: "scale(1)" }, { transform: "scale(1.15,.82)" }, { transform: "scale(1)" }], { duration: 380 }); if (!ok(t)) return;
+  let dx = rnd(10, W - c.w - 10) - el._x, dy = rnd(PAD + 10, H - c.h - 10) - el._y;
+  dx = clamp(dx, 6 - r.left, W - r.width - 6 - r.left); dy = clamp(dy, PAD - r.top, H - r.height - 6 - r.top);
+  const tx = el._x + dx, ty = el._y + dy, ms = clamp(Math.hypot(dx, dy) / 0.3, 800, 3000);
+  const ea = e.animate([{ transform: "translate(0,0)" }, { transform: `translate(${dx}px,${dy}px)` }], { duration: ms, easing: "ease-in-out", fill: "forwards" });
+  S.anims.add(ea); ea.onfinish = () => { e.style.transition = ""; e.style.transform = `translate(${dx}px,${dy}px) rotate(${rnd(-14, 14)}deg)`; ea.cancel(); }; ea.oncancel = () => S.anims.delete(ea);
+  await trot(el, tx, ty, ms);
+  if (ok(t)) { say(el, pick(["Hehe!", "Finders keepers!", "Shiny!"]), 900); await nap(500); }
+}
+async function hopAround(el, n, t) {
+  if (!el) return; const c = el._c;
+  for (let i = 0; i < n && ok(t); i++) {
+    const e = take(), r = e.getBoundingClientRect();
+    await hopTo(el, fitX(r.left + r.width / 2 - c.w / 2, c.w), fitY(r.top - c.h * .6, c.h)); if (!ok(t)) return;
+    dustPuff(el._x + c.w / 2, el._y + c.h - 4); mess(e, pick([0, 1, 5])); say(el, pick(c.sfx), 700); await nap(300);
   }
+}
+async function nibble(el, t) {
+  if (!el || !ok(t)) return; const b = document.getElementById("calc"), r = b.getBoundingClientRect(), c = el._c;
+  await hopTo(el, fitX(r.left - c.w * .4, c.w), fitY(r.top - c.h * .5, c.h)); if (!ok(t)) return;
+  el.classList.add("chew-crit"); say(el, "Mmm, crunchy button! 🥕", 900);
+  for (let k = 0; k < 8; k++) crumb(r.left + 30, r.top + 14, "#e0956b");
+  mess(b, 0); await nap(900); el.classList.remove("chew-crit");
+}
+async function mud(el, t) {
+  if (!el) return; const rows = [...document.querySelectorAll(".row")], c = el._c; if (!rows.length) return;
+  const r0 = rows[0].getBoundingClientRect();
+  await trot(el, fitX(r0.left + 10, c.w), fitY(r0.top + 10, c.h)); if (!ok(t)) return;
+  el.classList.add("roll-crit"); say(el, "Wheee! Rolling in the dirt! 🐷", 1300);
+  for (let i = 0; i < rows.length && ok(t); i++) {
+    const r = rows[i].getBoundingClientRect(), tx = fitX(i % 2 ? r.right - c.w - 10 : r.left + 10, c.w);
+    const p = go(el, tx, fitY(r.top + r.height / 2 - c.h / 2, c.h), 900, "ease-in-out");
+    setTimeout(() => { if (!ok(t)) return; rows[i].style.transition = "transform .55s cubic-bezier(.34,1.56,.64,1)"; rows[i].style.transform = `rotate(${pick([-1, 1]) * rnd(2.5, 5)}deg) translate(${rnd(-14, 14)}px,${rnd(-4, 6)}px)`; for (let k = 0; k < 6; k++) crumb(tx + c.w / 2, el._y + c.h / 2, "#8a6645"); }, 450);
+    await p;
+  }
+  el.classList.remove("roll-crit");
+}
+async function stompThrough(el, t) {
+  if (!el) return; const W = vw(), H = vh(), c = el._c, y = fitY(rnd(H * .3, H * .65), c.h), dir = Math.random() < .5 ? 1 : -1;
+  set(el, dir > 0 ? -c.w - 30 : W + 30, y);
+  for (let s = 1; s <= 3 && ok(t); s++) {
+    await trot(el, fitX(dir > 0 ? -c.w + (W + c.w) * s / 4 : W - (W + c.w) * s / 4, c.w), y, 950); if (!ok(t)) return;
+    el.classList.add("stomp-crit"); await nap(650); el.classList.remove("stomp-crit");
+    shake(); dustPuff(el._x + c.w / 2, el._y + c.h - 6); say(el, pick(c.sfx), 700); mess(take(), 4); mess(take(), 1); await nap(300);
+  }
+}
+async function dash(el, t) {
+  if (!el) return; const W = vw(), H = vh(), c = el._c, y = fitY(rnd(H * .2, H * .75), c.h), dir = Math.random() < .5 ? 1 : -1;
+  set(el, dir > 0 ? -c.w - 40 : W + 40, y);
+  for (let s = 1; s <= 3 && ok(t); s++) {
+    await trot(el, dir > 0 ? -c.w + (W + c.w * 2) * s / 3 : W - (W + c.w * 2) * s / 3, y + rnd(-30, 30), 800); if (!ok(t)) return;
+    dustPuff(el._x + c.w / 2, el._y + c.h - 6); mess(take()); if (el._k === "elephant") shake();
+  }
+}
+async function peekOut(el, t) {
+  if (!el) return; const W = vw(), H = vh(), c = el._c, edge = pick(["l", "r", "b"]), y = rnd(H * .25, H * .7);
+  const hx = edge === "l" ? -c.w * .58 : edge === "r" ? W - c.w * .42 : rnd(W * .2, W * .7), hy = edge === "b" ? H - c.h * .5 : y;
+  set(el, edge === "l" ? -c.w - 20 : edge === "r" ? W + 20 : hx, edge === "b" ? H + 20 : hy);
+  face(el, edge === "r" ? -1 : 1); await go(el, hx, hy, 600, "ease-out"); if (!ok(t)) return;
+  say(el, "Peekaboo! 👀", 900); await nap(rnd(800, 1200));
+  await anim(el.querySelector(".sprite-wrap"), [{ transform: "rotate(-6deg)" }, { transform: "rotate(6deg)" }, { transform: "rotate(0)" }], { duration: 400 });
+}
+async function dance(cast, t) {
+  const W = vw(), H = vh(), y = fitY(H * .55, 100), n = cast.length, cls = ["wobble-crit", "celebrate", "hop-crit"];
+  await Promise.all(cast.map((el, i) => trot(el, fitX(W / 2 - n * 50 + i * 100 - el._c.w / 2, el._c.w), y)));
+  const rows = [...document.querySelectorAll(".row")];
+  for (let b = 0; b < 8 && ok(t); b++) {
+    cast.forEach((el, i) => { cls.forEach(k => el.classList.remove(k)); el.classList.add(cls[(b + i) % 3]); });
+    rows.forEach((r, i) => { r.style.transition = "transform .35s ease-in-out"; r.style.transform = `rotate(${((b + i) % 2 ? 1 : -1) * 1.2}deg) translateX(${((b + i) % 2 ? 1 : -1) * 6}px)`; });
+    document.querySelectorAll(".plant").forEach((p, i) => { if ((b + i) % 3 === 0) hop(p); });
+    if (b % 2 === 0) say(pick(cast), pick(["♪ ♫", "Dance! 💃", "Boogie!"]), 600);
+    await nap(520);
+  }
+  cast.forEach(el => cls.forEach(k => el.classList.remove(k)));
+}
+const goatFeast = async (g, t) => {
+  if (!g) return;
+  for (const i of shuffle([0, 1, 2, 3, 4]).slice(0, 3)) { if (!ok(t)) return; await eatPlant(g, i, t); }
+  if (ok(t)) { say(g, "BURRRP! 💨🌿", 1200); dustPuff(g._x + g._c.w / 2, g._y + g._c.h - 6); await nap(900); }
+};
 
-  if (!S.on) return;
+/* ---------- episodes: 7 different stories, shuffled so none repeats until all have played ---------- */
+const spawn = async (key, delay, t) => { await nap(delay); return ok(t) ? mkCrit(key) : null; };
+const EPISODES = [
+  { banner: "🐐🐔 A hungry goat and a pecky chicken broke in!", run: async t => { const g = await spawn("goat", 0, t), h = await spawn("chicken", 0, t);
+      await Promise.all([goatFeast(g, t), (async () => { await nap(1600); for (let i = 0; i < 3 && ok(t); i++) await peck(h, t); })()]); } },
+  { banner: "🐇🐸 A bunny and a frog are bouncing on your buttons!", run: async t => { const r = await spawn("rabbit", 0, t), f = await spawn("frog", 0, t);
+      await Promise.all([hopAround(r, 3, t).then(() => nibble(r, t)), nap(900).then(() => hopAround(f, 3, t))]); } },
+  { banner: "🐷🐸 Mud party! A piglet and a frog are splashing about!", run: async t => { const p = await spawn("pig", 0, t), f = await spawn("frog", 0, t);
+      await Promise.all([mud(p, t), nap(1500).then(() => hopAround(f, 2, t))]); } },
+  { banner: "🐒🐘 A sneaky monkey is stealing icons — and an elephant is on the way!", run: async t => { const m = await spawn("monkey", 0, t), e = await spawn("elephant", 0, t);
+      await Promise.all([(async () => { for (let i = 0; i < 3 && ok(t); i++) await steal(m, t); })(), nap(3500).then(() => stompThrough(e, t))]); } },
+  { banner: "🐐🐷🐘 Stampede! Everyone is running through the garden!", run: async t => {
+      await Promise.all(["goat", "pig", "elephant"].map((k, i) => spawn(k, i * 900, t).then(async el => { await dash(el, t); await dash(el, t); }))); } },
+  { banner: "👀 Peekaboo! Someone is hiding in your garden…", run: async t => { const r = await spawn("rabbit", 0, t), m = await spawn("monkey", 600, t), f = await spawn("frog", 1200, t);
+      await Promise.all([peekOut(r, t).then(() => hopAround(r, 2, t)), peekOut(m, t).then(() => steal(m, t)), peekOut(f, t).then(() => hopAround(f, 2, t))]); } },
+  { banner: "💃 Dance party! The critters are grooving!", run: async t => { const cast = [];
+      for (const k of shuffle(Object.keys(CRITTERS)).slice(0, 3)) { const c = await spawn(k, 200, t); if (c) cast.push(c); }
+      if (cast.length) await dance(cast, t); } }
+];
 
-  if (can) can.classList.remove("show");
-  if (img) img.src = "assets/gardener/cheer0.png";
-  rd.classList.add("celebrate");
-  say(rd, "All regrown and blooming! 🌸✨", 900);
-  fixer(rd._x + 44, rd._y + 60);
-  await sleep(650);
+/* ---------- gardener: 4 different ways to fix things ---------- */
+const fleeAll = cast => Promise.all(cast.map(async (c, i) => { await sleep(i * 250); const [x, y] = off(randEdge(), c._c.w, c._c.h); say(c, pick(["Eek!", "Run!", "Bye!"]), 600); await trot(c, x, y, 1300); c.remove(); }));
+async function closer(tok) {
+  const kind = nextOf("cl", ["can", "whistle", "sweep", "carrot"]), W = vw(), H = vh();
+  const cast = S.cast.filter(c => c.isConnected), lead = cast[0], follow = kind === "whistle" || kind === "carrot";
+  setBanner("🧑‍🌾 The gardener heard the commotion!");
+  const gd = mkPuppet("gardener", "assets/gardener/idle.png", 88, 120, true), img = gd.querySelector(".p-img");
+  const [sx, sy] = off(randEdge(), 88, 120); set(gd, sx, sy);
+  const ax = lead ? lead._x : W / 2, ay = lead ? lead._y : H / 2;
+  await goGardener(gd, fitX(ax + (sx < ax ? -110 : (lead ? lead._c.w + 20 : 90)), 88), fitY(ay - 10, 120), 1300, "ease-out"); if (!live(tok)) return;
+  img.src = "assets/gardener/talk.png"; say(gd, pick(["Hey! Out of my garden!", "Not on my watch, rascals!", "Who did THIS?! 😤"]), 1400);
+  cast.forEach((c, i) => setTimeout(() => startle(c), i * 180)); await sleep(1500); if (!live(tok)) return;
+  img.src = "assets/gardener/hold.png";
+  const [ex, ey] = off(randEdge(), 88, 120);
+  const gather = () => Promise.all(cast.map((c, i) => trot(c, fitX(gd._x + (i % 2 ? 1 : -1) * (86 + i * 34), c._c.w), fitY(gd._y + rnd(-10, 16), c._c.h), 900)));
 
-  rd.classList.remove("celebrate");
-  const [lx, ly] = off(randEdge(), 88, 120);
-  await goGardener(rd, lx, ly, 500, "ease-in");
+  if (kind === "can") {
+    const can = gd.querySelector(".gardener-can"); can.classList.add("show"); fleeAll(cast);
+    const order = [...S.eatenPlants, ...[0, 1, 2, 3, 4].filter(i => !S.eatenPlants.has(i))].slice(0, Math.max(3, S.eatenPlants.size));
+    for (const i of order) {
+      if (!live(tok)) return; const pb = plantBox(i); if (!pb) continue; const r = pb.getBoundingClientRect();
+      await goGardener(gd, fitX(r.left - 92, 88), fitY(r.top - 14, 120), 650, "ease-out"); face(gd, 1); img.src = "assets/gardener/hold.png";
+      await pourWater(gd, r.left + r.width / 2 - 10, r.top + 30); if (S.eatenPlants.has(i)) regrow(i); else hop(pb);
+    }
+    restore("stagger"); await sleep(1000); can.classList.remove("show");
+  } else if (kind === "sweep") {
+    const p = addProp(gd, "🧹"); p.classList.add("sweep"); fleeAll(cast);
+    const y = fitY(H * .5 - 60, 120); await goGardener(gd, fitX(12, 88), y, 1000); if (!live(tok)) return;
+    restore("sweep"); regrowEaten(500); await goGardener(gd, W - 100, y, 2600, "linear"); p.remove();
+  } else if (kind === "whistle") {
+    say(gd, "♪ ♫ ♪ (whistles)", 1700); await gather(); cast.forEach(c => say(c, "Sorry… 🥺", 1200)); await sleep(1500); if (!live(tok)) return;
+    restore("pop"); regrowEaten(200); await sleep(1100);
+  } else {
+    addProp(gd, "🥕"); say(gd, "Who wants a carrot? 🥕", 1500); await gather(); if (!live(tok)) return;
+    restore("pop"); regrowEaten(200); await sleep(1100);
+  }
+  if (!live(tok)) return;
+  img.src = "assets/gardener/cheer0.png"; gd.classList.add("celebrate"); fixer(gd._x + 44, gd._y + 60);
+  say(gd, "✨ All back in place!", 1400); await sleep(1500); if (!live(tok)) return;
+  gd.classList.remove("celebrate");
+  if (follow) await Promise.all([goGardener(gd, ex, ey, 1500, "ease-in"), ...cast.map((c, i) => trot(c, ex + (ex > gd._x ? -1 : 1) * (i + 1) * 40, ey, 1500 + i * 160))]);
+  else await goGardener(gd, ex, ey, 1000, "ease-in");
   finish();
 }
 
-/* 2. RABBIT: hops between buttons, nibbles calculate button */
-async function doRabbitMischief(tok) {
-  const alive = () => S.on && S.tok === tok && !S.mom;
-  const cfg = CRITTERS.rabbit;
-  const bunny = mkPuppet("critter", cfg.img, cfg.w, cfg.h);
-  bunny.onclick = () => onCritterClick(bunny);
-
-  const W = innerWidth, H = innerHeight;
-  const [sx, sy] = off(randEdge(), cfg.w, cfg.h);
-  set(bunny, sx, sy);
-
-  const calcBtn = document.getElementById("calc");
-  const r0 = calcBtn.getBoundingClientRect();
-  const tx = clamp(r0.left - 20, 10, W - cfg.w - 10);
-  const ty = clamp(r0.top - 30, 44, H - cfg.h - 10);
-
-  bunny.classList.add("hop-crit");
-  face(bunny, tx < sx ? -1 : 1);
-  await go(bunny, tx, ty, 600, "ease-out");
-  bunny.classList.remove("hop-crit");
-  if (!alive()) return;
-
-  // Nibble button
-  bunny.classList.add("chew-crit");
-  say(bunny, "Mmm, crunchy button! 🥕", 700);
-  for (let c = 0; c < 8; c++) crumb(r0.left + 30, r0.top + 15, "#e0956b");
-  calcBtn.style.transition = "transform .3s";
-  calcBtn.style.transform = "rotate(-4deg) scale(0.96)";
-  await nap(500);
-  bunny.classList.remove("chew-crit");
-
-  // Hop to reset
-  const rstBtn = document.getElementById("reset");
-  const r1 = rstBtn.getBoundingClientRect();
-  face(bunny, r1.left < bunny._x ? -1 : 1);
-  bunny.classList.add("hop-crit");
-  await go(bunny, clamp(r1.left + 10, 10, W - cfg.w), clamp(r1.top - 25, 44, H - cfg.h), 400, "ease-in-out");
-  bunny.classList.remove("hop-crit");
-  if (!alive()) return;
-
-  rstBtn.style.transition = "transform .3s";
-  rstBtn.style.transform = "rotate(3deg)";
-  say(bunny, "Boing! 🐇", 600);
-  await nap(400);
-
-  // Gardener arrives
-  await gardenerGeneralFix(bunny, "Shoo, little bunny! Those aren't carrots! 🧑‍🌾");
-}
-
-/* 3. FROG: high leaps onto cards, lands with squash and wobble */
-async function doFrogMischief(tok) {
-  const alive = () => S.on && S.tok === tok && !S.mom;
-  const cfg = CRITTERS.frog;
-  const frog = mkPuppet("critter", cfg.img, cfg.w, cfg.h);
-  frog.onclick = () => onCritterClick(frog);
-
-  const W = innerWidth, H = innerHeight;
-  const [sx, sy] = off(randEdge(), cfg.w, cfg.h);
-  set(frog, sx, sy);
-
-  const stations = [
-    document.querySelector(".header"),
-    document.querySelector(".card"),
-    document.getElementById("total")
-  ].filter(Boolean);
-
-  for (const st of stations) {
-    if (!alive()) break;
-    const r = st.getBoundingClientRect();
-    const tx = clamp(r.left + r.width / 2 - cfg.w / 2, 10, W - cfg.w - 10);
-    const ty = clamp(r.top + r.height / 2 - cfg.h / 2, 44, H - cfg.h - 10);
-
-    face(frog, tx < frog._x ? -1 : 1);
-    frog.classList.add("hop-crit");
-    await go(frog, tx, ty, 500, "cubic-bezier(0.2, 0.9, 0.3, 1.2)");
-    frog.classList.remove("hop-crit");
-    dustPuff(tx + cfg.w / 2, ty + cfg.h);
-    say(frog, pick(cfg.sfx), 550);
-
-    st.style.transition = "transform .2s";
-    st.style.transform = "scale(0.97, 1.03)";
-    setTimeout(() => { st.style.transform = "scale(1.02, 0.98)"; setTimeout(() => st.style.transform = "", 200); }, 200);
-    await nap(450);
-  }
-
-  await gardenerGeneralFix(frog, "Out of the garden, little hopper! 🧑‍🌾");
-}
-
-/* 4. CHICKEN: pecks logo and icons loose */
-async function doChickenMischief(tok) {
-  const alive = () => S.on && S.tok === tok && !S.mom;
-  const cfg = CRITTERS.chicken;
-  const chook = mkPuppet("critter", cfg.img, cfg.w, cfg.h);
-  chook.onclick = () => onCritterClick(chook);
-
-  const W = innerWidth, H = innerHeight;
-  const [sx, sy] = off(randEdge(), cfg.w, cfg.h);
-  set(chook, sx, sy);
-
-  const logo = document.querySelector(".logo");
-  const r = logo.getBoundingClientRect();
-  const tx = clamp(r.right + 10, 10, W - cfg.w);
-  const ty = clamp(r.top - 10, 44, H - cfg.h);
-
-  face(chook, -1);
-  chook.classList.add("trot");
-  await go(chook, tx, ty, 500, "ease-out");
-  chook.classList.remove("trot");
-  if (!alive()) return;
-
-  chook.classList.add("peck-crit");
-  say(chook, "Bawk bawk! 🐔", 600);
-  for (let c = 0; c < 8; c++) crumb(r.left + 20, r.top + 20, "#e0b84a");
-  logo.style.transition = "transform .3s";
-  logo.style.transform = "rotate(22deg) translateY(12px)";
-  await nap(500);
-  chook.classList.remove("peck-crit");
-
-  // Peck a day badge
-  const dayBadge = document.querySelector(".day");
-  if (dayBadge && alive()) {
-    const dr = dayBadge.getBoundingClientRect();
-    face(chook, dr.left < chook._x ? -1 : 1);
-    chook.classList.add("trot");
-    await go(chook, clamp(dr.right + 8, 10, W - cfg.w), clamp(dr.top - 8, 44, H - cfg.h), 400, "ease-in-out");
-    chook.classList.remove("trot");
-    chook.classList.add("peck-crit");
-    say(chook, "Peck peck! 🌾", 500);
-    dayBadge.style.transition = "transform .3s";
-    dayBadge.style.transform = "rotate(-16deg) translateY(8px)";
-    await nap(400);
-    chook.classList.remove("peck-crit");
-  }
-
-  await gardenerGeneralFix(chook, "Shoo, chook! Go back to the coop! 🌾");
-}
-
-/* 5. PIG: rolls across cards in mud, pushes rows askew */
-async function doPigMischief(tok) {
-  const alive = () => S.on && S.tok === tok && !S.mom;
-  const cfg = CRITTERS.pig;
-  const pig = mkPuppet("critter", cfg.img, cfg.w, cfg.h);
-  pig.onclick = () => onCritterClick(pig);
-
-  const W = innerWidth, H = innerHeight;
-  const [sx, sy] = off(randEdge(), cfg.w, cfg.h);
-  set(pig, sx, sy);
-
-  // Position near the rows card area
-  const rowsEl = document.getElementById("rows") || document.querySelector(".rows");
-  const rowsRect = rowsEl ? rowsEl.getBoundingClientRect() : { left: W / 2 - 140, top: H / 2 - 50, right: W / 2 + 140, width: 280, height: 180 };
-
-  const startX = clamp(rowsRect.left + 15, 10, W - cfg.w - 10);
-  const startY = clamp(rowsRect.top + 20, 44, H - cfg.h - 10);
-
-  // 1. Slow, cute trot into the garden (950ms)
-  face(pig, startX < sx ? -1 : 1);
-  pig.classList.add("trot");
-  say(pig, "Oink! Mud puddle ahead! 🐽", 850);
-  await go(pig, startX, startY, 950, "ease-out");
-  pig.classList.remove("trot");
-  if (!alive()) return;
-
-  await nap(350);
-  if (!alive()) return;
-
-  // 2. Playful wallowing dive! Mud splatters
-  pig.classList.add("roll-crit");
-  say(pig, "Wheee! Rolling in the dirt! 🐷", 1200);
-  for (let c = 0; c < 12; c++) crumb(startX + cfg.w / 2, startY + cfg.h / 2 + 10, "#8a6645");
-
-  // 3. Rolls across the tracker rows from left to right (1300ms)
-  const endX = clamp(rowsRect.right - cfg.w - 15, 10, W - cfg.w - 10);
-  face(pig, 1);
-
-  // Progressively tilt each row with visible timing and mud particles
-  const rows = Array.from(document.querySelectorAll(".row"));
-  rows.forEach((row, idx) => {
-    if (idx < 5) {
-      setTimeout(() => {
-        if (!S.on) return;
-        row.style.transition = "transform .55s cubic-bezier(.34,1.56,.64,1)";
-        const rot = idx % 2 === 0 ? rnd(3.5, 5.5) : rnd(-5.5, -3.5);
-        const shiftX = idx % 2 === 0 ? rnd(8, 16) : rnd(-16, -8);
-        const shiftY = rnd(-5, 6);
-        row.style.transform = `rotate(${rot}deg) translate(${shiftX}px, ${shiftY}px)`;
-        const rRect = row.getBoundingClientRect();
-        crumb(rRect.left + rnd(50, Math.max(60, rRect.width - 50)), rRect.top + 16, "#7d5838");
-      }, 180 + idx * 240);
-    }
-  });
-
-  await go(pig, endX, startY + 12, 1300, "ease-in-out");
-  if (!alive()) return;
-
-  // 4. Joyful wallow on the other side with mud splashing (900ms)
-  for (let c = 0; c < 14; c++) crumb(endX + cfg.w / 2, startY + cfg.h / 2 + 10, "#8a6645");
-  say(pig, "Oink oink! So squishy & fun! 🐽✨", 1000);
-  await nap(900);
-
-  pig.classList.remove("roll-crit");
-  if (!alive()) return;
-
-  // 5. Gardener arrives, sweeps up mud, and restores everything to pristine condition
-  await gardenerGeneralFix(pig, "Hey, out of the flowerbeds, little piggy! 🧹");
-}
-
-/* 6. MONKEY: swings in from top, steals logo badge */
-async function doMonkeyMischief(tok) {
-  const alive = () => S.on && S.tok === tok && !S.mom;
-  const cfg = CRITTERS.monkey;
-  const monkey = mkPuppet("critter", cfg.img, cfg.w, cfg.h);
-  monkey.onclick = () => onCritterClick(monkey);
-
-  const W = innerWidth, H = innerHeight;
-  set(monkey, W / 2 - cfg.w / 2, -cfg.h - 40);
-
-  const logo = document.querySelector(".logo");
-  const r = logo.getBoundingClientRect();
-  const tx = clamp(r.left - 15, 10, W - cfg.w);
-  const ty = clamp(r.top - 10, 44, H - cfg.h);
-
-  monkey.classList.add("wobble-crit");
-  await go(monkey, tx, ty, 600, "ease-out");
-  monkey.classList.remove("wobble-crit");
-  if (!alive()) return;
-
-  say(monkey, "Ooh-ooh aah-aah! Mine! 🍌", 700);
-  logo.style.transition = "transform .3s, opacity .3s";
-  logo.style.transform = "scale(0.2)";
-  logo.style.opacity = "0.3";
-  await nap(450);
-
-  await gardenerGeneralFix(monkey, "Trade you a fresh banana 🍌 for that logo!", () => {
-    logo.style.transform = "";
-    logo.style.opacity = "";
-  });
-}
-
-/* 7. ELEPHANT: heavy stomps, shakes screen */
-async function doElephantMischief(tok) {
-  const alive = () => S.on && S.tok === tok && !S.mom;
-  const cfg = CRITTERS.elephant;
-  const ellie = mkPuppet("critter", cfg.img, cfg.w, cfg.h);
-  ellie.onclick = () => onCritterClick(ellie);
-
-  const W = innerWidth, H = innerHeight;
-  set(ellie, -cfg.w - 30, H * 0.45);
-
-  const steps = 3;
-  for (let s = 1; s <= steps; s++) {
-    if (!alive()) break;
-    const tx = -cfg.w + (W + cfg.w) * (s / (steps + 1));
-    face(ellie, 1);
-    ellie.classList.add("stomp-crit");
-    await go(ellie, tx, H * 0.45, 600, "ease-in-out");
-    ellie.classList.remove("stomp-crit");
-
-    dustPuff(tx + cfg.w / 2, H * 0.45 + cfg.h - 10);
-    document.body.classList.add("shake");
-    setTimeout(() => document.body.classList.remove("shake"), 300);
-    say(ellie, pick(cfg.sfx), 650);
-    await nap(350);
-  }
-
-  await gardenerGeneralFix(ellie, "Easy big friend, this way to the meadow! 🍎");
-}
-
-/* General Gardener Arrival & Resolution for animals other than goat */
-async function gardenerGeneralFix(critter, message, onBeforeRestore) {
-  if (!S.on) return;
-  setBanner("🧑‍🌾 The gardener is putting everything back in order!");
-  const W = innerWidth, H = innerHeight;
-  const rd = mkPuppet("gardener", "assets/gardener/idle.png", 88, 120, false);
-  const [rx0, ry0] = off(randEdge(), 88, 120);
-  set(rd, rx0, ry0);
-
-  const side = (rx0 < critter._x) ? -1 : 1;
-  const gx = clamp(side === -1 ? critter._x - 70 : critter._x + 90, 10, W - 90);
-  const gy = clamp(critter._y - 15, 44, H - 125);
-  await goGardener(rd, gx, gy, 500, "ease-out");
-  if (!S.on) return;
-
-  say(rd, message, 900);
-  const img = rd.querySelector(".p-img");
-  if (img) img.src = "assets/gardener/talk.png";
-  await sleep(450);
-
-  // Critter runs off
-  critter.classList.add("trot");
-  const [ex, ey] = off(randEdge(), 100, 100);
-  face(critter, ex < critter._x ? -1 : 1);
-  go(critter, ex, ey, 600, "ease-in").then(() => critter.remove());
-
-  if (onBeforeRestore) onBeforeRestore();
-  fixer(rd._x + 44, rd._y + 60);
-  restore();
-  if (img) img.src = "assets/gardener/cheer0.png";
-  rd.classList.add("celebrate");
-  say(rd, "✨ All back in place!", 800);
-  await sleep(650);
-
-  rd.classList.remove("celebrate");
-  const [lx, ly] = off(randEdge(), 88, 120);
-  await goGardener(rd, lx, ly, 500, "ease-in");
-  finish();
-}
-
-/* -------------------------------------------------------------
-   LAUNCH DISPATCHER
-   ------------------------------------------------------------- */
-async function launch(forcedCritter) {
+async function launch() {
   if (S.on) return;
-  S.on = true;
-  S.mom = false;
-  S.clicks = 0;
-  S.eatenPlants.clear();
-  const tok = ++S.tok;
-
-  const critterType = forcedCritter || pick(CAST_KEYS);
-  const cfg = CRITTERS[critterType] || CRITTERS.goat;
-
+  S.on = true; S.mom = false; S.clicks = 0; S.cast = []; S.look = {}; S.pool = null; S.eatenPlants.clear();
+  const tok = ++S.tok, ep = nextOf("ep", EPISODES);
   document.body.classList.add("busy");
-  setBanner(cfg.banner);
-  S.hard = setTimeout(finish, 10000); // 10 s hard cap
-
-  if (critterType === "goat") {
-    await doGoatMischief(tok);
-  } else if (critterType === "rabbit") {
-    await doRabbitMischief(tok);
-  } else if (critterType === "frog") {
-    await doFrogMischief(tok);
-  } else if (critterType === "chicken") {
-    await doChickenMischief(tok);
-  } else if (critterType === "pig") {
-    await doPigMischief(tok);
-  } else if (critterType === "monkey") {
-    await doMonkeyMischief(tok);
-  } else if (critterType === "elephant") {
-    await doElephantMischief(tok);
-  }
+  setBanner(ep.banner + " Tap any animal 3× to call the gardener — or press Cancel.");
+  S.hard = setTimeout(finish, 60000);               // safety net only; the Cancel button is always there
+  try { await ep.run(tok); } catch (e) { console.error("[garden]", e); }
+  if (!live(tok)) return;
+  await closer(tok);
 }
 
 document.getElementById("bx").addEventListener("click", finish);
