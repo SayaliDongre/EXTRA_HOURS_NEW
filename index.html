@@ -3,69 +3,171 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Extra Hours Tracker – Garden</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<title>Extra Hours Tracker</title>
+<link id="gardenFont" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#fff9ef;--card:#fff;--ink:#37362b;--muted:#7a755f;--accent:#a9d19a;--accent-strong:#5d9a4f;--ok:#2f7a3a;--bad:#b3402f;--sep:#e3dcc4;--chip:#f1ecd8}
+/* ===== Base & Shared ===== */
 *{box-sizing:border-box}html,body{height:100%}
-body{margin:0;font-family:Nunito,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:radial-gradient(900px 400px at 10% -5%,#e6f4d8 0,transparent 60%),radial-gradient(800px 380px at 100% 0,#fff0d6 0,transparent 55%),linear-gradient(180deg,#fffaf0,#f3f8e8) fixed;overflow-x:hidden}
-.app{max-width:960px;margin:0 auto;padding:26px 18px 56px;display:flex;flex-direction:column;gap:18px;min-height:100dvh;position:relative;z-index:2}
+body{margin:0;color:var(--ink);overflow-x:hidden;transition:background .45s ease,color .35s ease,font-family .2s}
+
+/* ===== Theme: Normal ===== */
+body[data-theme="normal"]{
+  --bg:#fff8fb;--card:#ffffff;--ink:#262833;--muted:#666a76;
+  --accent:#ffb3c4;--accent-strong:#ff8aa6;--ok:#206a3a;--bad:#a32626;
+  --sep:#d6d9e3;--chip:#f0f1f7;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,Cantarell,"Noto Sans",Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+  background:linear-gradient(180deg,var(--bg),#fff);
+}
+
+/* ===== Theme: Garden ===== */
+body[data-theme="garden"]{
+  --bg:#fff9ef;--card:#fff;--ink:#37362b;--muted:#7a755f;
+  --accent:#a9d19a;--accent-strong:#5d9a4f;--ok:#2f7a3a;--bad:#b3402f;
+  --sep:#e3dcc4;--chip:#f1ecd8;
+  font-family:Nunito,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  background:radial-gradient(900px 400px at 10% -5%,#e6f4d8 0,transparent 60%),radial-gradient(800px 380px at 100% 0,#fff0d6 0,transparent 55%),linear-gradient(180deg,#fffaf0,#f3f8e8) fixed;
+}
+
+/* ===== App container ===== */
+body[data-theme="normal"] .app{max-width:900px;margin:0 auto;padding:16px;display:flex;flex-direction:column;gap:12px;min-height:100dvh}
+body[data-theme="garden"] .app{max-width:960px;margin:0 auto;padding:26px 18px 56px;display:flex;flex-direction:column;gap:18px;min-height:100dvh;position:relative;z-index:2}
 body.busy .app{pointer-events:none}
-.header{display:flex;align-items:center;gap:14px;padding:4px 2px}
-.logo{width:50px;height:50px;border-radius:16px;background:var(--accent);display:grid;place-items:center;font-size:1.7rem;box-shadow:0 8px 18px rgba(93,154,79,.3);animation:logoBob 3.6s ease-in-out infinite}
-@keyframes logoBob{50%{transform:translateY(-3px) rotate(-4deg)}}
-h1{font-size:1.45rem;margin:0;line-height:1.2;font-weight:800;letter-spacing:-.01em}
-.hint{color:var(--muted);font-size:.9rem;margin-top:3px;line-height:1.45}
-.card{background:var(--card);border:1px solid rgba(93,154,79,.18);border-radius:22px;padding:20px;box-shadow:0 12px 32px rgba(60,80,30,.08);animation:cardIn .5s ease-out both}
+
+/* ===== Header ===== */
+body[data-theme="normal"] .header{display:flex;align-items:center;gap:10px}
+body[data-theme="garden"] .header{display:flex;align-items:center;gap:14px;padding:4px 2px}
+
+/* ===== Logo / Theme Toggle ===== */
+.theme-toggle{border:0;cursor:pointer;display:grid;place-items:center;position:relative;-webkit-tap-highlight-color:transparent;font-size:1.4rem;padding:0}
+.theme-toggle:focus{outline:2px solid var(--accent-strong);outline-offset:2px}
+
+body[data-theme="normal"] .theme-toggle{
+  width:38px;height:38px;border-radius:10px;background:var(--accent);
+  color:#231b1b;font-weight:900;
+  box-shadow:0 8px 18px rgba(255,138,166,.35);
+  animation:none;
+  transition:transform .2s,box-shadow .2s;
+}
+body[data-theme="normal"] .theme-toggle:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(255,138,166,.45)}
+
+body[data-theme="garden"] .theme-toggle{
+  width:50px;height:50px;border-radius:16px;background:var(--accent);
+  font-size:1.7rem;
+  box-shadow:0 8px 18px rgba(93,154,79,.3);
+  animation:logoBob 3.6s ease-in-out infinite;
+  transition:transform .2s,box-shadow .2s;
+}
+body[data-theme="garden"] .theme-toggle:hover{transform:translateY(-2px) scale(1.05)}
+
+@keyframes logoBob{50%{transform:translateY(-3px) rotate(-4deg)}0%,100%{transform:none}}
+
+/* Theme indicator pill */
+.theme-indicator{display:block;font-size:.58rem;font-weight:700;letter-spacing:.04em;color:var(--muted);margin-top:2px;text-align:center;line-height:1;text-transform:uppercase;pointer-events:none}
+
+/* ===== Title ===== */
+body[data-theme="normal"] h1{font-size:1.15rem;margin:0;line-height:1.2}
+body[data-theme="garden"] h1{font-size:1.45rem;margin:0;line-height:1.2;font-weight:800;letter-spacing:-.01em}
+.hint{color:var(--muted);font-size:.9rem}
+body[data-theme="garden"] .hint{margin-top:3px;line-height:1.45}
+
+/* ===== Card ===== */
+body[data-theme="normal"] .card{background:var(--card);border:1px solid var(--sep);border-radius:14px;padding:12px;box-shadow:0 6px 18px rgba(24,26,33,.05)}
+body[data-theme="garden"] .card{background:var(--card);border:1px solid rgba(93,154,79,.18);border-radius:22px;padding:20px;box-shadow:0 12px 32px rgba(60,80,30,.08);animation:cardIn .5s ease-out both}
 .footer{animation-delay:.15s}
 @keyframes cardIn{from{opacity:0;transform:translateY(10px)}}
+
+/* ===== Garden label ===== */
 .glabel{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 auto 16px;padding:8px 14px;border-radius:999px;background:#eef7e3;color:#4d6a3e;font-weight:700;font-size:.84rem;text-align:center;width:fit-content;max-width:100%}
-.rows{display:flex;flex-direction:column;gap:14px}
-.row{display:grid;grid-template-columns:minmax(0,1fr) 116px;align-items:center;gap:18px;padding:16px 16px 16px 20px;border:1px solid var(--sep);border-radius:18px;background:linear-gradient(135deg,#fff,#fbfdf6);border-left:6px solid var(--accent-strong);transition:box-shadow .25s,border-color .25s}
-.row:hover{box-shadow:0 10px 24px rgba(60,80,30,.1);border-color:#cfe3bf}
-.row-main{display:flex;flex-direction:column;gap:12px;min-width:0}
+body[data-theme="normal"] .glabel{display:none!important}
+
+/* ===== Rows container ===== */
+body[data-theme="normal"] .rows{display:flex;flex-direction:column;gap:8px;max-height:65vh;overflow:auto;scroll-behavior:smooth;padding-right:4px}
+body[data-theme="garden"] .rows{display:flex;flex-direction:column;gap:14px}
+
+/* ===== Row ===== */
+body[data-theme="normal"] .row{display:grid;grid-template-columns:1fr auto;gap:8px;padding:10px;border:1px solid var(--sep);border-radius:12px;background:#fff}
+body[data-theme="garden"] .row{display:grid;grid-template-columns:minmax(0,1fr) 116px;align-items:center;gap:18px;padding:16px 16px 16px 20px;border:1px solid var(--sep);border-radius:18px;background:linear-gradient(135deg,#fff,#fbfdf6);border-left:6px solid var(--accent-strong);transition:box-shadow .25s,border-color .25s}
+body[data-theme="garden"] .row:hover{box-shadow:0 10px 24px rgba(60,80,30,.1);border-color:#cfe3bf}
+
+/* ===== Row head ===== */
 .row-head{display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap}
-.day{font-weight:800;background:var(--chip);padding:6px 14px;border-radius:999px;font-size:.92rem}
+body[data-theme="normal"] .day{font-weight:700;background:var(--chip);padding:6px 10px;border-radius:999px}
+body[data-theme="garden"] .day{font-weight:800;background:var(--chip);padding:6px 14px;border-radius:999px;font-size:.92rem}
 .toggle{display:inline-flex;align-items:center;gap:6px;background:var(--chip);padding:5px 10px;border-radius:999px;font-size:.82rem}
 .toggle input{accent-color:var(--accent-strong)}
+
+/* ===== Normal-theme row body ===== */
+.row-body{grid-column:1/-1;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.right{margin-left:auto;display:flex;align-items:center;justify-content:flex-end;font-weight:600;min-width:160px}
+.over.ok{color:var(--ok)}
+.over.bad{color:var(--bad)}
+@media(max-width:740px){
+  body[data-theme="normal"] .rows{max-height:62vh}
+  body[data-theme="normal"] .right{min-width:auto}
+}
+
+/* ===== Garden-theme row-main ===== */
+.row-main{display:flex;flex-direction:column;gap:12px;min-width:0}
 .row-inputs{display:flex;align-items:center;gap:12px 24px;flex-wrap:wrap}
+
+/* ===== Cluster & Inputs ===== */
 .cluster{display:flex;align-items:center;gap:6px}
-.lbl{color:var(--muted);font-size:.88rem;min-width:24px;text-align:right;font-weight:700}
-input[type=time]{width:auto;min-width:105px;padding:9px 10px;border:1px solid var(--sep);border-radius:12px;background:#fff;color:var(--ink);font:inherit;font-size:.92rem}
+body[data-theme="normal"] .cluster{gap:8px;background:#fff;padding:0;border-radius:10px}
+body[data-theme="normal"] .lbl{color:var(--muted);font-size:.95rem;min-width:32px;text-align:right}
+body[data-theme="garden"] .lbl{color:var(--muted);font-size:.88rem;min-width:24px;text-align:right;font-weight:700}
+
+input[type=time]{width:auto;padding:9px 10px;border:1px solid var(--sep);background:#fff;color:var(--ink);font:inherit}
+body[data-theme="normal"] input[type=time]{min-width:110px;border-radius:10px;font-size:1rem}
+body[data-theme="garden"] input[type=time]{min-width:105px;border-radius:12px;font-size:.92rem}
 input[type=time]:focus{outline:2px solid var(--accent-strong);outline-offset:1px}
-.pick{padding:8px 12px;border-radius:11px;border:1px solid var(--sep);background:var(--accent);color:#1f2a1a;font-weight:700;cursor:pointer;font-size:.82rem;transition:transform .15s,filter .15s}
-.pick:hover{filter:brightness(.96);transform:translateY(-1px)}
+
+body[data-theme="normal"] .pick{padding:8px 10px;border-radius:10px;border:1px solid var(--sep);background:var(--accent);color:#1f1a1a;font-weight:600;cursor:pointer;transition:.15s ease}
+body[data-theme="normal"] .pick:active{transform:translateY(1px)}
+body[data-theme="garden"] .pick{padding:8px 12px;border-radius:11px;border:1px solid var(--sep);background:var(--accent);color:#1f2a1a;font-weight:700;cursor:pointer;font-size:.82rem;transition:transform .15s,filter .15s}
+body[data-theme="garden"] .pick:hover{filter:brightness(.96);transform:translateY(-1px)}
 .subtle{background:#f4f3e8;color:#333}
+body[data-theme="normal"] .subtle{background:#f4f5f9;color:#333}
 .placeholder{color:var(--muted);font-style:italic;padding:6px 0;font-size:.85rem}
 
-/* Plant panel */
+/* ===== Plant panel (garden only) ===== */
 .row-plant-box{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;width:116px;min-width:116px;padding:6px 4px 10px;border-radius:16px;background:radial-gradient(ellipse at 50% 100%,#e4f2d6,transparent 72%);text-align:center}
+body[data-theme="normal"] .row-plant-box{display:none!important}
 .plant{position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;height:104px;width:100%;display:flex;align-items:flex-end;justify-content:center}
 .plant svg{width:100%;max-width:96px;height:104px;display:block;margin:0 auto;overflow:visible}
 .row-over{margin-top:8px;padding:3px 10px;border-radius:999px;background:var(--chip);font-size:.76rem;font-weight:800;color:var(--muted);white-space:nowrap;line-height:1.2;text-align:center}
 .row-over.ok{background:#e1f3dc;color:var(--ok)}
 .row-over.bad{background:#fbe4de;color:var(--bad)}
+body[data-theme="normal"] .row-over{display:none!important}
 
-.controls{display:flex;gap:12px;flex-wrap:wrap}
-.btn{padding:12px 22px;border-radius:14px;border:1px solid var(--sep);background:linear-gradient(135deg,#b6dca6,#8fc77d);color:#1f2a1a;font:inherit;font-weight:800;cursor:pointer;box-shadow:0 6px 16px rgba(60,80,30,.12);transition:transform .15s,box-shadow .15s}
-.btn.secondary{background:#f1efe0}
-.btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(60,80,30,.18)}
-.btn:active{transform:translateY(0)}
+/* ===== Controls & Footer ===== */
+body[data-theme="normal"] .controls{display:flex;gap:10px;flex-wrap:wrap}
+body[data-theme="garden"] .controls{display:flex;gap:12px;flex-wrap:wrap}
+body[data-theme="normal"] .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--sep);background:var(--accent);color:#1f1a1a;font-weight:700;cursor:pointer;font:inherit}
+body[data-theme="garden"] .btn{padding:12px 22px;border-radius:14px;border:1px solid var(--sep);background:linear-gradient(135deg,#b6dca6,#8fc77d);color:#1f2a1a;font:inherit;font-weight:800;cursor:pointer;box-shadow:0 6px 16px rgba(60,80,30,.12);transition:transform .15s,box-shadow .15s}
+body[data-theme="normal"] .btn.secondary{background:#f1f2f8}
+body[data-theme="garden"] .btn.secondary{background:#f1efe0}
+body[data-theme="garden"] .btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(60,80,30,.18)}
+body[data-theme="garden"] .btn:active{transform:translateY(0)}
 .footer{display:grid;gap:10px}
-#total{font-size:1.4rem;font-weight:900;letter-spacing:-.01em}
+body[data-theme="normal"] #total{font-size:1rem;font-weight:700}
+body[data-theme="garden"] #total{font-size:1.4rem;font-weight:900;letter-spacing:-.01em}
 #suggest:empty{display:none}
 #suggest{color:var(--muted);font-weight:700}
+
+/* ===== Garden responsive ===== */
 @media(max-width:640px){
-  .app{padding:18px 12px 44px;gap:14px}
-  h1{font-size:1.2rem}
-  .card{padding:14px;border-radius:18px}
-  .row{grid-template-columns:minmax(0,1fr) 90px;gap:10px;padding:12px 10px 12px 14px}
-  .row-plant-box{width:90px;min-width:90px}
-  .plant{height:88px}.plant svg{max-width:80px;height:88px}
-  .row-inputs{gap:10px 14px}
-  input[type=time]{min-width:96px}
+  body[data-theme="garden"] .app{padding:18px 12px 44px;gap:14px}
+  body[data-theme="garden"] h1{font-size:1.2rem}
+  body[data-theme="garden"] .card{padding:14px;border-radius:18px}
+  body[data-theme="garden"] .row{grid-template-columns:minmax(0,1fr) 90px;gap:10px;padding:12px 10px 12px 14px}
+  body[data-theme="garden"] .row-plant-box{width:90px;min-width:90px}
+  body[data-theme="garden"] .plant{height:88px}
+  body[data-theme="garden"] .plant svg{max-width:80px;height:88px}
+  body[data-theme="garden"] .row-inputs{gap:10px 14px}
+  body[data-theme="garden"] input[type=time]{min-width:96px}
 }
 
+/* ===== Plant animations ===== */
 .pbub{position:absolute;top:-6px;left:50%;transform:translateX(-50%);font-size:.78rem;font-weight:800;background:#fff;border:1px solid var(--sep);border-radius:10px;padding:2px 7px;opacity:0;pointer-events:none;white-space:nowrap;z-index:10;box-shadow:0 3px 8px rgba(0,0,0,.12)}
 .pbub.on{animation:bub 1.1s}
 .plant.hop{animation:hop .6s}
@@ -88,16 +190,22 @@ input[type=time]:focus{outline:2px solid var(--accent-strong);outline-offset:1px
 @keyframes hop{30%{transform:translateY(-16px) scale(1.05,.95)}60%{transform:translateY(0) scale(.96,1.05)}}
 @keyframes bub{0%{opacity:0;top:6px}20%,70%{opacity:1;top:-14px}100%{opacity:0;top:-22px}}
 @keyframes fall{0%{opacity:.9;transform:translateY(0)}100%{opacity:0;transform:translateY(150px)}}
+
+/* ===== Floating leaves (garden only) ===== */
 .leafbg span{position:fixed;top:-30px;z-index:1;opacity:.35;font-size:1.2rem;pointer-events:none;animation:drift 20s linear infinite}
 @keyframes drift{to{transform:translate(60px,110vh) rotate(360deg)}}
+body[data-theme="normal"] .leafbg{display:none!important}
 
-/* ===== Mischief layer ===== */
+/* ===== Mischief layer (garden only) ===== */
 #banner{position:fixed;top:0;left:0;right:0;z-index:100;display:none;justify-content:center;align-items:center;gap:12px;padding:10px 14px;background:#3f6f3a;color:#fff;font-weight:800;font-size:.9rem;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.2)}
 #banner.show{display:flex;animation:slide .4s ease-out}
 #banner button{background:#fff;color:#3f6f3a;border:0;border-radius:8px;padding:5px 10px;font:inherit;font-weight:800;cursor:pointer}
 @keyframes slide{from{transform:translateY(-100%)}}
 #stage{position:fixed;inset:0;z-index:60;pointer-events:none;overflow:hidden}
+body[data-theme="normal"] #banner{display:none!important}
+body[data-theme="normal"] #stage{display:none!important}
 
+/* ===== Critter / Puppet styles ===== */
 .puppet{position:fixed;left:0;top:0;z-index:5;will-change:transform;pointer-events:auto;cursor:pointer;user-select:none}
 .puppet .shadow{position:absolute;bottom:-4px;left:10%;width:80%;height:12px;background:radial-gradient(ellipse at center,rgba(30,40,20,.35) 0%,rgba(30,40,20,0) 70%);border-radius:50%;pointer-events:none}
 .puppet .fl{width:100%;height:100%;transition:transform .12s;display:flex;align-items:center;justify-content:center;position:relative}
@@ -140,7 +248,6 @@ input[type=time]:focus{outline:2px solid var(--accent-strong);outline-offset:1px
 .ring{position:fixed;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(255,244,160,.95),rgba(130,225,255,.5) 60%,transparent 72%);pointer-events:none;z-index:75}
 .sp,.crit,.particle{position:fixed;left:0;top:0;pointer-events:none;z-index:80}
 
-/* props dropped on the stage by critters */
 .fx{position:fixed;pointer-events:none}
 .fx.mud,.fx.puddle,.fx.hole,.fx.print{z-index:1}
 .fx.egg,.fx.emo,.fx.tongue{z-index:6}
@@ -151,7 +258,7 @@ input[type=time]:focus{outline:2px solid var(--accent-strong);outline-offset:1px
 .puddle.water{background:radial-gradient(ellipse at 40% 35%,#bfe6ff,#5cc5ff);opacity:.75}
 .print{width:11px;height:15px;border-radius:50%;background:#6b4a33;opacity:.6}
 .tongue{height:8px;border-radius:4px;background:linear-gradient(#ff8fa8,#e0587a)}
-@media(prefers-reduced-motion:reduce){.sw,.lf,.leafbg span,.shake,.logo,.puppet .sprite-wrap{animation:none}}
+@media(prefers-reduced-motion:reduce){.sw,.lf,.leafbg span,.shake,.theme-toggle,.puppet .sprite-wrap{animation:none}}
 
 /* ===== Arcade & Mini Games ===== */
 .arcade-pill{flex-shrink:0;width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#243242,#151f2b);color:#fff;border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:0;font-family:inherit;cursor:pointer;box-shadow:0 4px 14px rgba(20,30,42,.3),0 0 0 1px rgba(255,255,255,.08) inset;transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s,background .2s;user-select:none;position:relative;overflow:hidden}
@@ -159,6 +266,7 @@ input[type=time]:focus{outline:2px solid var(--accent-strong);outline-offset:1px
 .arcade-pill:active{transform:scale(.94)}
 .arcade-glow{position:absolute;top:-8px;right:-8px;width:24px;height:24px;background:radial-gradient(circle,rgba(93,154,79,.85),transparent 70%);border-radius:50%;pointer-events:none}
 .arcade-icon{font-size:1.25rem;line-height:1;display:flex;align-items:center;justify-content:center}
+body[data-theme="normal"] .arcade-pill{display:none!important}
 
 .game-modal-overlay{position:fixed;inset:0;background:rgba(10,15,22,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);z-index:150;display:flex;align-items:center;justify-content:center;padding:14px;opacity:0;pointer-events:none;transition:opacity .25s ease-out}
 .game-modal-overlay.open{opacity:1;pointer-events:auto}
@@ -202,13 +310,16 @@ input[type=time]:focus{outline:2px solid var(--accent-strong);outline-offset:1px
 .touch-dpad button:active{background:rgba(255,255,255,.25)}
 </style>
 </head>
-<body>
+<body data-theme="normal">
 <div class="leafbg"><span style="left:10%">🍃</span><span style="left:35%;animation-delay:4s">🌿</span><span style="left:60%;animation-delay:8s">🍂</span><span style="left:82%;animation-delay:12s">🍃</span></div>
 <div id="banner"><span id="bmsg"></span><button id="bx">✕ Cancel</button></div>
 
 <main class="app">
   <header class="header">
-    <div class="logo">🌱</div>
+    <div style="display:flex;flex-direction:column;align-items:center">
+      <button class="theme-toggle" id="themeToggle" title="Switch theme">⏱</button>
+      <span class="theme-indicator" id="themeLabel">Normal</span>
+    </div>
     <div style="flex:1;min-width:0">
       <h1>Weekly Extra Hours Tracker</h1>
       <div class="hint">Track Monday–Friday, lunch break auto-applied, Friday auto-out supported.</div>
@@ -220,7 +331,7 @@ input[type=time]:focus{outline:2px solid var(--accent-strong);outline-offset:1px
   </header>
 
   <section class="card">
-    <div class="glabel">Press “Calculate” to water your plants — taller plants mean more extra time that day</div>
+    <div class="glabel">Press "Calculate" to water your plants — taller plants mean more extra time that day</div>
     <div class="rows" id="rows"></div>
   </section>
 
@@ -289,8 +400,41 @@ input[type=time]:focus{outline:2px solid var(--accent-strong);outline-offset:1px
 
 <script>
 /* =====================================================================
-   PART 1 — ORIGINAL TRACKER LOGIC (unchanged; only a few lines marked
-   "// garden" were added so the plants can read each day's result)
+   THEME MANAGEMENT
+   ===================================================================== */
+const THEME_KEY = "eht_theme";
+function getTheme() { return localStorage.getItem(THEME_KEY) || "normal"; }
+function setTheme(t) {
+  localStorage.setItem(THEME_KEY, t);
+  document.body.dataset.theme = t;
+  const btn = document.getElementById("themeToggle");
+  const lbl = document.getElementById("themeLabel");
+  btn.textContent = t === "garden" ? "🌱" : "⏱";
+  lbl.textContent = t === "garden" ? "Garden" : "Normal";
+  document.title = t === "garden" ? "Extra Hours Tracker – Garden" : "Extra Hours Tracker";
+  // Toggle Nunito font loading
+  const fontLink = document.getElementById("gardenFont");
+  if (fontLink) fontLink.disabled = (t !== "garden");
+}
+function toggleTheme() {
+  const cur = getTheme();
+  const next = cur === "normal" ? "garden" : "normal";
+  setTheme(next);
+  // Stop any running garden critter events when switching to normal
+  if (next === "normal" && typeof finish === "function" && S && S.on) finish();
+  // Re-render to switch row layout
+  render();
+  // Re-apply last calculation if there was one
+  if (lastCalcDone) calculate();
+}
+
+// Apply saved theme on load
+setTheme(getTheme());
+
+document.getElementById("themeToggle").addEventListener("click", toggleTheme);
+
+/* =====================================================================
+   PART 1 — TRACKER LOGIC
    ===================================================================== */
 const MIN_DAILY_MINUTES = 9 * 60;
 const MAX_PHYSICAL_DAY_MINUTES = 10 * 60;
@@ -354,103 +498,185 @@ function load(){
 }
 
 const rowsEl = document.getElementById("rows");
+let lastCalcDone = false;
+
 function render(){
+  const theme = getTheme();
   rowsEl.innerHTML = "";
   rowsModel.forEach((r, idx)=>{
-    const row = document.createElement("div");
-    row.className = "row";
-    row.dataset.idx = idx;
-
-    const main = document.createElement("div");
-    main.className = "row-main";
-
-    const head = document.createElement("div");
-    head.className = "row-head";
-    head.innerHTML = `
-      <div class="day">${r.day}</div>
-      <label class="toggle"><input type="checkbox" class="work" ${r.work ? "checked":""}><span>Work</span></label>
-      ${r.isFriday ? `<label class="toggle"><input type="checkbox" class="manual" ${r.manualOut && r.work ? "checked":""} ${!r.work ? "disabled":""}><span>Manual OUT</span></label>`:""}`;
-
-    const inputs = document.createElement("div");
-    inputs.className = "row-inputs";
-
-    const inCluster = document.createElement("div");
-    inCluster.className = "cluster";
-    const inLbl = document.createElement("div");
-    inLbl.className = "lbl"; inLbl.textContent = "In";
-    const inTime = document.createElement("input");
-    inTime.type = "time"; inTime.step = 60; inTime.value = r.in; inTime.disabled = !r.work;
-    const inPick = document.createElement("button");
-    inPick.className="pick subtle"; inPick.textContent="Pick";
-    inCluster.append(inLbl,inTime,inPick);
-
-    const outCluster = document.createElement("div");
-    outCluster.className = "cluster";
-    const outLbl = document.createElement("div");
-    outLbl.className = "lbl"; outLbl.textContent = "Out";
-    const outTime = document.createElement("input");
-    outTime.type = "time"; outTime.step = 60; outTime.value = r.out;
-    const outPick = document.createElement("button");
-    outPick.className="pick subtle"; outPick.textContent="Pick";
-    const autoPh = document.createElement("div");
-    autoPh.className="placeholder"; autoPh.textContent="(auto)";
-    outCluster.append(outLbl);
-    if(r.isFriday && (!r.manualOut || !r.work)){
-      outCluster.append(autoPh);
-    }else{
-      outTime.disabled = !r.work;
-      outCluster.append(outTime,outPick);
+    if (theme === "garden") {
+      renderGardenRow(r, idx);
+    } else {
+      renderNormalRow(r, idx);
     }
-    inputs.append(inCluster, outCluster);
-    main.append(head, inputs);
-
-    // Right side: Plant on top, Over / time info below
-    const plantSide = document.createElement("div");
-    plantSide.className = "row-plant-box";
-    plantSide.innerHTML = `
-      <div class="plant" data-i="${idx}">
-        <div class="sv"></div>
-        <div class="pbub"></div>
-      </div>
-      <div class="row-over" data-idx="${idx}">--</div>
-    `;
-
-    row.append(main, plantSide);
-    rowsEl.appendChild(row);
-
-    // Draw plant with its current state
-    const svEl = plantSide.querySelector(".sv");
-    if(svEl && PS[idx]) svEl.innerHTML = plantSVG(PS[idx].h, PS[idx].m);
-
-    head.querySelector(".work").addEventListener("change", (e)=>{
-      r.work = e.target.checked;
-      if(!r.work && r.isFriday){ r.manualOut = false; }
-      save(); render();
-    });
-    if(r.isFriday){
-      head.querySelector(".manual").addEventListener("change",(e)=>{
-        if(r.work){ r.manualOut = e.target.checked; save(); render(); }
-      });
-    }
-    inTime.addEventListener("change", ()=>{ r.in = inTime.value || r.in; save(); });
-    inPick.addEventListener("click", ()=> inTime.showPicker ? inTime.showPicker() : inTime.focus());
-    outTime.addEventListener("change", ()=>{ r.out = outTime.value || r.out; save(); });
-    outPick.addEventListener("click", ()=> outTime.showPicker ? outTime.showPicker() : outTime.focus());
   });
 }
 
+function renderNormalRow(r, idx) {
+  const row = document.createElement("div");
+  row.className = "row";
+
+  const head = document.createElement("div");
+  head.className = "row-head";
+  head.innerHTML = `
+    <div class="day">${r.day}</div>
+    <label class="toggle"><input type="checkbox" class="work" ${r.work ? "checked":""}><span>Work</span></label>
+    ${r.isFriday ? `<label class="toggle"><input type="checkbox" class="manual" ${r.manualOut && r.work ? "checked":""} ${!r.work ? "disabled":""}><span>Manual OUT</span></label>`:""}
+  `;
+
+  const body = document.createElement("div");
+  body.className = "row-body";
+
+  const inCluster = document.createElement("div");
+  inCluster.className = "cluster";
+  const inLbl = document.createElement("div");
+  inLbl.className = "lbl"; inLbl.textContent = "In";
+  const inTime = document.createElement("input");
+  inTime.type = "time"; inTime.step = 60; inTime.value = r.in; inTime.disabled = !r.work;
+  const inPick = document.createElement("button");
+  inPick.className="pick subtle"; inPick.textContent="Pick";
+  inCluster.append(inLbl,inTime,inPick);
+
+  const outCluster = document.createElement("div");
+  outCluster.className = "cluster";
+  const outLbl = document.createElement("div");
+  outLbl.className = "lbl"; outLbl.textContent = "Out";
+  const outTime = document.createElement("input");
+  outTime.type = "time"; outTime.step = 60; outTime.value = r.out;
+  const outPick = document.createElement("button");
+  outPick.className="pick subtle"; outPick.textContent="Pick";
+  const autoPh = document.createElement("div");
+  autoPh.className="placeholder"; autoPh.textContent="(auto)";
+  outCluster.append(outLbl);
+  if(r.isFriday && (!r.manualOut || !r.work)){
+    outCluster.append(autoPh);
+  }else{
+    outTime.disabled = !r.work;
+    outCluster.append(outTime,outPick);
+  }
+
+  const over = document.createElement("div");
+  over.className = "right over";
+  over.textContent = "Over: +0h 0m";
+  over.dataset.idx = idx;
+
+  body.append(inCluster, outCluster, over);
+
+  head.querySelector(".work").addEventListener("change", (e)=>{
+    r.work = e.target.checked;
+    if(!r.work && r.isFriday){ r.manualOut = false; }
+    save(); render();
+  });
+  if(r.isFriday){
+    head.querySelector(".manual").addEventListener("change",(e)=>{
+      if(r.work){ r.manualOut = e.target.checked; save(); render(); }
+    });
+  }
+  inTime.addEventListener("change", ()=>{ r.in = inTime.value || r.in; save(); });
+  inPick.addEventListener("click", ()=> inTime.showPicker ? inTime.showPicker() : inTime.focus());
+  outTime.addEventListener("change", ()=>{ r.out = outTime.value || r.out; save(); });
+  outPick.addEventListener("click", ()=> outTime.showPicker ? outTime.showPicker() : outTime.focus());
+
+  row.appendChild(head);
+  row.appendChild(body);
+  rowsEl.appendChild(row);
+}
+
+function renderGardenRow(r, idx) {
+  const row = document.createElement("div");
+  row.className = "row";
+  row.dataset.idx = idx;
+
+  const main = document.createElement("div");
+  main.className = "row-main";
+
+  const head = document.createElement("div");
+  head.className = "row-head";
+  head.innerHTML = `
+    <div class="day">${r.day}</div>
+    <label class="toggle"><input type="checkbox" class="work" ${r.work ? "checked":""}><span>Work</span></label>
+    ${r.isFriday ? `<label class="toggle"><input type="checkbox" class="manual" ${r.manualOut && r.work ? "checked":""} ${!r.work ? "disabled":""}><span>Manual OUT</span></label>`:""}`;
+
+  const inputs = document.createElement("div");
+  inputs.className = "row-inputs";
+
+  const inCluster = document.createElement("div");
+  inCluster.className = "cluster";
+  const inLbl = document.createElement("div");
+  inLbl.className = "lbl"; inLbl.textContent = "In";
+  const inTime = document.createElement("input");
+  inTime.type = "time"; inTime.step = 60; inTime.value = r.in; inTime.disabled = !r.work;
+  const inPick = document.createElement("button");
+  inPick.className="pick subtle"; inPick.textContent="Pick";
+  inCluster.append(inLbl,inTime,inPick);
+
+  const outCluster = document.createElement("div");
+  outCluster.className = "cluster";
+  const outLbl = document.createElement("div");
+  outLbl.className = "lbl"; outLbl.textContent = "Out";
+  const outTime = document.createElement("input");
+  outTime.type = "time"; outTime.step = 60; outTime.value = r.out;
+  const outPick = document.createElement("button");
+  outPick.className="pick subtle"; outPick.textContent="Pick";
+  const autoPh = document.createElement("div");
+  autoPh.className="placeholder"; autoPh.textContent="(auto)";
+  outCluster.append(outLbl);
+  if(r.isFriday && (!r.manualOut || !r.work)){
+    outCluster.append(autoPh);
+  }else{
+    outTime.disabled = !r.work;
+    outCluster.append(outTime,outPick);
+  }
+  inputs.append(inCluster, outCluster);
+  main.append(head, inputs);
+
+  // Right side: Plant + Over
+  const plantSide = document.createElement("div");
+  plantSide.className = "row-plant-box";
+  plantSide.innerHTML = `
+    <div class="plant" data-i="${idx}">
+      <div class="sv"></div>
+      <div class="pbub"></div>
+    </div>
+    <div class="row-over" data-idx="${idx}">--</div>
+  `;
+
+  row.append(main, plantSide);
+  rowsEl.appendChild(row);
+
+  // Draw plant with its current state
+  const svEl = plantSide.querySelector(".sv");
+  if(svEl && PS[idx]) svEl.innerHTML = plantSVG(PS[idx].h, PS[idx].m);
+
+  head.querySelector(".work").addEventListener("change", (e)=>{
+    r.work = e.target.checked;
+    if(!r.work && r.isFriday){ r.manualOut = false; }
+    save(); render();
+  });
+  if(r.isFriday){
+    head.querySelector(".manual").addEventListener("change",(e)=>{
+      if(r.work){ r.manualOut = e.target.checked; save(); render(); }
+    });
+  }
+  inTime.addEventListener("change", ()=>{ r.in = inTime.value || r.in; save(); });
+  inPick.addEventListener("click", ()=> inTime.showPicker ? inTime.showPicker() : inTime.focus());
+  outTime.addEventListener("change", ()=>{ r.out = outTime.value || r.out; save(); });
+  outPick.addEventListener("click", ()=> outTime.showPicker ? outTime.showPicker() : outTime.focus());
+}
+
 function calculate(){
+  const theme = getTheme();
   let total = 0;
-  const dayVals = [null,null,null,null,null]; // garden: per-day result in minutes (null = not working)
+  const dayVals = [null,null,null,null,null];
 
   rowsModel.forEach((r, i)=>{
     if(!r.work){
-      setOver(i, "Off", false, false);
+      setOver(i, theme === "normal" ? "Over: +0h 0m" : "Off", false, false, theme);
       return;
     }
     if(r.isFriday && !r.manualOut){
-      dayVals[i] = DEFAULT_START_MIN - toMinutes(r.in); // garden: Friday auto = arrival adjustment
-      setOver(i, "(auto)", false, false);
+      dayVals[i] = DEFAULT_START_MIN - toMinutes(r.in);
+      setOver(i, theme === "normal" ? "Over: (auto)" : "(auto)", false, false, theme);
       return;
     }
     const inMin = toMinutes(r.in);
@@ -460,12 +686,12 @@ function calculate(){
     const counted = Math.min(afterBreak, MAX_PHYSICAL_DAY_MINUTES);
     const daily = counted - MIN_DAILY_MINUTES;
     total += daily;
-    dayVals[i] = daily; // garden
+    dayVals[i] = daily;
 
     const sign = daily>=0 ? "+" : "-";
     const dh = Math.floor(Math.abs(daily)/60);
     const dm = Math.abs(daily)%60;
-    setOver(i, `Over: ${sign}${dh}h ${dm}m`, daily>=0, daily<0);
+    setOver(i, `Over: ${sign}${dh}h ${dm}m`, daily>=0, daily<0, theme);
   });
 
   const fri = rowsModel[4];
@@ -476,7 +702,7 @@ function calculate(){
       total += arrivalAdjust;
       const leaveMin = DEFAULT_END_MIN - total;
       friLeaveMin = ((leaveMin % (24*60)) + (24*60)) % (24*60);
-      setOver(4, `leave ${toHHMM(friLeaveMin)}`, total>=0, total<0);
+      setOver(4, theme === "normal" ? `Over: leave ${toHHMM(friLeaveMin)}` : `leave ${toHHMM(friLeaveMin)}`, total>=0, total<0, theme);
     } else {
       friLeaveMin = toMinutes(fri.out);
     }
@@ -501,9 +727,31 @@ function calculate(){
   }
 
   save();
+  lastCalcDone = true;
   currentDayVals = dayVals.slice();
   currentFriLeaveMin = friLeaveMin;
-  growGarden(dayVals, friLeaveMin); // garden
+  if (theme === "garden") growGarden(dayVals, friLeaveMin);
+}
+
+function setOver(i, text, isOk, isBad, theme) {
+  if (!theme) theme = getTheme();
+  if (theme === "normal") {
+    // Normal: .right.over[data-idx]
+    const el = rowsEl.querySelector(`.over[data-idx="${i}"]`);
+    if (!el) return;
+    el.textContent = text;
+    el.classList.toggle("ok", !!isOk);
+    el.classList.toggle("bad", !!isBad);
+  } else {
+    // Garden: .row-over[data-idx]
+    const r = rowsEl.children[i];
+    if(!r) return;
+    const el = r.querySelector(`.row-over[data-idx="${i}"]`) || r.querySelector(".row-over");
+    if(!el) return;
+    el.textContent = text;
+    el.classList.toggle("ok", !!isOk);
+    el.classList.toggle("bad", !!isBad);
+  }
 }
 
 function resetAll(){
@@ -517,20 +765,14 @@ function resetAll(){
   document.getElementById("total").classList.remove("bad");
   document.getElementById("total").classList.add("ok");
   document.getElementById("suggest").textContent = "";
+  lastCalcDone = false;
   currentDayVals = [0, 0, 0, 0, 0];
   currentFriLeaveMin = null;
-  resetGarden(); // garden
+  if (getTheme() === "garden") resetGarden();
 }
 
 /* =====================================================================
    PART 2 — GARDEN: plants grow with each day's extra minutes
-   cry (<0) · meh (0-29) · smile (30-89) · happy (90-179) · joy (180+)
-   Friday mood is based on leaving time:
-     < 16:00 (before 4 PM)  -> joy (happier & fuller than 1h, sparkles)
-     16:00 - 17:00 (4-5 PM) -> happy (like 1h extra)
-     17:00 - 18:00 (5-6 PM) -> meh (duller)
-     18:00 - 19:00 (6-7 PM) -> cry (sad)
-     >= 19:00 (7 PM or later) -> dead (withered stem & leaves, X_X face)
    ===================================================================== */
 const PS = [];
 DAYS.forEach((d, i) => { PS[i] = { h: 26, m: "idle", raf: 0 }; });
@@ -544,11 +786,11 @@ function getPlantState(i, dayVal, friLeaveMin){
   if(i===4){
     if(dayVal==null) return {m:"idle", h:26};
     if(friLeaveMin!=null){
-      if(friLeaveMin < 960)  return {m:"joy",   h:135}; // before 4 PM
-      if(friLeaveMin < 1020) return {m:"happy", h:100}; // 4-5 PM
-      if(friLeaveMin < 1080) return {m:"meh",   h:55};  // 5-6 PM
-      if(friLeaveMin < 1140) return {m:"cry",   h:35};  // 6-7 PM
-      return {m:"dead",  h:24};                         // 7 PM & later
+      if(friLeaveMin < 960)  return {m:"joy",   h:135};
+      if(friLeaveMin < 1020) return {m:"happy", h:100};
+      if(friLeaveMin < 1080) return {m:"meh",   h:55};
+      if(friLeaveMin < 1140) return {m:"cry",   h:35};
+      return {m:"dead",  h:24};
     }
   }
   return {m:moodOf(dayVal), h:heightOf(dayVal)};
@@ -579,7 +821,6 @@ function plantSVG(h, m){
     }
     if(m==="joy") s += [[18,60],[84,40],[78,100],[22,110]].map(([x,y],i)=>`<text class="tw" style="animation-delay:${i*.3}s" x="${x}" y="${y}" font-size="14">✨</text>`).join("");
   }
-  // pot
   const soil = isDead ? "#4a382c" : "#6b4a33";
   const potBase = isDead ? "#9e8b7d" : "#e0956b";
   const potRim = isDead ? "#b39e90" : "#eaa57d";
@@ -610,22 +851,13 @@ const drawP = (i,h,m)=>{
   const el = sv(i);
   if(el) el.innerHTML = plantSVG(h,m);
 };
-const setOver = (i, text, isOk, isBad) => {
-  const r = rowsEl.children[i];
-  if(!r) return;
-  const el = r.querySelector(`.row-over[data-idx="${i}"]`) || r.querySelector(".row-over");
-  if(!el) return;
-  el.textContent = text;
-  el.classList.toggle("ok", !!isOk);
-  el.classList.toggle("bad", !!isBad);
-};
 function hop(el){ if(el){ el.classList.remove("hop"); void el.offsetWidth; el.classList.add("hop"); } }
 function resetGarden(){
   PS.forEach((st,i)=>{
     cancelAnimationFrame(st.raf);
     st.h=26; st.m="idle";
     drawP(i,26,"idle");
-    setOver(i, "--", false, false);
+    setOver(i, "--", false, false, "garden");
   });
 }
 function rain(i, delay){
@@ -638,6 +870,7 @@ function rain(i, delay){
   }
 }
 function growGarden(vals, friLeaveMin){
+  if (getTheme() !== "garden") return;
   vals.forEach((d,i)=>{
     const st = PS[i], h0 = st.h;
     const target = getPlantState(i, d, friLeaveMin);
@@ -648,7 +881,7 @@ function growGarden(vals, friLeaveMin){
     const step = t=>{
       if(t < t0){ st.raf = requestAnimationFrame(step); return; }
       const p = Math.min(1,(t-t0)/1100), c1=1.70158, c3=c1+1;
-      const e = 1 + c3*Math.pow(p-1,3) + c1*Math.pow(p-1,2);   // ease-out-back
+      const e = 1 + c3*Math.pow(p-1,3) + c1*Math.pow(p-1,2);
       st.h = h0 + (h1-h0)*e; st.m = m; drawP(i, st.h, m);
       if(p<1) st.raf = requestAnimationFrame(step);
       else {
@@ -662,9 +895,7 @@ function growGarden(vals, friLeaveMin){
 }
 
 /* =====================================================================
-   PART 3 — SURPRISE: garden critters (visual only; never touches the
-   calculation or saved data). Eight shuffled stories, four gardener endings.
-   Art: Kenney Animal Pack Redux + Toon Characters (CC0), under assets/.
+   PART 3 — SURPRISE: garden critters
    ===================================================================== */
 const WATERING_CAN_SVG = `<svg viewBox="0 0 60 45" width="46" height="34" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.25))">
   <ellipse cx="28" cy="28" rx="18" ry="14" fill="#589a50" stroke="#2d5225" stroke-width="2.2"/>
@@ -722,7 +953,6 @@ function go(el, x, y, ms, ease = "ease-in-out") {
 }
 const nap = ms => new Promise(r => { const t = Date.now(), iv = setInterval(() => { if (S.mom || Date.now() - t >= ms) { clearInterval(iv); r(); } }, 40); });
 
-/* particles */
 function crumb(x, y, color = "#4a8f4a") {
   const el = document.createElement("div"); el.className = "particle";
   el.style.cssText = `left:${x}px;top:${y}px;width:${rnd(4, 9)}px;height:${rnd(4, 9)}px;border-radius:50%;background:${color}`;
@@ -756,7 +986,6 @@ function fixer(cx, cy) {
   document.querySelectorAll(".plant").forEach((p, i) => setTimeout(() => hop(p), i * 80));
 }
 
-/* stage props that stay on screen until the gardener cleans up (mud, holes, puddles) */
 function fxEl(cls, html, x, y, keep) {
   const d = document.createElement("div"); d.className = "fx " + cls;
   if (html) d.innerHTML = html;
@@ -801,12 +1030,11 @@ function finish() {
   S.look = {}; S.eatenPlants.clear(); S.cast = []; S.mud = []; stage.innerHTML = "";
 }
 
-/* ---- engine helpers ---- */
 const PAD = 46, vw = () => innerWidth, vh = () => innerHeight;
-const ok = t => S.on && S.tok === t && !S.mom;      // critters keep playing
-const live = t => S.on && S.tok === t;              // gardener phase
+const ok = t => S.on && S.tok === t && !S.mom;
+const live = t => S.on && S.tok === t;
 const BAG = {};
-const nextOf = (k, list) => (BAG[k] && BAG[k].length ? BAG[k] : (BAG[k] = shuffle(list))).pop();   // shuffled bag: no repeats until all used
+const nextOf = (k, list) => (BAG[k] && BAG[k].length ? BAG[k] : (BAG[k] = shuffle(list))).pop();
 const fitX = (x, w) => clamp(x, 6, vw() - w - 6), fitY = (y, h) => clamp(y, PAD, vh() - h - 6);
 const anim = (el, kf, o) => new Promise(r => { const a = el.animate(kf, o); S.anims.add(a); const d = () => { S.anims.delete(a); r(); }; a.onfinish = d; a.oncancel = d; });
 function arc(el, x, y, ms, h) {
@@ -837,7 +1065,6 @@ async function hopTo(el, x, y, ms = 540, h = 58) {
 const startle = c => { anim(c.querySelector(".sprite-wrap"), [{ transform: "translateY(0) scale(1)" }, { transform: "translateY(-26px) scale(.92,1.15)", offset: .45 }, { transform: "translateY(0) scale(1.12,.88)", offset: .8 }, { transform: "scale(1)" }], { duration: 520 }); say(c, "!?", 700); };
 function shake() { const a = document.querySelector(".app"); a.classList.remove("shake"); void a.offsetWidth; a.classList.add("shake"); setTimeout(() => a.classList.remove("shake"), 350); }
 
-/* six ways an element can get messed up */
 const MESS = [
   () => `rotate(${pick([-1, 1]) * rnd(8, 22)}deg) translateY(${rnd(6, 20)}px)`,
   () => `translate(${rnd(-70, 70)}px,${rnd(-30, 50)}px) rotate(${rnd(-25, 25)}deg)`,
@@ -848,7 +1075,7 @@ const MESS = [
 ];
 function mess(e, i) { const r = e.getBoundingClientRect(); e.style.transition = "transform .55s cubic-bezier(.34,1.56,.64,1)"; e.style.transform = (i == null ? pick(MESS) : MESS[i])(r); }
 function take() {
-  if (!S.pool || !S.pool.length) S.pool = shuffle([...document.querySelectorAll(".logo,.hint,.day,.toggle,.cluster,.row-over,.btn,#total,.glabel")].filter(e => { const r = e.getBoundingClientRect(); return r.width && r.bottom > PAD && r.top < vh() - 20; }));
+  if (!S.pool || !S.pool.length) S.pool = shuffle([...document.querySelectorAll(".theme-toggle,.hint,.day,.toggle,.cluster,.row-over,.btn,#total,.glabel")].filter(e => { const r = e.getBoundingClientRect(); return r.width && r.bottom > PAD && r.top < vh() - 20; }));
   return S.pool.pop() || document.getElementById("total");
 }
 function mkCrit(key) {
@@ -876,7 +1103,6 @@ function regrow(i, delay = 0) {
 }
 const regrowEaten = (d = 0) => [...S.eatenPlants].forEach((i, k) => regrow(i, d + k * 300));
 
-/* gardener locomotion */
 function walkGardener(rd) {
   let f = 0; const img = rd.querySelector(".p-img");
   const iv = setInterval(() => { if (!S.on) { clearInterval(iv); return; } f = (f + 1) % 8; if (img) img.src = `assets/gardener/walk${f}.png`; }, 85);
@@ -896,7 +1122,6 @@ function addProp(gd, emoji) { const p = document.createElement("div"); p.classNa
 
 /* ===================== critter behaviours ===================== */
 
-/* GOAT (unchanged): eats three plants bite by bite, plants shrink and cry */
 async function eatPlant(el, i, t) {
   const pb = plantBox(i); if (!el || !pb) return;
   const c = el._c; S.look[i] ??= { h: PS[i].h, m: PS[i].m }; S.eatenPlants.add(i);
@@ -920,7 +1145,6 @@ const goatFeast = async (g, t) => {
   if (ok(t)) { say(g, "BURRRP! 💨🌿", 1200); dustPuff(g._x + g._c.w / 2, g._y + g._c.h - 6); await nap(900); }
 };
 
-/* CHICKEN: pecks an element, squats, lays an egg that bounces, cracks, and a chick hops away */
 async function layEggs(el, t, n = 3) {
   if (!el) return; const c = el._c, w = el.querySelector(".sprite-wrap");
   for (let k = 0; k < n && ok(t); k++) {
@@ -942,7 +1166,6 @@ async function layEggs(el, t, n = 3) {
   }
 }
 
-/* RABBIT: digs a hole next to one element, dives in, then pops out of a new hole on top of another */
 async function burrow(el, t, n = 2) {
   if (!el) return; const c = el._c, w = el.querySelector(".sprite-wrap");
   for (let k = 0; k < n && ok(t); k++) {
@@ -966,7 +1189,6 @@ async function burrow(el, t, n = 2) {
   }
 }
 
-/* FROG: lines up a target, shoots its tongue, reels the element in and swallows it */
 async function tongue(el, t, n = 3) {
   if (!el) return; const c = el._c, w = el.querySelector(".sprite-wrap");
   for (let k = 0; k < n && ok(t); k++) {
@@ -986,7 +1208,6 @@ async function tongue(el, t, n = 3) {
   }
 }
 
-/* PIG: waddles (leaving footprints) to mud puddles, rolls, flings mud that sticks to the page, shakes off */
 async function mudBath(el, t) {
   if (!el) return; const c = el._c, rows = shuffle([...document.querySelectorAll(".row")]).slice(0, 3); if (!rows.length) return;
   const print = (x, y) => { const p = fxEl("print", "", x, y); p.animate([{ opacity: .6 }, { opacity: 0 }], { duration: 4200 }); setTimeout(() => p.remove(), 4200); };
@@ -1007,7 +1228,6 @@ async function mudBath(el, t) {
   clearInterval(iv);
 }
 
-/* MONKEY: grabs three elements, juggles them in an orbit over its head, then throws them away */
 async function juggle(el, t) {
   if (!el) return; const c = el._c, es = [...new Set([take(), take(), take()])];
   const bc = es.map(e => { const r = e.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; });
@@ -1028,7 +1248,6 @@ async function juggle(el, t) {
   es.forEach(e => { e.style.transition = "transform .7s cubic-bezier(.34,1.56,.64,1)"; e.style.transform = `translate(${rnd(-90, 90) + (cx - e.getBoundingClientRect().left) * 0}px,${rnd(-30, 60)}px) rotate(${rnd(-40, 40)}deg)`; });
   await nap(900);
 }
-/* MONKEY: banana barrage — bananas arc onto elements and knock them about */
 async function bananas(el, t, n = 4) {
   if (!el) return; const c = el._c, w = el.querySelector(".sprite-wrap"); say(el, "Banana barrage! 🍌", 1300);
   for (let k = 0; k < n && ok(t); k++) {
@@ -1043,7 +1262,6 @@ async function bananas(el, t, n = 4) {
   }
 }
 
-/* ELEPHANT: trumpets, then blasts elements across the screen with a water jet and leaves puddles */
 async function spray(el, t) {
   if (!el) return; const W = vw(), H = vh(), c = el._c, dir = Math.random() < .5 ? 1 : -1, y = fitY(H * .5, c.h);
   set(el, dir > 0 ? -c.w - 30 : W + 30, y); await trot(el, dir > 0 ? 10 : W - c.w - 10, y, 1900); if (!ok(t)) return;
@@ -1068,7 +1286,6 @@ async function stompThrough(el, t) {
   }
 }
 
-/* older shared behaviours (used by Stampede / Peekaboo / Easter) */
 async function steal(el, t) {
   if (!el || !ok(t)) return; const e = take(), r = e.getBoundingClientRect(), c = el._c, W = vw(), H = vh();
   await trot(el, fitX(r.left + r.width / 2 - c.w / 2, c.w), fitY(r.top + r.height / 2 - c.h / 2, c.h)); if (!ok(t)) return;
@@ -1126,7 +1343,6 @@ async function dance(cast, t) {
   cast.forEach(el => cls.forEach(k => el.classList.remove(k)));
 }
 
-/* ---------- eight stories, shuffled so none repeats until all have played ---------- */
 const spawn = async (key, delay, t) => { await nap(delay); return ok(t) ? mkCrit(key) : null; };
 const EPISODES = [
   { banner: "🐐🐔 A hungry goat and an egg-laying chicken broke in!", run: async t => { const g = await spawn("goat", 0, t), h = await spawn("chicken", 0, t);
@@ -1148,7 +1364,6 @@ const EPISODES = [
       if (cast.length) await dance(cast, t); } }
 ];
 
-/* ---------- gardener: four ways to fix things ---------- */
 const fleeAll = cast => Promise.all(cast.map(async (c, i) => { await sleep(i * 250); const [x, y] = off(randEdge(), c._c.w, c._c.h); say(c, pick(["Eek!", "Run!", "Bye!"]), 600); await trot(c, x, y, 1300); c.remove(); }));
 async function closer(tok) {
   const kind = nextOf("cl", ["can", "whistle", "sweep", "carrot"]), W = vw(), H = vh();
@@ -1194,12 +1409,12 @@ async function closer(tok) {
 }
 
 async function launch() {
-  if (S.on) return;
+  if (S.on || getTheme() !== "garden") return;
   S.on = true; S.mom = false; S.clicks = 0; S.cast = []; S.look = {}; S.mud = []; S.pool = null; S.eatenPlants.clear();
   const tok = ++S.tok, ep = nextOf("ep", EPISODES);
   document.body.classList.add("busy");
   setBanner(ep.banner + " Tap any animal 3× to call the gardener — or press Cancel.");
-  S.hard = setTimeout(finish, 75000);               // safety net only; the Cancel button is always there
+  S.hard = setTimeout(finish, 75000);
   try { await ep.run(tok); } catch (e) { console.error("[garden]", e); }
   if (!live(tok)) return;
   await closer(tok);
@@ -1207,9 +1422,9 @@ async function launch() {
 
 document.getElementById("bx").addEventListener("click", finish);
 
-// Plant taps: giggle. Tapping plants 5× summons a random story!
 let mc = 0, mt = 0;
 rowsEl.addEventListener("click", e => {
+  if (getTheme() !== "garden") return;
   const p = e.target.closest(".plant");
   if (!p) return;
   const i = +p.dataset.i, b = p.querySelector(".pbub");
@@ -1219,8 +1434,8 @@ rowsEl.addEventListener("click", e => {
   if (mc >= 5) { mc = 0; launch(); }
 });
 
-// Little garden visitors (butterfly, bee, ladybug, snail) drift by now and then
 function critter() {
+  if (getTheme() !== "garden") return;
   const c = document.createElement("div"), em = pick(["🦋", "🐝", "🐞", "🐌"]), snail = em === "🐌", L = Math.random() < .5, W = innerWidth, H = innerHeight;
   c.className = "crit"; c.textContent = em; c.style.fontSize = snail ? "26px" : "30px"; document.body.appendChild(c);
   const pts = snail ? [[L ? -40 : W + 40, H - 34], [L ? W + 40 : -40, H - 34]] : Array.from({ length: 6 }, (_, i) => [(L ? i / 5 : 1 - i / 5) * (W + 80) - 40, rnd(40, H * .7)]);
@@ -1230,7 +1445,6 @@ function critter() {
 
 /* =====================================================================
    PART 4 — ARCADE: Endless Algorithmic Mini-Games
-   Pure procedural algorithms & physics, zero levels, infinite survival.
    ===================================================================== */
 const ARCADE_GAMES = {
   track: {
@@ -1282,656 +1496,139 @@ const ARCADE_KEYS = ["track", "canyon", "orbit", "snake"];
 
 class TrackGame {
   constructor(canvas, onScore, onGameOver) {
-    this.cvs = canvas;
-    this.ctx = canvas.getContext("2d");
-    this.onScore = onScore;
-    this.onGameOver = onGameOver;
-    this.dist = 0;
-    this.speed = 4.2;
-    this.py = 330;
-    this.px = 200;
-    this.vx = 0;
-    this.keys = { left: false, right: false };
-    this.obstacles = [];
-    this.particles = [];
-    this.nextObs = 350;
-    this.over = false;
+    this.cvs = canvas; this.ctx = canvas.getContext("2d");
+    this.onScore = onScore; this.onGameOver = onGameOver;
+    this.dist = 0; this.speed = 4.2; this.py = 330; this.px = 200; this.vx = 0;
+    this.keys = { left: false, right: false }; this.obstacles = []; this.particles = [];
+    this.nextObs = 350; this.over = false;
   }
-  curve(y) {
-    const d = this.dist + (this.py - y);
-    return 200 + Math.sin(d * 0.0035) * 80 + Math.sin(d * 0.007) * 40;
-  }
+  curve(y) { const d = this.dist + (this.py - y); return 200 + Math.sin(d * 0.0035) * 80 + Math.sin(d * 0.007) * 40; }
   update() {
     if (this.over) return;
     const score = Math.floor(this.dist / 20);
-    this.speed = 4.2 + Math.min(6.5, score * 0.012);
-    this.dist += this.speed;
-    this.onScore(score);
-
-    if (this.keys.left) this.vx -= 1.5;
-    if (this.keys.right) this.vx += 1.5;
-    this.px += this.vx;
-    this.vx *= 0.85;
-
-    const roadW = Math.max(120, 185 - score * 0.15);
-    const rc = this.curve(this.py);
-
-    // Grace period on spawn so game never crashes on frame 1
-    if (this.dist > 60) {
-      if (this.px - 12 < rc - roadW / 2 || this.px + 12 > rc + roadW / 2) {
-        this.crash();
-        return;
-      }
-    }
-
-    if (this.dist + 500 > this.nextObs) {
-      const xOff = (Math.random() - 0.5) * (roadW - 55);
-      this.obstacles.push({
-        d: this.nextObs,
-        xOff,
-        type: Math.random() < 0.5 ? "cone" : "boulder"
-      });
-      this.nextObs += 190 + Math.random() * 150;
-    }
-
-    for (let i = this.obstacles.length - 1; i >= 0; i--) {
-      const obs = this.obstacles[i];
-      const oy = this.py - (obs.d - this.dist);
-      if (oy > 450) {
-        this.obstacles.splice(i, 1);
-        continue;
-      }
-      const ox = this.curve(oy) + obs.xOff;
-      if (Math.hypot(this.px - ox, this.py - oy) < 20) {
-        this.crash();
-        return;
-      }
-    }
-
-    if (Math.random() < 0.4) {
-      this.particles.push({
-        x: this.px + (Math.random() - 0.5) * 12,
-        y: this.py + 16,
-        r: 3 + Math.random() * 4,
-        alpha: 0.6
-      });
-    }
-    for (let i = this.particles.length - 1; i >= 0; i--) {
-      const p = this.particles[i];
-      p.y += this.speed * 0.5;
-      p.r += 0.3;
-      p.alpha -= 0.04;
-      if (p.alpha <= 0) this.particles.splice(i, 1);
-    }
+    this.speed = 4.2 + Math.min(6.5, score * 0.012); this.dist += this.speed; this.onScore(score);
+    if (this.keys.left) this.vx -= 1.5; if (this.keys.right) this.vx += 1.5;
+    this.px += this.vx; this.vx *= 0.85;
+    const roadW = Math.max(120, 185 - score * 0.15), rc = this.curve(this.py);
+    if (this.dist > 60) { if (this.px - 12 < rc - roadW / 2 || this.px + 12 > rc + roadW / 2) { this.crash(); return; } }
+    if (this.dist + 500 > this.nextObs) { const xOff = (Math.random() - 0.5) * (roadW - 55); this.obstacles.push({ d: this.nextObs, xOff, type: Math.random() < 0.5 ? "cone" : "boulder" }); this.nextObs += 190 + Math.random() * 150; }
+    for (let i = this.obstacles.length - 1; i >= 0; i--) { const obs = this.obstacles[i]; const oy = this.py - (obs.d - this.dist); if (oy > 450) { this.obstacles.splice(i, 1); continue; } const ox = this.curve(oy) + obs.xOff; if (Math.hypot(this.px - ox, this.py - oy) < 20) { this.crash(); return; } }
+    if (Math.random() < 0.4) { this.particles.push({ x: this.px + (Math.random() - 0.5) * 12, y: this.py + 16, r: 3 + Math.random() * 4, alpha: 0.6 }); }
+    for (let i = this.particles.length - 1; i >= 0; i--) { const p = this.particles[i]; p.y += this.speed * 0.5; p.r += 0.3; p.alpha -= 0.04; if (p.alpha <= 0) this.particles.splice(i, 1); }
   }
   render() {
-    const ctx = this.ctx, W = 400, H = 420;
-    ctx.fillStyle = "#0b1118";
-    ctx.fillRect(0, 0, W, H);
-
-    const step = 8;
-    const score = Math.floor(this.dist / 20);
-    const roadW = Math.max(120, 185 - score * 0.15);
-    for (let y = 0; y < H; y += step) {
-      const cx = this.curve(y);
-      const isAlt = Math.floor((this.dist + (this.py - y)) / 26) % 2 === 0;
-
-      ctx.fillStyle = isAlt ? "#102318" : "#0d1d14";
-      ctx.fillRect(0, y, W, step);
-
-      ctx.fillStyle = isAlt ? "#1e293b" : "#1a2434";
-      ctx.fillRect(cx - roadW / 2, y, roadW, step);
-
-      ctx.fillStyle = isAlt ? "#ef4444" : "#f8fafc";
-      ctx.fillRect(cx - roadW / 2 - 5, y, 5, step);
-      ctx.fillRect(cx + roadW / 2, y, 5, step);
-
-      if (isAlt) {
-        ctx.fillStyle = "#facc15";
-        ctx.fillRect(cx - 2, y, 4, step);
-      }
-    }
-
-    for (const obs of this.obstacles) {
-      const oy = this.py - (obs.d - this.dist);
-      if (oy < -30 || oy > H + 30) continue;
-      const ox = this.curve(oy) + obs.xOff;
-      ctx.save();
-      ctx.translate(ox, oy);
-      if (obs.type === "cone") {
-        ctx.fillStyle = "#ea580c";
-        ctx.beginPath();
-        ctx.moveTo(0, -14);
-        ctx.lineTo(9, 9);
-        ctx.lineTo(-9, 9);
-        ctx.closePath();
-        ctx.fill();
-        ctx.fillStyle = "#fff";
-        ctx.fillRect(-5, -2, 10, 4);
-      } else {
-        ctx.fillStyle = "#64748b";
-        ctx.beginPath();
-        ctx.arc(0, 0, 11, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = "#94a3b8";
-        ctx.beginPath();
-        ctx.arc(-3, -3, 4, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.restore();
-    }
-
-    for (const p of this.particles) {
-      ctx.fillStyle = `rgba(148, 163, 184, ${p.alpha})`;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    ctx.save();
-    ctx.translate(this.px, this.py);
-    ctx.rotate(this.vx * 0.05);
-
-    ctx.fillStyle = "rgba(0,0,0,0.45)";
-    ctx.beginPath();
-    ctx.ellipse(0, 5, 17, 8, 0, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = "#1e293b";
-    ctx.fillRect(-15, -14, 4, 8);
-    ctx.fillRect(11, -14, 4, 8);
-    ctx.fillRect(-15, 8, 4, 8);
-    ctx.fillRect(11, 8, 4, 8);
-
-    ctx.fillStyle = "#10b981";
-    ctx.beginPath();
-    ctx.roundRect(-12, -18, 24, 34, 6);
-    ctx.fill();
-
-    ctx.fillStyle = "#38bdf8";
-    ctx.beginPath();
-    ctx.roundRect(-8, -9, 16, 10, 3);
-    ctx.fill();
-
-    ctx.fillStyle = "#fef08a";
-    ctx.fillRect(-9, -18, 5, 3);
-    ctx.fillRect(4, -18, 5, 3);
-
-    ctx.fillStyle = "#065f46";
-    ctx.fillRect(-12, 12, 24, 4);
-    ctx.restore();
+    const ctx = this.ctx, W = 400, H = 420; ctx.fillStyle = "#0b1118"; ctx.fillRect(0, 0, W, H);
+    const step = 8, score = Math.floor(this.dist / 20), roadW = Math.max(120, 185 - score * 0.15);
+    for (let y = 0; y < H; y += step) { const cx = this.curve(y); const isAlt = Math.floor((this.dist + (this.py - y)) / 26) % 2 === 0; ctx.fillStyle = isAlt ? "#102318" : "#0d1d14"; ctx.fillRect(0, y, W, step); ctx.fillStyle = isAlt ? "#1e293b" : "#1a2434"; ctx.fillRect(cx - roadW / 2, y, roadW, step); ctx.fillStyle = isAlt ? "#ef4444" : "#f8fafc"; ctx.fillRect(cx - roadW / 2 - 5, y, 5, step); ctx.fillRect(cx + roadW / 2, y, 5, step); if (isAlt) { ctx.fillStyle = "#facc15"; ctx.fillRect(cx - 2, y, 4, step); } }
+    for (const obs of this.obstacles) { const oy = this.py - (obs.d - this.dist); if (oy < -30 || oy > H + 30) continue; const ox = this.curve(oy) + obs.xOff; ctx.save(); ctx.translate(ox, oy); if (obs.type === "cone") { ctx.fillStyle = "#ea580c"; ctx.beginPath(); ctx.moveTo(0, -14); ctx.lineTo(9, 9); ctx.lineTo(-9, 9); ctx.closePath(); ctx.fill(); ctx.fillStyle = "#fff"; ctx.fillRect(-5, -2, 10, 4); } else { ctx.fillStyle = "#64748b"; ctx.beginPath(); ctx.arc(0, 0, 11, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#94a3b8"; ctx.beginPath(); ctx.arc(-3, -3, 4, 0, Math.PI * 2); ctx.fill(); } ctx.restore(); }
+    for (const p of this.particles) { ctx.fillStyle = `rgba(148, 163, 184, ${p.alpha})`; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill(); }
+    ctx.save(); ctx.translate(this.px, this.py); ctx.rotate(this.vx * 0.05);
+    ctx.fillStyle = "rgba(0,0,0,0.45)"; ctx.beginPath(); ctx.ellipse(0, 5, 17, 8, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = "#1e293b"; ctx.fillRect(-15, -14, 4, 8); ctx.fillRect(11, -14, 4, 8); ctx.fillRect(-15, 8, 4, 8); ctx.fillRect(11, 8, 4, 8);
+    ctx.fillStyle = "#10b981"; ctx.beginPath(); ctx.roundRect(-12, -18, 24, 34, 6); ctx.fill();
+    ctx.fillStyle = "#38bdf8"; ctx.beginPath(); ctx.roundRect(-8, -9, 16, 10, 3); ctx.fill();
+    ctx.fillStyle = "#fef08a"; ctx.fillRect(-9, -18, 5, 3); ctx.fillRect(4, -18, 5, 3);
+    ctx.fillStyle = "#065f46"; ctx.fillRect(-12, 12, 24, 4); ctx.restore();
   }
-  crash() {
-    this.over = true;
-    this.onGameOver(Math.floor(this.dist / 20));
-  }
+  crash() { this.over = true; this.onGameOver(Math.floor(this.dist / 20)); }
 }
 
 class CanyonGame {
   constructor(canvas, onScore, onGameOver) {
-    this.cvs = canvas;
-    this.ctx = canvas.getContext("2d");
-    this.onScore = onScore;
-    this.onGameOver = onGameOver;
-    this.py = 200;
-    this.vy = 0;
-    this.px = 80;
-    this.score = 0;
-    this.pillars = [];
-    this.particles = [];
-    this.over = false;
-    this.spawnTimer = 0;
-    this.gapTarget = 200;
-    this.gapCurrent = 200;
+    this.cvs = canvas; this.ctx = canvas.getContext("2d"); this.onScore = onScore; this.onGameOver = onGameOver;
+    this.py = 200; this.vy = 0; this.px = 80; this.score = 0; this.pillars = []; this.particles = [];
+    this.over = false; this.spawnTimer = 0; this.gapTarget = 200; this.gapCurrent = 200;
   }
-  jump() {
-    if (this.over) return;
-    this.vy = -6.5;
-    for (let i = 0; i < 5; i++) {
-      this.particles.push({
-        x: this.px - 6,
-        y: this.py + 4,
-        vx: -2 - Math.random() * 2,
-        vy: (Math.random() - 0.5) * 3,
-        r: 3 + Math.random() * 3,
-        c: "#38bdf8",
-        alpha: 0.9
-      });
-    }
-  }
+  jump() { if (this.over) return; this.vy = -6.5; for (let i = 0; i < 5; i++) { this.particles.push({ x: this.px - 6, y: this.py + 4, vx: -2 - Math.random() * 2, vy: (Math.random() - 0.5) * 3, r: 3 + Math.random() * 3, c: "#38bdf8", alpha: 0.9 }); } }
   update() {
-    if (this.over) return;
-    this.vy += 0.42;
-    this.py += this.vy;
-
-    if (this.py < 12 || this.py > 408) {
-      this.crash();
-      return;
-    }
-
-    const speed = 3.2 + Math.min(5, this.score * 0.04);
-    const gapH = Math.max(105, 150 - this.score * 0.6);
-
+    if (this.over) return; this.vy += 0.42; this.py += this.vy;
+    if (this.py < 12 || this.py > 408) { this.crash(); return; }
+    const speed = 3.2 + Math.min(5, this.score * 0.04), gapH = Math.max(105, 150 - this.score * 0.6);
     this.spawnTimer += speed;
-    if (this.spawnTimer > 130) {
-      this.spawnTimer = 0;
-      this.gapTarget = 90 + Math.random() * 220;
-      this.gapCurrent += (this.gapTarget - this.gapCurrent) * 0.7;
-      this.pillars.push({
-        x: 420,
-        gapY: this.gapCurrent,
-        gapH,
-        passed: false
-      });
-    }
-
-    for (let i = this.pillars.length - 1; i >= 0; i--) {
-      const p = this.pillars[i];
-      p.x -= speed;
-
-      if (!p.passed && p.x + 35 < this.px) {
-        p.passed = true;
-        this.score++;
-        this.onScore(this.score);
-      }
-
-      if (this.px + 12 > p.x && this.px - 12 < p.x + 35) {
-        if (this.py - 12 < p.gapY - p.gapH / 2 || this.py + 12 > p.gapY + p.gapH / 2) {
-          this.crash();
-          return;
-        }
-      }
-
-      if (p.x < -50) this.pillars.splice(i, 1);
-    }
-
-    for (let i = this.particles.length - 1; i >= 0; i--) {
-      const pt = this.particles[i];
-      pt.x += pt.vx;
-      pt.y += pt.vy;
-      pt.alpha -= 0.03;
-      if (pt.alpha <= 0) this.particles.splice(i, 1);
-    }
+    if (this.spawnTimer > 130) { this.spawnTimer = 0; this.gapTarget = 90 + Math.random() * 220; this.gapCurrent += (this.gapTarget - this.gapCurrent) * 0.7; this.pillars.push({ x: 420, gapY: this.gapCurrent, gapH, passed: false }); }
+    for (let i = this.pillars.length - 1; i >= 0; i--) { const p = this.pillars[i]; p.x -= speed; if (!p.passed && p.x + 35 < this.px) { p.passed = true; this.score++; this.onScore(this.score); } if (this.px + 12 > p.x && this.px - 12 < p.x + 35) { if (this.py - 12 < p.gapY - p.gapH / 2 || this.py + 12 > p.gapY + p.gapH / 2) { this.crash(); return; } } if (p.x < -50) this.pillars.splice(i, 1); }
+    for (let i = this.particles.length - 1; i >= 0; i--) { const pt = this.particles[i]; pt.x += pt.vx; pt.y += pt.vy; pt.alpha -= 0.03; if (pt.alpha <= 0) this.particles.splice(i, 1); }
   }
   render() {
-    const ctx = this.ctx, W = 400, H = 420;
-    ctx.fillStyle = "#0c1524";
-    ctx.fillRect(0, 0, W, H);
-
-    for (let i = 0; i < 20; i++) {
-      ctx.fillStyle = "rgba(255,255,255,0.25)";
-      ctx.fillRect((i * 47) % W, (i * 29) % H, 2, 2);
-    }
-
-    for (const p of this.pillars) {
-      const topH = p.gapY - p.gapH / 2;
-      const botY = p.gapY + p.gapH / 2;
-
-      ctx.fillStyle = "#1e293b";
-      ctx.fillRect(p.x, 0, 35, topH);
-      ctx.fillStyle = "#38bdf8";
-      ctx.fillRect(p.x - 2, topH - 12, 39, 12);
-
-      ctx.fillStyle = "#1e293b";
-      ctx.fillRect(p.x, botY, 35, H - botY);
-      ctx.fillStyle = "#38bdf8";
-      ctx.fillRect(p.x - 2, botY, 39, 12);
-    }
-
-    for (const pt of this.particles) {
-      ctx.fillStyle = pt.c;
-      ctx.globalAlpha = Math.max(0, pt.alpha);
-      ctx.beginPath();
-      ctx.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-
-    ctx.save();
-    ctx.translate(this.px, this.py);
-    ctx.rotate(Math.min(Math.PI / 4, Math.max(-Math.PI / 4, this.vy * 0.08)));
-
-    ctx.fillStyle = "rgba(56, 189, 248, 0.25)";
-    ctx.beginPath();
-    ctx.arc(0, 0, 18, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = "#f59e0b";
-    ctx.beginPath();
-    ctx.ellipse(0, 0, 14, 11, 0, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = "#fff";
-    ctx.beginPath();
-    ctx.arc(6, -4, 4.5, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = "#0f172a";
-    ctx.beginPath();
-    ctx.arc(7.5, -4, 2, 0, Math.PI * 2);
-    ctx.fill();
-
-    const wingY = Math.sin(Date.now() * 0.02) * 5;
-    ctx.fillStyle = "#fbbf24";
-    ctx.beginPath();
-    ctx.ellipse(-4, wingY, 7, 5, -0.4, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = "#ea580c";
-    ctx.beginPath();
-    ctx.moveTo(11, -1);
-    ctx.lineTo(19, 2);
-    ctx.lineTo(11, 5);
-    ctx.closePath();
-    ctx.fill();
-    ctx.restore();
+    const ctx = this.ctx, W = 400, H = 420; ctx.fillStyle = "#0c1524"; ctx.fillRect(0, 0, W, H);
+    for (let i = 0; i < 20; i++) { ctx.fillStyle = "rgba(255,255,255,0.25)"; ctx.fillRect((i * 47) % W, (i * 29) % H, 2, 2); }
+    for (const p of this.pillars) { const topH = p.gapY - p.gapH / 2, botY = p.gapY + p.gapH / 2; ctx.fillStyle = "#1e293b"; ctx.fillRect(p.x, 0, 35, topH); ctx.fillStyle = "#38bdf8"; ctx.fillRect(p.x - 2, topH - 12, 39, 12); ctx.fillStyle = "#1e293b"; ctx.fillRect(p.x, botY, 35, H - botY); ctx.fillStyle = "#38bdf8"; ctx.fillRect(p.x - 2, botY, 39, 12); }
+    for (const pt of this.particles) { ctx.fillStyle = pt.c; ctx.globalAlpha = Math.max(0, pt.alpha); ctx.beginPath(); ctx.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2); ctx.fill(); } ctx.globalAlpha = 1;
+    ctx.save(); ctx.translate(this.px, this.py); ctx.rotate(Math.min(Math.PI / 4, Math.max(-Math.PI / 4, this.vy * 0.08)));
+    ctx.fillStyle = "rgba(56, 189, 248, 0.25)"; ctx.beginPath(); ctx.arc(0, 0, 18, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = "#f59e0b"; ctx.beginPath(); ctx.ellipse(0, 0, 14, 11, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(6, -4, 4.5, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#0f172a"; ctx.beginPath(); ctx.arc(7.5, -4, 2, 0, Math.PI * 2); ctx.fill();
+    const wingY = Math.sin(Date.now() * 0.02) * 5; ctx.fillStyle = "#fbbf24"; ctx.beginPath(); ctx.ellipse(-4, wingY, 7, 5, -0.4, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = "#ea580c"; ctx.beginPath(); ctx.moveTo(11, -1); ctx.lineTo(19, 2); ctx.lineTo(11, 5); ctx.closePath(); ctx.fill(); ctx.restore();
   }
-  crash() {
-    this.over = true;
-    this.onGameOver(this.score);
-  }
+  crash() { this.over = true; this.onGameOver(this.score); }
 }
 
 class OrbitGame {
   constructor(canvas, onScore, onGameOver) {
-    this.cvs = canvas;
-    this.ctx = canvas.getContext("2d");
-    this.onScore = onScore;
-    this.onGameOver = onGameOver;
-    this.px = 60;
-    this.py = 210;
-    this.vx = 2.8;
-    this.vy = -1.2;
-    this.score = 0;
-    this.planets = [];
-    this.stars = [];
-    this.tethering = false;
-    this.tetherPlanet = null;
-    this.over = false;
-    this.camX = 0;
-    this.nextPlanetX = 180;
-    this.trail = [];
-
+    this.cvs = canvas; this.ctx = canvas.getContext("2d"); this.onScore = onScore; this.onGameOver = onGameOver;
+    this.px = 60; this.py = 210; this.vx = 2.8; this.vy = -1.2; this.score = 0;
+    this.planets = []; this.stars = []; this.tethering = false; this.tetherPlanet = null;
+    this.over = false; this.camX = 0; this.nextPlanetX = 180; this.trail = [];
     this.planets.push({ x: 200, y: 210, r: 24, c: "#8b5cf6" });
     this.planets.push({ x: 380, y: 150, r: 28, c: "#ec4899" });
     this.planets.push({ x: 560, y: 270, r: 22, c: "#06b6d4" });
     this.nextPlanetX = 740;
   }
   setTether(active) {
-    if (this.over) return;
-    this.tethering = active;
-    if (active) {
-      let closest = null, minD = 150;
-      for (const pl of this.planets) {
-        const d = Math.hypot(pl.x - this.px, pl.y - this.py);
-        if (d < minD) { minD = d; closest = pl; }
-      }
-      this.tetherPlanet = closest;
-    } else {
-      this.tetherPlanet = null;
-    }
+    if (this.over) return; this.tethering = active;
+    if (active) { let closest = null, minD = 150; for (const pl of this.planets) { const d = Math.hypot(pl.x - this.px, pl.y - this.py); if (d < minD) { minD = d; closest = pl; } } this.tetherPlanet = closest; } else { this.tetherPlanet = null; }
   }
   update() {
     if (this.over) return;
-
-    if (this.tethering && this.tetherPlanet) {
-      const pl = this.tetherPlanet;
-      const dx = pl.x - this.px, dy = pl.y - this.py;
-      const d = Math.hypot(dx, dy);
-
-      if (d < pl.r + 8) {
-        this.crash();
-        return;
-      }
-
-      const speed = Math.max(4.2, Math.hypot(this.vx, this.vy));
-      const nx = dx / d, ny = dy / d;
-      const tx = -ny, ty = nx;
-      const dot = this.vx * tx + this.vy * ty;
-      const dir = dot >= 0 ? 1 : -1;
-
-      this.vx = (tx * dir * speed * 0.95) + (nx * 1.2);
-      this.vy = (ty * dir * speed * 0.95) + (ny * 1.2);
-    } else {
-      this.vx = Math.min(8, Math.max(1.8, this.vx * 0.998));
-      this.vy = Math.min(6, Math.max(-6, this.vy * 0.998));
-    }
-
-    this.px += this.vx;
-    this.py += this.vy;
-
-    this.trail.push({ x: this.px, y: this.py });
-    if (this.trail.length > 25) this.trail.shift();
-
-    this.camX = this.px - 100;
-
-    const distScore = Math.max(0, Math.floor(this.px / 25));
-    if (distScore > this.score) {
-      this.score = distScore;
-      this.onScore(this.score);
-    }
-
-    if (this.py < -60 || this.py > 480) {
-      this.crash();
-      return;
-    }
-
-    if (this.camX + 600 > this.nextPlanetX) {
-      const py = 90 + Math.random() * 240;
-      const pr = 18 + Math.random() * 16;
-      const cols = ["#8b5cf6", "#ec4899", "#06b6d4", "#10b981", "#f59e0b"];
-      this.planets.push({
-        x: this.nextPlanetX,
-        y: py,
-        r: pr,
-        c: cols[Math.floor(Math.random() * cols.length)]
-      });
-
-      this.stars.push({
-        x: this.nextPlanetX + (Math.random() - 0.5) * 80,
-        y: py + (Math.random() - 0.5) * 80,
-        taken: false
-      });
-
-      this.nextPlanetX += 160 + Math.random() * 100;
-    }
-
-    for (const st of this.stars) {
-      if (!st.taken && Math.hypot(st.x - this.px, st.y - this.py) < 22) {
-        st.taken = true;
-        this.score += 5;
-        this.onScore(this.score);
-      }
-    }
-
-    this.planets = this.planets.filter(pl => pl.x > this.camX - 100);
-    this.stars = this.stars.filter(st => st.x > this.camX - 100 && !st.taken);
+    if (this.tethering && this.tetherPlanet) { const pl = this.tetherPlanet; const dx = pl.x - this.px, dy = pl.y - this.py; const d = Math.hypot(dx, dy); if (d < pl.r + 8) { this.crash(); return; } const speed = Math.max(4.2, Math.hypot(this.vx, this.vy)); const nx = dx / d, ny = dy / d; const tx = -ny, ty = nx; const dot = this.vx * tx + this.vy * ty; const dir = dot >= 0 ? 1 : -1; this.vx = (tx * dir * speed * 0.95) + (nx * 1.2); this.vy = (ty * dir * speed * 0.95) + (ny * 1.2); } else { this.vx = Math.min(8, Math.max(1.8, this.vx * 0.998)); this.vy = Math.min(6, Math.max(-6, this.vy * 0.998)); }
+    this.px += this.vx; this.py += this.vy; this.trail.push({ x: this.px, y: this.py }); if (this.trail.length > 25) this.trail.shift(); this.camX = this.px - 100;
+    const distScore = Math.max(0, Math.floor(this.px / 25)); if (distScore > this.score) { this.score = distScore; this.onScore(this.score); }
+    if (this.py < -60 || this.py > 480) { this.crash(); return; }
+    if (this.camX + 600 > this.nextPlanetX) { const py = 90 + Math.random() * 240; const pr = 18 + Math.random() * 16; const cols = ["#8b5cf6", "#ec4899", "#06b6d4", "#10b981", "#f59e0b"]; this.planets.push({ x: this.nextPlanetX, y: py, r: pr, c: cols[Math.floor(Math.random() * cols.length)] }); this.stars.push({ x: this.nextPlanetX + (Math.random() - 0.5) * 80, y: py + (Math.random() - 0.5) * 80, taken: false }); this.nextPlanetX += 160 + Math.random() * 100; }
+    for (const st of this.stars) { if (!st.taken && Math.hypot(st.x - this.px, st.y - this.py) < 22) { st.taken = true; this.score += 5; this.onScore(this.score); } }
+    this.planets = this.planets.filter(pl => pl.x > this.camX - 100); this.stars = this.stars.filter(st => st.x > this.camX - 100 && !st.taken);
   }
   render() {
-    const ctx = this.ctx, W = 400, H = 420;
-    ctx.fillStyle = "#070b12";
-    ctx.fillRect(0, 0, W, H);
-
-    ctx.save();
-    ctx.translate(-this.camX, 0);
-
-    for (let x = Math.floor(this.camX / 60) * 60; x < this.camX + W + 60; x += 60) {
-      ctx.strokeStyle = "rgba(255,255,255,0.03)";
-      ctx.strokeRect(x, 0, 60, H);
-    }
-
-    for (const pl of this.planets) {
-      ctx.fillStyle = pl.c + "33";
-      ctx.beginPath();
-      ctx.arc(pl.x, pl.y, pl.r + 14, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = pl.c;
-      ctx.beginPath();
-      ctx.arc(pl.x, pl.y, pl.r, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.strokeStyle = "rgba(255,255,255,0.4)";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.ellipse(pl.x, pl.y, pl.r + 8, pl.r / 3, -0.3, 0, Math.PI * 2);
-      ctx.stroke();
-    }
-
-    for (const st of this.stars) {
-      ctx.fillStyle = "#facc15";
-      ctx.beginPath();
-      ctx.arc(st.x, st.y, 5, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    if (this.tethering && this.tetherPlanet) {
-      ctx.strokeStyle = "#38bdf8";
-      ctx.lineWidth = 2.5;
-      ctx.setLineDash([4, 4]);
-      ctx.beginPath();
-      ctx.moveTo(this.px, this.py);
-      ctx.lineTo(this.tetherPlanet.x, this.tetherPlanet.y);
-      ctx.stroke();
-      ctx.setLineDash([]);
-    }
-
-    for (let i = 0; i < this.trail.length; i++) {
-      const tr = this.trail[i];
-      ctx.fillStyle = `rgba(56, 189, 248, ${(i / this.trail.length) * 0.5})`;
-      ctx.beginPath();
-      ctx.arc(tr.x, tr.y, (i / this.trail.length) * 4, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    ctx.save();
-    ctx.translate(this.px, this.py);
-    ctx.rotate(Math.atan2(this.vy, this.vx));
-
-    ctx.fillStyle = "#38bdf8";
-    ctx.beginPath();
-    ctx.moveTo(12, 0);
-    ctx.lineTo(-8, -7);
-    ctx.lineTo(-4, 0);
-    ctx.lineTo(-8, 7);
-    ctx.closePath();
-    ctx.fill();
-    ctx.restore();
-
-    ctx.restore();
+    const ctx = this.ctx, W = 400, H = 420; ctx.fillStyle = "#070b12"; ctx.fillRect(0, 0, W, H); ctx.save(); ctx.translate(-this.camX, 0);
+    for (let x = Math.floor(this.camX / 60) * 60; x < this.camX + W + 60; x += 60) { ctx.strokeStyle = "rgba(255,255,255,0.03)"; ctx.strokeRect(x, 0, 60, H); }
+    for (const pl of this.planets) { ctx.fillStyle = pl.c + "33"; ctx.beginPath(); ctx.arc(pl.x, pl.y, pl.r + 14, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = pl.c; ctx.beginPath(); ctx.arc(pl.x, pl.y, pl.r, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = "rgba(255,255,255,0.4)"; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(pl.x, pl.y, pl.r + 8, pl.r / 3, -0.3, 0, Math.PI * 2); ctx.stroke(); }
+    for (const st of this.stars) { ctx.fillStyle = "#facc15"; ctx.beginPath(); ctx.arc(st.x, st.y, 5, 0, Math.PI * 2); ctx.fill(); }
+    if (this.tethering && this.tetherPlanet) { ctx.strokeStyle = "#38bdf8"; ctx.lineWidth = 2.5; ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(this.px, this.py); ctx.lineTo(this.tetherPlanet.x, this.tetherPlanet.y); ctx.stroke(); ctx.setLineDash([]); }
+    for (let i = 0; i < this.trail.length; i++) { const tr = this.trail[i]; ctx.fillStyle = `rgba(56, 189, 248, ${(i / this.trail.length) * 0.5})`; ctx.beginPath(); ctx.arc(tr.x, tr.y, (i / this.trail.length) * 4, 0, Math.PI * 2); ctx.fill(); }
+    ctx.save(); ctx.translate(this.px, this.py); ctx.rotate(Math.atan2(this.vy, this.vx)); ctx.fillStyle = "#38bdf8"; ctx.beginPath(); ctx.moveTo(12, 0); ctx.lineTo(-8, -7); ctx.lineTo(-4, 0); ctx.lineTo(-8, 7); ctx.closePath(); ctx.fill(); ctx.restore(); ctx.restore();
   }
-  crash() {
-    this.over = true;
-    this.onGameOver(this.score);
-  }
+  crash() { this.over = true; this.onGameOver(this.score); }
 }
 
 class SnakeGame {
   constructor(canvas, onScore, onGameOver) {
-    this.cvs = canvas;
-    this.ctx = canvas.getContext("2d");
-    this.onScore = onScore;
-    this.onGameOver = onGameOver;
-    this.grid = 18;
-    this.size = 400 / 18;
-    this.snake = [{ x: 9, y: 9 }, { x: 8, y: 9 }, { x: 7, y: 9 }];
-    this.dir = { x: 1, y: 0 };
-    this.nextDir = { x: 1, y: 0 };
-    this.food = this.spawnFood();
-    this.score = 0;
-    this.lastStep = 0;
-    this.over = false;
+    this.cvs = canvas; this.ctx = canvas.getContext("2d"); this.onScore = onScore; this.onGameOver = onGameOver;
+    this.grid = 18; this.size = 400 / 18; this.snake = [{ x: 9, y: 9 }, { x: 8, y: 9 }, { x: 7, y: 9 }];
+    this.dir = { x: 1, y: 0 }; this.nextDir = { x: 1, y: 0 }; this.food = this.spawnFood();
+    this.score = 0; this.lastStep = 0; this.over = false;
   }
-  spawnFood() {
-    let p;
-    while (!p || this.snake.some(s => s.x === p.x && s.y === p.y)) {
-      p = { x: Math.floor(Math.random() * this.grid), y: Math.floor(Math.random() * this.grid) };
-    }
-    return p;
-  }
-  setDir(dx, dy) {
-    if (dx !== -this.dir.x || dy !== -this.dir.y) {
-      this.nextDir = { x: dx, y: dy };
-    }
-  }
+  spawnFood() { let p; while (!p || this.snake.some(s => s.x === p.x && s.y === p.y)) { p = { x: Math.floor(Math.random() * this.grid), y: Math.floor(Math.random() * this.grid) }; } return p; }
+  setDir(dx, dy) { if (dx !== -this.dir.x || dy !== -this.dir.y) { this.nextDir = { x: dx, y: dy }; } }
   update(t) {
-    if (this.over) return;
-    const interval = Math.max(130, 230 - this.snake.length * 2.5);
-    if (t - this.lastStep < interval) return;
-    this.lastStep = t;
-
-    this.dir = this.nextDir;
-    const head = { x: this.snake[0].x + this.dir.x, y: this.snake[0].y + this.dir.y };
-
-    if (head.x < 0 || head.x >= this.grid || head.y < 0 || head.y >= this.grid) {
-      this.crash();
-      return;
-    }
-
-    if (this.snake.some(s => s.x === head.x && s.y === head.y)) {
-      this.crash();
-      return;
-    }
-
+    if (this.over) return; const interval = Math.max(130, 230 - this.snake.length * 2.5); if (t - this.lastStep < interval) return; this.lastStep = t;
+    this.dir = this.nextDir; const head = { x: this.snake[0].x + this.dir.x, y: this.snake[0].y + this.dir.y };
+    if (head.x < 0 || head.x >= this.grid || head.y < 0 || head.y >= this.grid) { this.crash(); return; }
+    if (this.snake.some(s => s.x === head.x && s.y === head.y)) { this.crash(); return; }
     this.snake.unshift(head);
-
-    if (head.x === this.food.x && head.y === this.food.y) {
-      this.score += 10;
-      this.onScore(this.score);
-      this.food = this.spawnFood();
-    } else {
-      this.snake.pop();
-    }
+    if (head.x === this.food.x && head.y === this.food.y) { this.score += 10; this.onScore(this.score); this.food = this.spawnFood(); } else { this.snake.pop(); }
   }
   render() {
-    const ctx = this.ctx, W = 400, H = 420;
-    ctx.fillStyle = "#0c131d";
-    ctx.fillRect(0, 0, W, H);
-
-    for (let x = 0; x < this.grid; x++) {
-      for (let y = 0; y < this.grid; y++) {
-        ctx.fillStyle = "rgba(255,255,255,0.02)";
-        ctx.fillRect(x * this.size + 10, y * this.size + 10, 2, 2);
-      }
-    }
-
-    ctx.fillStyle = "#ef4444";
-    ctx.beginPath();
-    ctx.arc((this.food.x + 0.5) * this.size, (this.food.y + 0.5) * this.size, this.size * 0.4, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = "#84cc16";
-    ctx.fillRect((this.food.x + 0.4) * this.size, (this.food.y + 0.1) * this.size, 3, 5);
-
-    this.snake.forEach((s, idx) => {
-      ctx.fillStyle = idx === 0 ? "#10b981" : "#059669";
-      ctx.beginPath();
-      ctx.roundRect(s.x * this.size + 1, s.y * this.size + 1, this.size - 2, this.size - 2, 5);
-      ctx.fill();
-
-      if (idx === 0) {
-        ctx.fillStyle = "#fff";
-        const cx = (s.x + 0.5) * this.size, cy = (s.y + 0.5) * this.size;
-        ctx.beginPath();
-        ctx.arc(cx - 3, cy - 3, 2.5, 0, Math.PI * 2);
-        ctx.arc(cx + 3, cy - 3, 2.5, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    });
+    const ctx = this.ctx, W = 400, H = 420; ctx.fillStyle = "#0c131d"; ctx.fillRect(0, 0, W, H);
+    for (let x = 0; x < this.grid; x++) { for (let y = 0; y < this.grid; y++) { ctx.fillStyle = "rgba(255,255,255,0.02)"; ctx.fillRect(x * this.size + 10, y * this.size + 10, 2, 2); } }
+    ctx.fillStyle = "#ef4444"; ctx.beginPath(); ctx.arc((this.food.x + 0.5) * this.size, (this.food.y + 0.5) * this.size, this.size * 0.4, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#84cc16"; ctx.fillRect((this.food.x + 0.4) * this.size, (this.food.y + 0.1) * this.size, 3, 5);
+    this.snake.forEach((s, idx) => { ctx.fillStyle = idx === 0 ? "#10b981" : "#059669"; ctx.beginPath(); ctx.roundRect(s.x * this.size + 1, s.y * this.size + 1, this.size - 2, this.size - 2, 5); ctx.fill(); if (idx === 0) { ctx.fillStyle = "#fff"; const cx = (s.x + 0.5) * this.size, cy = (s.y + 0.5) * this.size; ctx.beginPath(); ctx.arc(cx - 3, cy - 3, 2.5, 0, Math.PI * 2); ctx.arc(cx + 3, cy - 3, 2.5, 0, Math.PI * 2); ctx.fill(); } });
   }
-  crash() {
-    this.over = true;
-    this.onGameOver(this.score);
-  }
+  crash() { this.over = true; this.onGameOver(this.score); }
 }
 
 /* Arcade Manager */
-const ARCADE = {
-  instance: null,
-  gameKey: null,
-  raf: null,
-  score: 0,
-  best: 0,
-  isOpen: false
-};
+const ARCADE = { instance: null, gameKey: null, raf: null, score: 0, best: 0, isOpen: false };
 
 const gModal = document.getElementById("gameModal");
 const gCanvas = document.getElementById("gameCanvas");
@@ -1946,138 +1643,36 @@ const gFinalScoreEl = document.getElementById("finalScoreVal");
 const gNewBestBadge = document.getElementById("newBestBadge");
 const gTouchControls = document.getElementById("touchControls");
 
-function initCanvasDPR() {
-  const dpr = window.devicePixelRatio || 1;
-  gCanvas.width = 400 * dpr;
-  gCanvas.height = 420 * dpr;
-  const ctx = gCanvas.getContext("2d");
-  ctx.scale(dpr, dpr);
-}
+function initCanvasDPR() { const dpr = window.devicePixelRatio || 1; gCanvas.width = 400 * dpr; gCanvas.height = 420 * dpr; const ctx = gCanvas.getContext("2d"); ctx.scale(dpr, dpr); }
 
-function openRandomGame(forceNew = false) {
-  let choices = ARCADE_KEYS;
-  if (forceNew && ARCADE.gameKey) {
-    choices = ARCADE_KEYS.filter(k => k !== ARCADE.gameKey);
-  }
-  const nextKey = choices[Math.floor(Math.random() * choices.length)];
-  launchArcadeGame(nextKey);
-}
+function openRandomGame(forceNew = false) { let choices = ARCADE_KEYS; if (forceNew && ARCADE.gameKey) { choices = ARCADE_KEYS.filter(k => k !== ARCADE.gameKey); } const nextKey = choices[Math.floor(Math.random() * choices.length)]; launchArcadeGame(nextKey); }
 
 function launchArcadeGame(key) {
   if (ARCADE.raf) cancelAnimationFrame(ARCADE.raf);
-  ARCADE.gameKey = key;
-  ARCADE.isOpen = true;
-  ARCADE.score = 0;
+  ARCADE.gameKey = key; ARCADE.isOpen = true; ARCADE.score = 0;
   ARCADE.best = parseInt(localStorage.getItem("arcade_best_" + key) || "0", 10);
-
   const cfg = ARCADE_GAMES[key];
-  gTitleEl.textContent = cfg.name;
-  gIconEl.textContent = cfg.icon;
-  gSubEl.textContent = cfg.sub;
-  gHelpEl.textContent = cfg.help;
-  gScoreEl.textContent = "0";
-  gBestEl.textContent = ARCADE.best;
-  gTouchControls.innerHTML = cfg.touch;
-  gOverScreen.classList.remove("show");
-  gModal.classList.add("open");
-
-  initCanvasDPR();
-  wireTouchControls(key);
-
-  const onScore = (sc) => {
-    ARCADE.score = sc;
-    gScoreEl.textContent = sc;
-    if (sc > ARCADE.best) {
-      ARCADE.best = sc;
-      gBestEl.textContent = sc;
-      localStorage.setItem("arcade_best_" + key, sc);
-    }
-  };
-
-  const onGameOver = (finalScore) => {
-    gFinalScoreEl.textContent = finalScore;
-    const isNewRecord = finalScore > 0 && finalScore >= ARCADE.best;
-    gNewBestBadge.style.display = isNewRecord ? "inline-block" : "none";
-    gOverScreen.classList.add("show");
-  };
-
-  if (key === "track") {
-    ARCADE.instance = new TrackGame(gCanvas, onScore, onGameOver);
-  } else if (key === "canyon") {
-    ARCADE.instance = new CanyonGame(gCanvas, onScore, onGameOver);
-  } else if (key === "orbit") {
-    ARCADE.instance = new OrbitGame(gCanvas, onScore, onGameOver);
-  } else if (key === "snake") {
-    ARCADE.instance = new SnakeGame(gCanvas, onScore, onGameOver);
-  }
-
-  const loop = (t) => {
-    if (!ARCADE.isOpen) return;
-    if (ARCADE.instance) {
-      ARCADE.instance.update(t);
-      ARCADE.instance.render();
-    }
-    ARCADE.raf = requestAnimationFrame(loop);
-  };
+  gTitleEl.textContent = cfg.name; gIconEl.textContent = cfg.icon; gSubEl.textContent = cfg.sub;
+  gHelpEl.textContent = cfg.help; gScoreEl.textContent = "0"; gBestEl.textContent = ARCADE.best;
+  gTouchControls.innerHTML = cfg.touch; gOverScreen.classList.remove("show"); gModal.classList.add("open");
+  initCanvasDPR(); wireTouchControls(key);
+  const onScore = (sc) => { ARCADE.score = sc; gScoreEl.textContent = sc; if (sc > ARCADE.best) { ARCADE.best = sc; gBestEl.textContent = sc; localStorage.setItem("arcade_best_" + key, sc); } };
+  const onGameOver = (finalScore) => { gFinalScoreEl.textContent = finalScore; const isNewRecord = finalScore > 0 && finalScore >= ARCADE.best; gNewBestBadge.style.display = isNewRecord ? "inline-block" : "none"; gOverScreen.classList.add("show"); };
+  if (key === "track") { ARCADE.instance = new TrackGame(gCanvas, onScore, onGameOver); } else if (key === "canyon") { ARCADE.instance = new CanyonGame(gCanvas, onScore, onGameOver); } else if (key === "orbit") { ARCADE.instance = new OrbitGame(gCanvas, onScore, onGameOver); } else if (key === "snake") { ARCADE.instance = new SnakeGame(gCanvas, onScore, onGameOver); }
+  const loop = (t) => { if (!ARCADE.isOpen) return; if (ARCADE.instance) { ARCADE.instance.update(t); ARCADE.instance.render(); } ARCADE.raf = requestAnimationFrame(loop); };
   ARCADE.raf = requestAnimationFrame(loop);
 }
 
 function wireTouchControls(key) {
-  if (key === "track") {
-    const l = document.getElementById("tLeft"), r = document.getElementById("tRight");
-    if (l && r) {
-      const setL = (v) => { if (ARCADE.instance) ARCADE.instance.keys.left = v; };
-      const setR = (v) => { if (ARCADE.instance) ARCADE.instance.keys.right = v; };
-      l.onpointerdown = (e) => { e.preventDefault(); setL(true); };
-      l.onpointerup = (e) => { e.preventDefault(); setL(false); };
-      l.onpointerleave = () => setL(false);
-      l.onpointercancel = () => setL(false);
-      r.onpointerdown = (e) => { e.preventDefault(); setR(true); };
-      r.onpointerup = (e) => { e.preventDefault(); setR(false); };
-      r.onpointerleave = () => setR(false);
-      r.onpointercancel = () => setR(false);
-    }
-  } else if (key === "canyon") {
-    const b = document.getElementById("tFly");
-    if (b) {
-      b.onpointerdown = (e) => { e.preventDefault(); if (ARCADE.instance) ARCADE.instance.jump(); };
-      b.onclick = (e) => { e.preventDefault(); if (ARCADE.instance) ARCADE.instance.jump(); };
-    }
-  } else if (key === "orbit") {
-    const b = document.getElementById("tOrbit");
-    if (b) {
-      b.onpointerdown = (e) => { e.preventDefault(); if (ARCADE.instance) ARCADE.instance.setTether(true); };
-      b.onpointerup = (e) => { e.preventDefault(); if (ARCADE.instance) ARCADE.instance.setTether(false); };
-      b.onpointerleave = () => { if (ARCADE.instance) ARCADE.instance.setTether(false); };
-      b.onpointercancel = () => { if (ARCADE.instance) ARCADE.instance.setTether(false); };
-    }
-  } else if (key === "snake") {
-    const u = document.getElementById("sUp"), d = document.getElementById("sDown"),
-          l = document.getElementById("sLeft"), r = document.getElementById("sRight");
-    const act = (dx, dy, e) => {
-      if (e) e.preventDefault();
-      if (ARCADE.instance) ARCADE.instance.setDir(dx, dy);
-    };
-    if (u) { u.onpointerdown = (e) => act(0, -1, e); u.onclick = (e) => act(0, -1, e); }
-    if (d) { d.onpointerdown = (e) => act(0, 1, e);  d.onclick = (e) => act(0, 1, e); }
-    if (l) { l.onpointerdown = (e) => act(-1, 0, e); l.onclick = (e) => act(-1, 0, e); }
-    if (r) { r.onpointerdown = (e) => act(1, 0, e);  r.onclick = (e) => act(1, 0, e); }
-  }
+  if (key === "track") { const l = document.getElementById("tLeft"), r = document.getElementById("tRight"); if (l && r) { const setL = (v) => { if (ARCADE.instance) ARCADE.instance.keys.left = v; }; const setR = (v) => { if (ARCADE.instance) ARCADE.instance.keys.right = v; }; l.onpointerdown = (e) => { e.preventDefault(); setL(true); }; l.onpointerup = (e) => { e.preventDefault(); setL(false); }; l.onpointerleave = () => setL(false); l.onpointercancel = () => setL(false); r.onpointerdown = (e) => { e.preventDefault(); setR(true); }; r.onpointerup = (e) => { e.preventDefault(); setR(false); }; r.onpointerleave = () => setR(false); r.onpointercancel = () => setR(false); } }
+  else if (key === "canyon") { const b = document.getElementById("tFly"); if (b) { b.onpointerdown = (e) => { e.preventDefault(); if (ARCADE.instance) ARCADE.instance.jump(); }; b.onclick = (e) => { e.preventDefault(); if (ARCADE.instance) ARCADE.instance.jump(); }; } }
+  else if (key === "orbit") { const b = document.getElementById("tOrbit"); if (b) { b.onpointerdown = (e) => { e.preventDefault(); if (ARCADE.instance) ARCADE.instance.setTether(true); }; b.onpointerup = (e) => { e.preventDefault(); if (ARCADE.instance) ARCADE.instance.setTether(false); }; b.onpointerleave = () => { if (ARCADE.instance) ARCADE.instance.setTether(false); }; b.onpointercancel = () => { if (ARCADE.instance) ARCADE.instance.setTether(false); }; } }
+  else if (key === "snake") { const u = document.getElementById("sUp"), d = document.getElementById("sDown"), l = document.getElementById("sLeft"), r = document.getElementById("sRight"); const act = (dx, dy, e) => { if (e) e.preventDefault(); if (ARCADE.instance) ARCADE.instance.setDir(dx, dy); }; if (u) { u.onpointerdown = (e) => act(0, -1, e); u.onclick = (e) => act(0, -1, e); } if (d) { d.onpointerdown = (e) => act(0, 1, e); d.onclick = (e) => act(0, 1, e); } if (l) { l.onpointerdown = (e) => act(-1, 0, e); l.onclick = (e) => act(-1, 0, e); } if (r) { r.onpointerdown = (e) => act(1, 0, e); r.onclick = (e) => act(1, 0, e); } }
 }
 
-function closeGameModal() {
-  ARCADE.isOpen = false;
-  if (ARCADE.raf) cancelAnimationFrame(ARCADE.raf);
-  ARCADE.instance = null;
-  gModal.classList.remove("open");
-  gOverScreen.classList.remove("show");
-}
+function closeGameModal() { ARCADE.isOpen = false; if (ARCADE.raf) cancelAnimationFrame(ARCADE.raf); ARCADE.instance = null; gModal.classList.remove("open"); gOverScreen.classList.remove("show"); }
+function restartCurrentGame() { if (ARCADE.gameKey) launchArcadeGame(ARCADE.gameKey); }
 
-function restartCurrentGame() {
-  if (ARCADE.gameKey) launchArcadeGame(ARCADE.gameKey);
-}
-
-// Global Arcade Event Listeners
 document.getElementById("arcadeBtn").addEventListener("click", () => openRandomGame());
 document.getElementById("gameCloseBtn").addEventListener("click", closeGameModal);
 document.getElementById("gameRandomBtn").addEventListener("click", () => openRandomGame(true));
@@ -2085,127 +1680,57 @@ document.getElementById("gameRestartBtn").addEventListener("click", restartCurre
 document.getElementById("gameSwitchBtn").addEventListener("click", () => openRandomGame(true));
 gModal.addEventListener("click", (e) => { if (e.target === gModal) closeGameModal(); });
 
-// Canvas Pointer Interaction (tap, drag steer, swipe)
 let pointerStartX = 0, pointerStartY = 0;
 gCanvas.addEventListener("pointerdown", (e) => {
   if (!ARCADE.instance || !ARCADE.isOpen) return;
-  const rect = gCanvas.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-  const w = rect.width;
-  pointerStartX = x;
-  pointerStartY = y;
-
-  if (ARCADE.gameKey === "track") {
-    if (x < w / 2) {
-      ARCADE.instance.keys.left = true;
-      ARCADE.instance.keys.right = false;
-    } else {
-      ARCADE.instance.keys.right = true;
-      ARCADE.instance.keys.left = false;
-    }
-  } else if (ARCADE.gameKey === "canyon") {
-    ARCADE.instance.jump();
-  } else if (ARCADE.gameKey === "orbit") {
-    ARCADE.instance.setTether(true);
-  }
+  const rect = gCanvas.getBoundingClientRect(); const x = e.clientX - rect.left; const y = e.clientY - rect.top; const w = rect.width;
+  pointerStartX = x; pointerStartY = y;
+  if (ARCADE.gameKey === "track") { if (x < w / 2) { ARCADE.instance.keys.left = true; ARCADE.instance.keys.right = false; } else { ARCADE.instance.keys.right = true; ARCADE.instance.keys.left = false; } }
+  else if (ARCADE.gameKey === "canyon") { ARCADE.instance.jump(); }
+  else if (ARCADE.gameKey === "orbit") { ARCADE.instance.setTether(true); }
 });
-
 gCanvas.addEventListener("pointermove", (e) => {
   if (!ARCADE.instance || !ARCADE.isOpen) return;
-  if (e.buttons > 0 && ARCADE.gameKey === "track") {
-    const rect = gCanvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const w = rect.width;
-    if (x < w / 2) {
-      ARCADE.instance.keys.left = true;
-      ARCADE.instance.keys.right = false;
-    } else {
-      ARCADE.instance.keys.right = true;
-      ARCADE.instance.keys.left = false;
-    }
-  }
+  if (e.buttons > 0 && ARCADE.gameKey === "track") { const rect = gCanvas.getBoundingClientRect(); const x = e.clientX - rect.left; const w = rect.width; if (x < w / 2) { ARCADE.instance.keys.left = true; ARCADE.instance.keys.right = false; } else { ARCADE.instance.keys.right = true; ARCADE.instance.keys.left = false; } }
 });
-
 gCanvas.addEventListener("pointerup", (e) => {
   if (!ARCADE.instance || !ARCADE.isOpen) return;
-  const rect = gCanvas.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-
-  if (ARCADE.gameKey === "track") {
-    ARCADE.instance.keys.left = false;
-    ARCADE.instance.keys.right = false;
-  } else if (ARCADE.gameKey === "orbit") {
-    ARCADE.instance.setTether(false);
-  } else if (ARCADE.gameKey === "snake") {
-    const dx = x - pointerStartX;
-    const dy = y - pointerStartY;
-    if (Math.abs(dx) > 18 || Math.abs(dy) > 18) {
-      if (Math.abs(dx) > Math.abs(dy)) {
-        ARCADE.instance.setDir(dx > 0 ? 1 : -1, 0);
-      } else {
-        ARCADE.instance.setDir(0, dy > 0 ? 1 : -1);
-      }
-    }
-  }
+  const rect = gCanvas.getBoundingClientRect(); const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+  if (ARCADE.gameKey === "track") { ARCADE.instance.keys.left = false; ARCADE.instance.keys.right = false; }
+  else if (ARCADE.gameKey === "orbit") { ARCADE.instance.setTether(false); }
+  else if (ARCADE.gameKey === "snake") { const dx = x - pointerStartX; const dy = y - pointerStartY; if (Math.abs(dx) > 18 || Math.abs(dy) > 18) { if (Math.abs(dx) > Math.abs(dy)) { ARCADE.instance.setDir(dx > 0 ? 1 : -1, 0); } else { ARCADE.instance.setDir(0, dy > 0 ? 1 : -1); } } }
 });
-
 gCanvas.addEventListener("pointercancel", () => {
   if (!ARCADE.instance || !ARCADE.isOpen) return;
-  if (ARCADE.gameKey === "track") {
-    ARCADE.instance.keys.left = false;
-    ARCADE.instance.keys.right = false;
-  } else if (ARCADE.gameKey === "orbit") {
-    ARCADE.instance.setTether(false);
-  }
+  if (ARCADE.gameKey === "track") { ARCADE.instance.keys.left = false; ARCADE.instance.keys.right = false; }
+  else if (ARCADE.gameKey === "orbit") { ARCADE.instance.setTether(false); }
 });
 
-// Keyboard Controls
 window.addEventListener("keydown", (e) => {
-  if (!ARCADE.isOpen) return;
-  if (e.key === "Escape") { closeGameModal(); return; }
-
-  const inst = ARCADE.instance;
-  if (!inst) return;
-
-  if (ARCADE.gameKey === "track") {
-    if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") inst.keys.left = true;
-    if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") inst.keys.right = true;
-  } else if (ARCADE.gameKey === "canyon") {
-    if (e.key === " " || e.key === "ArrowUp") { e.preventDefault(); inst.jump(); }
-  } else if (ARCADE.gameKey === "orbit") {
-    if (e.key === " " || e.key === "ArrowDown") { e.preventDefault(); inst.setTether(true); }
-  } else if (ARCADE.gameKey === "snake") {
-    if (e.key === "ArrowUp" || e.key === "w" || e.key === "W") { e.preventDefault(); inst.setDir(0, -1); }
-    if (e.key === "ArrowDown" || e.key === "s" || e.key === "S") { e.preventDefault(); inst.setDir(0, 1); }
-    if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") { e.preventDefault(); inst.setDir(-1, 0); }
-    if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") { e.preventDefault(); inst.setDir(1, 0); }
-  }
+  if (!ARCADE.isOpen) return; if (e.key === "Escape") { closeGameModal(); return; }
+  const inst = ARCADE.instance; if (!inst) return;
+  if (ARCADE.gameKey === "track") { if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") inst.keys.left = true; if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") inst.keys.right = true; }
+  else if (ARCADE.gameKey === "canyon") { if (e.key === " " || e.key === "ArrowUp") { e.preventDefault(); inst.jump(); } }
+  else if (ARCADE.gameKey === "orbit") { if (e.key === " " || e.key === "ArrowDown") { e.preventDefault(); inst.setTether(true); } }
+  else if (ARCADE.gameKey === "snake") { if (e.key === "ArrowUp" || e.key === "w" || e.key === "W") { e.preventDefault(); inst.setDir(0, -1); } if (e.key === "ArrowDown" || e.key === "s" || e.key === "S") { e.preventDefault(); inst.setDir(0, 1); } if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") { e.preventDefault(); inst.setDir(-1, 0); } if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") { e.preventDefault(); inst.setDir(1, 0); } }
 });
-
 window.addEventListener("keyup", (e) => {
-  if (!ARCADE.isOpen || !ARCADE.instance) return;
-  const inst = ARCADE.instance;
-  if (ARCADE.gameKey === "track") {
-    if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") inst.keys.left = false;
-    if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") inst.keys.right = false;
-  } else if (ARCADE.gameKey === "orbit") {
-    if (e.key === " " || e.key === "ArrowDown") inst.setTether(false);
-  }
+  if (!ARCADE.isOpen || !ARCADE.instance) return; const inst = ARCADE.instance;
+  if (ARCADE.gameKey === "track") { if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") inst.keys.left = false; if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") inst.keys.right = false; }
+  else if (ARCADE.gameKey === "orbit") { if (e.key === " " || e.key === "ArrowDown") inst.setTether(false); }
 });
 
 /* ===== Init ===== */
 load();
 render();
-resetGarden();
+if (getTheme() === "garden") resetGarden();
 document.getElementById("calc").addEventListener("click", calculate);
 document.getElementById("reset").addEventListener("click", resetAll);
-document.addEventListener("keydown", (e) => { if (e.key === "Enter") calculate(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Enter" && !ARCADE.isOpen) calculate(); });
 
-// Surprise is occasional, never every visit: ~30% chance after load, ~8% after a Calculate click
-if (Math.random() < .3) setTimeout(() => launch(), rnd(8000, 25000));
-document.getElementById("calc").addEventListener("click", () => { if (Math.random() < .08) setTimeout(() => launch(), 2000); });
+// Surprise is occasional (garden only)
+if (getTheme() === "garden" && Math.random() < .3) setTimeout(() => launch(), rnd(8000, 25000));
+document.getElementById("calc").addEventListener("click", () => { if (getTheme() === "garden" && Math.random() < .08) setTimeout(() => launch(), 2000); });
 </script>
 </body>
 </html>

@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Extra Hours Tracker</title>
+  <style>
+    :root{
+      --bg:#fff8fb;
+      --card:#ffffff;
+      --ink:#262833;
+      --muted:#666a76;
+      --accent:#ffb3c4;
+      --accent-strong:#ff8aa6;
+      --ok:#206a3a;
+      --bad:#a32626;
+      --sep:#d6d9e3;
+      --chip:#f0f1f7;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color:var(--ink);
+      background:linear-gradient(180deg,var(--bg),#fff);
+    }
+    .app{
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      min-height:100dvh;
+    }
+    .header{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .logo{
+      width:38px;height:38px;border-radius:10px;background:var(--accent);
+      display:grid;place-items:center;color:#231b1b;font-weight:900;
+      box-shadow: 0 8px 18px rgba(255,138,166,.35);
+    }
+    h1{font-size:1.15rem;margin:0;line-height:1.2;}
+    .hint{color:var(--muted);font-size:.9rem}
+    .card{
+      background:var(--card);
+      border:1px solid var(--sep);
+      border-radius:14px;
+      padding:12px;
+      box-shadow: 0 6px 18px rgba(24,26,33,.05);
+    }
+    .rows{
+      display:flex;flex-direction:column;gap:8px;
+      max-height: 65vh; overflow:auto; scroll-behavior:smooth;
+      padding-right:4px;
+    }
+    .row{
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap:8px;
+      padding:10px;
+      border:1px solid var(--sep);
+      border-radius:12px;
+      background:#fff;
+    }
+    .row-head{
+      display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    }
+    .day{
+      font-weight:700;
+      background:var(--chip);
+      padding:6px 10px;
+      border-radius:999px;
+    }
+    .toggle{
+      display:inline-flex;align-items:center;gap:6px;
+      background:var(--chip); padding:6px 10px;border-radius:999px;
+    }
+    .toggle input{accent-color:var(--accent-strong)}
+
+    /* One-line inputs: group label + input + pick together */
+    .row-body{
+      grid-column:1/-1;
+      display:flex;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap; /* allow wrapping between the two clusters if screen is narrow */
+    }
+    .cluster{
+      display:flex; align-items:center; gap:8px;
+      background:#fff;
+      padding:0; border-radius:10px;
+    }
+    .lbl{color:var(--muted);font-size:.95rem;min-width:32px;text-align:right}
+    input[type="time"]{
+      width:auto; min-width:110px;
+      padding:8px 10px;
+      border:1px solid var(--sep);
+      border-radius:10px;
+      background:#fff;
+      color:var(--ink);
+      font-size:1rem;
+    }
+    .pick{
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid var(--sep);
+      background:var(--accent);
+      color:#1f1a1a;
+      font-weight:600;
+      cursor:pointer;
+      transition:.15s ease;
+    }
+    .pick:active{transform:translateY(1px)}
+    .subtle{background:#f4f5f9;color:#333}
+    .placeholder{
+      color:var(--muted); font-style:italic; padding: 8px 0;
+    }
+    .right{
+      margin-left:auto;
+      display:flex;align-items:center;justify-content:flex-end;
+      font-weight:600;
+      min-width:160px;
+    }
+    .over.ok{color:var(--ok)}
+    .over.bad{color:var(--bad)}
+
+    .controls{display:flex; gap:10px; flex-wrap:wrap;}
+    .btn{
+      padding:10px 14px; border-radius:10px; border:1px solid var(--sep);
+      background:var(--accent); color:#1f1a1a; font-weight:700; cursor:pointer;
+    }
+    .btn.secondary{background:#f1f2f8}
+    .footer{display:grid; gap:8px;}
+
+    @media (max-width:740px){
+      .rows{max-height: 62vh}
+      .right{min-width:auto}
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <div class="logo">⏱</div>
+      <div>
+        <h1>Weekly Extra Hours Tracker</h1>
+        <div class="hint">Track Monday–Friday, lunch break auto-applied, Friday auto-out supported.</div>
+      </div>
+    </header>
+
+    <section class="card">
+      <div class="rows" id="rows"></div>
+    </section>
+
+    <section class="controls">
+      <button id="calc" class="btn">Calculate Extra Hours</button>
+      <button id="reset" class="btn secondary">Reset to defaults</button>
+    </section>
+
+    <section class="footer card">
+      <div id="total" class="over ok">Total Extra: +0h 0m</div>
+      <div id="suggest" class="note"></div>
+    </section>
+  </main>
+
+  <script>
+    // Constants
+    const MIN_DAILY_MINUTES = 9 * 60;
+    const MAX_PHYSICAL_DAY_MINUTES = 10 * 60;
+    const LUNCH_BREAK_MINUTES = 30;
+    const DEFAULT_START_MIN = 8 * 60 + 45; // 08:45
+    const DEFAULT_END_MIN = 18 * 60 + 15;  // 18:15
+    const DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday"];
+    const STORE_KEY = "extra_hours_web_v1";
+
+    // Utils
+    const clamp = (v, lo, hi)=> Math.max(lo, Math.min(hi, v));
+    function toMinutes(hhmm){
+      if(!hhmm || typeof hhmm !== "string" || !hhmm.includes(":")) return 0;
+      const [h,m] = hhmm.split(":").map(n=>parseInt(n||"0",10));
+      return clamp(h,0,23)*60 + clamp(m,0,59);
+    }
+    function toHHMM(mins){
+      mins = ((mins % (24*60)) + (24*60)) % (24*60);
+      const h = Math.floor(mins/60);
+      const m = mins % 60;
+      return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;
+    }
+    function workedMinutes(inMin, outMin){
+      let d = outMin - inMin;
+      if (d < 0) d += 24*60;
+      return d;
+    }
+
+    // Model
+    let rowsModel = DAYS.map((d, i)=>({
+      day: d,
+      isFriday: i===4,
+      work: true,
+      in: toHHMM(DEFAULT_START_MIN),
+      out: toHHMM(DEFAULT_END_MIN),
+      manualOut: i===4 ? false : true // non-Friday always shows out
+    }));
+
+    // Storage
+    function save(){
+      const data = rowsModel.map(r=>{
+        return {
+          work: !!r.work,
+          in: r.in,
+          out: r.isFriday ? (r.manualOut ? r.out : null) : r.out,
+          manual_out: r.isFriday ? !!r.manualOut : undefined
+        };
+      });
+      localStorage.setItem(STORE_KEY, JSON.stringify(data));
+    }
+    function load(){
+      const raw = localStorage.getItem(STORE_KEY);
+      if(!raw) return;
+      try{
+        const data = JSON.parse(raw);
+        data.forEach((e, i)=>{
+          const r = rowsModel[i];
+          if(!r) return;
+          r.work = e.work ?? true;
+          r.in = e.in ?? toHHMM(DEFAULT_START_MIN);
+          if(r.isFriday){
+            const inferredManual = (typeof e.manual_out === "boolean") ? e.manual_out : !!e.out;
+            r.manualOut = !!inferredManual && !!r.work;
+            r.out = e.out ? e.out : toHHMM(DEFAULT_END_MIN);
+          }else{
+            r.out = e.out ?? toHHMM(DEFAULT_END_MIN);
+            r.manualOut = true;
+          }
+        });
+      }catch(e){}
+    }
+
+    // View
+    const rowsEl = document.getElementById("rows");
+    function render(){
+      rowsEl.innerHTML = "";
+      rowsModel.forEach((r, idx)=>{
+        const row = document.createElement("div");
+        row.className = "row";
+
+        const head = document.createElement("div");
+        head.className = "row-head";
+        head.innerHTML = `
+          <div class="day">${r.day}</div>
+          <label class="toggle">
+            <input type="checkbox" class="work" ${r.work ? "checked":""}>
+            <span>Work</span>
+          </label>
+          ${r.isFriday ? `
+          <label class="toggle">
+            <input type="checkbox" class="manual" ${r.manualOut && r.work ? "checked":""} ${!r.work ? "disabled":""}>
+            <span>Manual OUT</span>
+          </label>`:""}
+        `;
+
+        const body = document.createElement("div");
+        body.className = "row-body";
+
+        // In cluster: label + time + pick
+        const inCluster = document.createElement("div");
+        inCluster.className = "cluster";
+        const inLbl = document.createElement("div");
+        inLbl.className = "lbl"; inLbl.textContent = "In";
+        const inTime = document.createElement("input");
+        inTime.type = "time"; inTime.step = 60;
+        inTime.value = r.in; inTime.disabled = !r.work;
+        const inPick = document.createElement("button");
+        inPick.className="pick subtle"; inPick.textContent="Pick";
+        inCluster.append(inLbl,inTime,inPick);
+
+        // Out cluster: label + (time+pick) OR (auto)
+        const outCluster = document.createElement("div");
+        outCluster.className = "cluster";
+        const outLbl = document.createElement("div");
+        outLbl.className = "lbl"; outLbl.textContent = "Out";
+
+        const outTime = document.createElement("input");
+        outTime.type = "time"; outTime.step = 60; outTime.value = r.out;
+        const outPick = document.createElement("button");
+        outPick.className="pick subtle"; outPick.textContent="Pick";
+        const autoPh = document.createElement("div");
+        autoPh.className="placeholder"; autoPh.textContent="(auto)";
+
+        outCluster.append(outLbl);
+        if(r.isFriday && (!r.manualOut || !r.work)){
+          outCluster.append(autoPh);
+        }else{
+          outTime.disabled = !r.work;
+          outCluster.append(outTime,outPick);
+        }
+
+        // Over result to the far right
+        const over = document.createElement("div");
+        over.className = "right over";
+        over.textContent = "Over: +0h 0m";
+        over.dataset.idx = idx;
+
+        // Assemble the body in one line
+        body.append(inCluster, outCluster, over);
+
+        // Wire events
+        head.querySelector(".work").addEventListener("change", (e)=>{
+          r.work = e.target.checked;
+          if(!r.work && r.isFriday){
+            r.manualOut = false;
+          }
+          save(); render();
+        });
+
+        if(r.isFriday){
+          head.querySelector(".manual").addEventListener("change",(e)=>{
+            if(r.work){
+              r.manualOut = e.target.checked;
+              save(); render();
+            }
+          });
+        }
+
+        inTime.addEventListener("change", ()=>{
+          r.in = inTime.value || r.in;
+          save();
+        });
+        inPick.addEventListener("click", ()=> inTime.showPicker ? inTime.showPicker() : inTime.focus());
+
+        outTime.addEventListener("change", ()=>{
+          r.out = outTime.value || r.out;
+          save();
+        });
+        outPick.addEventListener("click", ()=> outTime.showPicker ? outTime.showPicker() : outTime.focus());
+
+        // assemble row
+        row.appendChild(head);
+        row.appendChild(body);
+        rowsEl.appendChild(row);
+      });
+    }
+
+    // Calculation logic
+    function calculate(){
+      let total = 0;
+
+      rowsModel.forEach((r, i)=>{
+        const overEl = rowsEl.querySelector(`.over[data-idx="${i}"]`);
+        if(!r.work){
+          if(overEl){ overEl.textContent = "Over: +0h 0m"; overEl.classList.remove("bad"); overEl.classList.add("ok"); }
+          return;
+        }
+        if(r.isFriday && !r.manualOut){
+          if(overEl){ overEl.textContent = "Over: (auto)"; overEl.classList.remove("bad","ok"); }
+          return;
+        }
+        const inMin = toMinutes(r.in);
+        const outMin = toMinutes(r.out);
+        const mWorked = workedMinutes(inMin, outMin);
+        const afterBreak = Math.max(0, mWorked - LUNCH_BREAK_MINUTES);
+        const counted = Math.min(afterBreak, MAX_PHYSICAL_DAY_MINUTES);
+        const daily = counted - MIN_DAILY_MINUTES;
+        total += daily;
+
+        const sign = daily>=0 ? "+" : "-";
+        const dh = Math.floor(Math.abs(daily)/60);
+        const dm = Math.abs(daily)%60;
+        if(overEl){
+          overEl.textContent = `Over: ${sign}${dh}h ${dm}m`;
+          overEl.classList.toggle("ok", daily>=0);
+          overEl.classList.toggle("bad", daily<0);
+        }
+      });
+
+      // Friday special: arrival adjustment when auto
+      const fri = rowsModel[4];
+      if(fri && fri.work && !fri.manualOut){
+        const arrivalAdjust = DEFAULT_START_MIN - toMinutes(fri.in);
+        total += arrivalAdjust;
+      }
+
+      // Total
+      const totalEl = document.getElementById("total");
+      const signT = total>=0 ? "+" : "-";
+      const th = Math.floor(Math.abs(total)/60);
+      const tm = Math.abs(total)%60;
+      totalEl.textContent = `Total Extra: ${signT}${th}h ${tm}m`;
+      totalEl.classList.toggle("ok", total>=0);
+      totalEl.classList.toggle("bad", total<0);
+
+      // Friday suggestion when auto
+      const suggEl = document.getElementById("suggest");
+      if(fri && fri.work && !fri.manualOut){
+        const leaveMin = DEFAULT_END_MIN - total;
+        const leaveAbs = ((leaveMin % (24*60)) + (24*60)) % (24*60);
+        const leaveStr = toHHMM(leaveAbs);
+        const note = leaveMin < toMinutes(fri.in) ? " (earlier than your arrival — large positive balance)" : "";
+        suggEl.textContent = `Friday suggestion: You can leave at ${leaveStr}${note}`;
+      }else{
+        suggEl.textContent = "";
+      }
+
+      save();
+    }
+
+    function resetAll(){
+      rowsModel = DAYS.map((d,i)=>({
+        day:d,
+        isFriday:i===4,
+        work:true,
+        in: toHHMM(DEFAULT_START_MIN),
+        out: toHHMM(DEFAULT_END_MIN),
+        manualOut: i===4? false : true
+      }));
+      save(); render();
+      document.getElementById("total").textContent = "Total Extra: +0h 0m";
+      document.getElementById("total").classList.remove("bad");
+      document.getElementById("total").classList.add("ok");
+      document.getElementById("suggest").textContent = "";
+    }
+
+    // Init
+    load();
+    render();
+
+    // Buttons
+    document.getElementById("calc").addEventListener("click", calculate);
+    document.getElementById("reset").addEventListener("click", resetAll);
+
+    // Recalc on Enter
+    document.addEventListener("keydown",(e)=>{
+      if(e.key==="Enter") calculate();
+    });
+  </script>
+</body>
+</html>
