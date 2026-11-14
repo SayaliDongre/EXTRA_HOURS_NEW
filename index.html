@@ -8,48 +8,62 @@
 <style>
 :root{--bg:#fff9ef;--card:#fff;--ink:#37362b;--muted:#7a755f;--accent:#a9d19a;--accent-strong:#5d9a4f;--ok:#2f7a3a;--bad:#b3402f;--sep:#e3dcc4;--chip:#f1ecd8}
 *{box-sizing:border-box}html,body{height:100%}
-body{margin:0;font-family:Nunito,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg),#f3f8e8);overflow-x:hidden}
-.app{max-width:900px;margin:0 auto;padding:16px;display:flex;flex-direction:column;gap:12px;min-height:100dvh;position:relative;z-index:2}
+body{margin:0;font-family:Nunito,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:radial-gradient(900px 400px at 10% -5%,#e6f4d8 0,transparent 60%),radial-gradient(800px 380px at 100% 0,#fff0d6 0,transparent 55%),linear-gradient(180deg,#fffaf0,#f3f8e8) fixed;overflow-x:hidden}
+.app{max-width:960px;margin:0 auto;padding:26px 18px 56px;display:flex;flex-direction:column;gap:18px;min-height:100dvh;position:relative;z-index:2}
 body.busy .app{pointer-events:none}
-.header{display:flex;align-items:center;gap:10px}
-.logo{width:38px;height:38px;border-radius:12px;background:var(--accent);display:grid;place-items:center;font-size:1.3rem;box-shadow:0 8px 18px rgba(93,154,79,.3)}
-h1{font-size:1.15rem;margin:0;line-height:1.2;font-weight:800}
-.hint{color:var(--muted);font-size:.9rem}
-.card{background:var(--card);border:1px solid var(--sep);border-radius:16px;padding:14px;box-shadow:0 6px 18px rgba(80,90,40,.06)}
-.glabel{color:var(--muted);font-size:.85rem;text-align:center;margin-bottom:8px}
-.rows{display:flex;flex-direction:column;gap:10px;max-height:72vh;overflow:auto;padding-right:4px}
-.row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:10px 12px 10px 14px;border:1px solid var(--sep);border-radius:14px;background:#fff;border-left:5px solid var(--accent-strong)}
-.row-main{display:flex;flex-direction:column;gap:8px;min-width:0}
-.row-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.day{font-weight:800;background:var(--chip);padding:5px 12px;border-radius:999px;font-size:.88rem}
+.header{display:flex;align-items:center;gap:14px;padding:4px 2px}
+.logo{width:50px;height:50px;border-radius:16px;background:var(--accent);display:grid;place-items:center;font-size:1.7rem;box-shadow:0 8px 18px rgba(93,154,79,.3);animation:logoBob 3.6s ease-in-out infinite}
+@keyframes logoBob{50%{transform:translateY(-3px) rotate(-4deg)}}
+h1{font-size:1.45rem;margin:0;line-height:1.2;font-weight:800;letter-spacing:-.01em}
+.hint{color:var(--muted);font-size:.9rem;margin-top:3px;line-height:1.45}
+.card{background:var(--card);border:1px solid rgba(93,154,79,.18);border-radius:22px;padding:20px;box-shadow:0 12px 32px rgba(60,80,30,.08);animation:cardIn .5s ease-out both}
+.footer{animation-delay:.15s}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px)}}
+.glabel{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 auto 16px;padding:8px 14px;border-radius:999px;background:#eef7e3;color:#4d6a3e;font-weight:700;font-size:.84rem;text-align:center;width:fit-content;max-width:100%}
+.rows{display:flex;flex-direction:column;gap:14px}
+.row{display:grid;grid-template-columns:minmax(0,1fr) 116px;align-items:center;gap:18px;padding:16px 16px 16px 20px;border:1px solid var(--sep);border-radius:18px;background:linear-gradient(135deg,#fff,#fbfdf6);border-left:6px solid var(--accent-strong);transition:box-shadow .25s,border-color .25s}
+.row:hover{box-shadow:0 10px 24px rgba(60,80,30,.1);border-color:#cfe3bf}
+.row-main{display:flex;flex-direction:column;gap:12px;min-width:0}
+.row-head{display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap}
+.day{font-weight:800;background:var(--chip);padding:6px 14px;border-radius:999px;font-size:.92rem}
 .toggle{display:inline-flex;align-items:center;gap:6px;background:var(--chip);padding:5px 10px;border-radius:999px;font-size:.82rem}
 .toggle input{accent-color:var(--accent-strong)}
-.row-inputs{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.row-inputs{display:flex;align-items:center;gap:12px 24px;flex-wrap:wrap}
 .cluster{display:flex;align-items:center;gap:6px}
 .lbl{color:var(--muted);font-size:.88rem;min-width:24px;text-align:right;font-weight:700}
-input[type=time]{width:auto;min-width:105px;padding:6px 8px;border:1px solid var(--sep);border-radius:10px;background:#fff;color:var(--ink);font:inherit;font-size:.88rem}
-.pick{padding:6px 10px;border-radius:10px;border:1px solid var(--sep);background:var(--accent);color:#1f2a1a;font-weight:700;cursor:pointer;font-size:.82rem}
+input[type=time]{width:auto;min-width:105px;padding:9px 10px;border:1px solid var(--sep);border-radius:12px;background:#fff;color:var(--ink);font:inherit;font-size:.92rem}
+input[type=time]:focus{outline:2px solid var(--accent-strong);outline-offset:1px}
+.pick{padding:8px 12px;border-radius:11px;border:1px solid var(--sep);background:var(--accent);color:#1f2a1a;font-weight:700;cursor:pointer;font-size:.82rem;transition:transform .15s,filter .15s}
+.pick:hover{filter:brightness(.96);transform:translateY(-1px)}
 .subtle{background:#f4f3e8;color:#333}
 .placeholder{color:var(--muted);font-style:italic;padding:6px 0;font-size:.85rem}
 
-/* Right-side plant panel */
-.row-plant-box{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;width:82px;min-width:82px;text-align:center}
-.plant{position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;height:84px;width:100%;display:flex;align-items:flex-end;justify-content:center}
-.plant svg{width:100%;max-width:76px;height:84px;display:block;margin:0 auto;overflow:visible}
-.row-over{margin-top:2px;font-size:.76rem;font-weight:800;color:var(--muted);white-space:nowrap;line-height:1.2;text-align:center}
-.row-over.ok{color:var(--ok)}
-.row-over.bad{color:var(--bad)}
+/* Plant panel */
+.row-plant-box{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;width:116px;min-width:116px;padding:6px 4px 10px;border-radius:16px;background:radial-gradient(ellipse at 50% 100%,#e4f2d6,transparent 72%);text-align:center}
+.plant{position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;height:104px;width:100%;display:flex;align-items:flex-end;justify-content:center}
+.plant svg{width:100%;max-width:96px;height:104px;display:block;margin:0 auto;overflow:visible}
+.row-over{margin-top:8px;padding:3px 10px;border-radius:999px;background:var(--chip);font-size:.76rem;font-weight:800;color:var(--muted);white-space:nowrap;line-height:1.2;text-align:center}
+.row-over.ok{background:#e1f3dc;color:var(--ok)}
+.row-over.bad{background:#fbe4de;color:var(--bad)}
 
-.controls{display:flex;gap:10px;flex-wrap:wrap}
-.btn{padding:10px 14px;border-radius:12px;border:1px solid var(--sep);background:var(--accent);color:#1f2a1a;font:inherit;font-weight:800;cursor:pointer}
+.controls{display:flex;gap:12px;flex-wrap:wrap}
+.btn{padding:12px 22px;border-radius:14px;border:1px solid var(--sep);background:linear-gradient(135deg,#b6dca6,#8fc77d);color:#1f2a1a;font:inherit;font-weight:800;cursor:pointer;box-shadow:0 6px 16px rgba(60,80,30,.12);transition:transform .15s,box-shadow .15s}
 .btn.secondary{background:#f1efe0}
-.footer{display:grid;gap:8px}
-@media(max-width:740px){
-  .rows{max-height:68vh}
-  .row{padding:8px 10px 8px 12px;gap:8px}
-  .row-plant-box{width:74px;min-width:74px}
-  .plant{height:78px}
-  .plant svg{max-width:68px;height:78px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(60,80,30,.18)}
+.btn:active{transform:translateY(0)}
+.footer{display:grid;gap:10px}
+#total{font-size:1.4rem;font-weight:900;letter-spacing:-.01em}
+#suggest:empty{display:none}
+#suggest{color:var(--muted);font-weight:700}
+@media(max-width:640px){
+  .app{padding:18px 12px 44px;gap:14px}
+  h1{font-size:1.2rem}
+  .card{padding:14px;border-radius:18px}
+  .row{grid-template-columns:minmax(0,1fr) 90px;gap:10px;padding:12px 10px 12px 14px}
+  .row-plant-box{width:90px;min-width:90px}
+  .plant{height:88px}.plant svg{max-width:80px;height:88px}
+  .row-inputs{gap:10px 14px}
+  input[type=time]{min-width:96px}
 }
 
 .pbub{position:absolute;top:-6px;left:50%;transform:translateX(-50%);font-size:.78rem;font-weight:800;background:#fff;border:1px solid var(--sep);border-radius:10px;padding:2px 7px;opacity:0;pointer-events:none;white-space:nowrap;z-index:10;box-shadow:0 3px 8px rgba(0,0,0,.12)}
@@ -84,19 +98,21 @@ input[type=time]{width:auto;min-width:105px;padding:6px 8px;border:1px solid var
 @keyframes slide{from{transform:translateY(-100%)}}
 #stage{position:fixed;inset:0;z-index:60;pointer-events:none;overflow:hidden}
 
-/* Puppets & Shadow */
-.puppet{position:fixed;left:0;top:0;will-change:transform;pointer-events:auto;cursor:pointer;user-select:none}
-.puppet .shadow{position:absolute;bottom:-4px;left:10%;width:80%;height:12px;background:radial-gradient(ellipse at center,rgba(30,40,20,.35) 0%,rgba(30,40,20,0) 70%);border-radius:50%;pointer-events:none;transition:transform .15s,opacity .15s}
+.puppet{position:fixed;left:0;top:0;z-index:5;will-change:transform;pointer-events:auto;cursor:pointer;user-select:none}
+.puppet .shadow{position:absolute;bottom:-4px;left:10%;width:80%;height:12px;background:radial-gradient(ellipse at center,rgba(30,40,20,.35) 0%,rgba(30,40,20,0) 70%);border-radius:50%;pointer-events:none}
 .puppet .fl{width:100%;height:100%;transition:transform .12s;display:flex;align-items:center;justify-content:center;position:relative}
-.puppet .sprite-wrap{width:100%;height:100%;position:relative;transform-origin:50% 90%}
+.puppet .sprite-wrap{width:100%;height:100%;position:relative;transform-origin:50% 90%;animation:breathe 2.6s ease-in-out infinite}
 .puppet img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 4px 8px rgba(0,0,0,.15))}
+@keyframes breathe{50%{transform:scale(1.015,1.045)}}
 
-/* Gardener Watering Can */
 .gardener-can{position:absolute;right:-24px;top:44px;width:44px;height:34px;transform-origin:12% 50%;transition:transform .25s cubic-bezier(.34,1.56,.64,1);pointer-events:none;display:none}
 .gardener-can.show{display:block}
 .gardener-can.pour{transform:rotate(36deg)}
+.prop{position:absolute;right:-16px;top:30px;font-size:34px;line-height:1;transform-origin:80% 90%;animation:propWave .5s ease-in-out infinite alternate;pointer-events:none}
+.prop.sweep{animation:propSweep .3s ease-in-out infinite alternate}
+@keyframes propWave{to{transform:rotate(-18deg) translateY(-4px)}}
+@keyframes propSweep{from{transform:rotate(-30deg)}to{transform:rotate(20deg)}}
 
-/* Critter Animations */
 .trot .sprite-wrap{animation:trot .24s ease-in-out infinite alternate}
 .hop-crit .sprite-wrap{animation:hop-squash .36s ease-in-out infinite}
 .chew-crit .sprite-wrap{animation:chew .18s ease-in-out infinite alternate}
@@ -105,7 +121,6 @@ input[type=time]{width:auto;min-width:105px;padding:6px 8px;border:1px solid var
 .stomp-crit .sprite-wrap{animation:stomp .32s ease-in-out infinite}
 .wobble-crit .sprite-wrap{animation:wobble .25s ease-in-out infinite alternate}
 .celebrate .sprite-wrap{animation:celebrate .38s ease-in-out infinite alternate}
-
 @keyframes trot{0%{transform:translateY(0) rotate(-4deg)}100%{transform:translateY(-10px) rotate(4deg)}}
 @keyframes hop-squash{0%,100%{transform:scale(1,1) translateY(0)}30%{transform:scale(.86,1.14) translateY(-24px)}60%{transform:scale(1.14,.86) translateY(0)}}
 @keyframes chew{0%{transform:scale(1,1) rotate(0deg)}50%{transform:scale(1.09,.92) rotate(5deg)}100%{transform:scale(.94,1.06) rotate(-4deg)}}
@@ -117,14 +132,26 @@ input[type=time]{width:auto;min-width:105px;padding:6px 8px;border:1px solid var
 @keyframes screen-shake{0%,100%{transform:translate(0,0)}20%{transform:translate(-6px,3px)}40%{transform:translate(6px,-3px)}60%{transform:translate(-5px,-2px)}80%{transform:translate(5px,2px)}}
 .shake{animation:screen-shake .3s cubic-bezier(.36,.07,.19,.97) both}
 
-/* Speech bubbles & particles */
 .bub{position:absolute;bottom:102%;left:50%;transform:translateX(-50%);background:#fff;border:2px solid #333;border-radius:12px;padding:3px 9px;font-size:.82rem;font-weight:800;white-space:nowrap;display:none;color:#222;box-shadow:0 4px 10px rgba(0,0,0,.15);z-index:10}
-.bub.on{display:block;animation:pop .22s cubic-bezier(.34,1.56,.64,1)}
+.bub.on{display:block;animation:bpop .22s cubic-bezier(.34,1.56,.64,1)}
+@keyframes bpop{from{transform:translateX(-50%) scale(0)}to{transform:translateX(-50%) scale(1)}}
 .bub::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border-width:6px;border-style:solid;border-color:#333 transparent transparent transparent}
 
 .ring{position:fixed;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(255,244,160,.95),rgba(130,225,255,.5) 60%,transparent 72%);pointer-events:none;z-index:75}
 .sp,.crit,.particle{position:fixed;left:0;top:0;pointer-events:none;z-index:80}
-@media(prefers-reduced-motion:reduce){.sw,.lf,.leafbg span,.shake,.trot .sprite-wrap,.hop-crit .sprite-wrap,.chew-crit .sprite-wrap,.roll-crit .sprite-wrap,.peck-crit .sprite-wrap,.stomp-crit .sprite-wrap{animation:none}}
+
+/* props dropped on the stage by critters */
+.fx{position:fixed;pointer-events:none}
+.fx.mud,.fx.puddle,.fx.hole,.fx.print{z-index:1}
+.fx.egg,.fx.emo,.fx.tongue{z-index:6}
+.egg,.emo{line-height:1}.egg{font-size:26px}.emo{font-size:30px}
+.hole{width:76px;height:24px;border-radius:50%;background:radial-gradient(ellipse at 50% 40%,#2b1b10 0,#4a3220 55%,#6b4a33 100%);box-shadow:0 2px 0 rgba(255,255,255,.35) inset,0 3px 6px rgba(0,0,0,.25)}
+.mud{border-radius:52% 48% 55% 45%;background:radial-gradient(circle at 35% 35%,#8a6645,#5e4128);opacity:.88}
+.puddle{width:130px;height:36px;border-radius:50%;background:radial-gradient(ellipse at 40% 35%,#9a7650,#5e4128);opacity:.9}
+.puddle.water{background:radial-gradient(ellipse at 40% 35%,#bfe6ff,#5cc5ff);opacity:.75}
+.print{width:11px;height:15px;border-radius:50%;background:#6b4a33;opacity:.6}
+.tongue{height:8px;border-radius:4px;background:linear-gradient(#ff8fa8,#e0587a)}
+@media(prefers-reduced-motion:reduce){.sw,.lf,.leafbg span,.shake,.logo,.puppet .sprite-wrap{animation:none}}
 
 /* ===== Arcade & Mini Games ===== */
 .arcade-pill{flex-shrink:0;width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#243242,#151f2b);color:#fff;border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:0;font-family:inherit;cursor:pointer;box-shadow:0 4px 14px rgba(20,30,42,.3),0 0 0 1px rgba(255,255,255,.08) inset;transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s,background .2s;user-select:none;position:relative;overflow:hidden}
@@ -173,62 +200,6 @@ input[type=time]{width:auto;min-width:105px;padding:6px 8px;border:1px solid var
 .touch-dpad{display:grid;grid-template-columns:repeat(3,44px);gap:6px;margin:0 auto}
 .touch-dpad button{height:40px;padding:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:8px;font-size:1.1rem;cursor:pointer;display:grid;place-items:center}
 .touch-dpad button:active{background:rgba(255,255,255,.25)}
-
-/* ===== v2 UI polish (overrides) ===== */
-body{background:radial-gradient(900px 400px at 10% -5%,#e6f4d8 0,transparent 60%),radial-gradient(800px 380px at 100% 0,#fff0d6 0,transparent 55%),linear-gradient(180deg,#fffaf0,#f3f8e8) fixed}
-.app{max-width:960px;padding:26px 18px 56px;gap:18px}
-.header{gap:14px;padding:4px 2px}
-.logo{width:50px;height:50px;border-radius:16px;font-size:1.7rem;animation:logoBob 3.6s ease-in-out infinite}
-@keyframes logoBob{50%{transform:translateY(-3px) rotate(-4deg)}}
-h1{font-size:1.45rem;letter-spacing:-.01em}
-.hint{margin-top:3px;line-height:1.45}
-.card{padding:20px;border-radius:22px;border-color:rgba(93,154,79,.18);box-shadow:0 12px 32px rgba(60,80,30,.08);animation:cardIn .5s ease-out both}
-.card+.controls+.footer,.footer{animation-delay:.15s}
-@keyframes cardIn{from{opacity:0;transform:translateY(10px)}}
-.glabel{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 auto 16px;padding:8px 14px;border-radius:999px;background:#eef7e3;color:#4d6a3e;font-weight:700;font-size:.84rem;text-align:center;width:fit-content;max-width:100%}
-.rows{max-height:none;overflow:visible;padding:0;gap:14px}
-.row{grid-template-columns:minmax(0,1fr) 116px;gap:18px;padding:16px 16px 16px 20px;border-radius:18px;background:linear-gradient(135deg,#fff,#fbfdf6);transition:box-shadow .25s,border-color .25s}
-.row:hover{box-shadow:0 10px 24px rgba(60,80,30,.1);border-color:#cfe3bf}
-.row-main{gap:12px}
-.row-head{gap:8px 10px}
-.row-inputs{gap:12px 24px}
-.day{padding:6px 14px;font-size:.92rem}
-input[type=time]{padding:9px 10px;border-radius:12px;font-size:.92rem}
-input[type=time]:focus{outline:2px solid var(--accent-strong);outline-offset:1px}
-.pick{padding:8px 12px;border-radius:11px;transition:transform .15s,filter .15s}
-.pick:hover{filter:brightness(.96);transform:translateY(-1px)}
-.row-plant-box{width:116px;min-width:116px;padding:6px 4px 10px;border-radius:16px;background:radial-gradient(ellipse at 50% 100%,#e4f2d6,transparent 72%)}
-.plant{height:104px}
-.plant svg{max-width:96px;height:104px}
-.row-over{margin-top:8px;padding:3px 10px;border-radius:999px;background:var(--chip);font-size:.76rem}
-.row-over.ok{background:#e1f3dc}
-.row-over.bad{background:#fbe4de}
-.controls{gap:12px}
-.btn{padding:12px 22px;border-radius:14px;box-shadow:0 6px 16px rgba(60,80,30,.12);transition:transform .15s,box-shadow .15s}
-.btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(60,80,30,.18)}
-.btn:active{transform:translateY(0)}
-.btn:not(.secondary){background:linear-gradient(135deg,#b6dca6,#8fc77d)}
-.footer{gap:10px}
-#total{font-size:1.4rem;font-weight:900;letter-spacing:-.01em}
-#suggest:empty{display:none}
-#suggest{color:var(--muted);font-weight:700}
-@media(max-width:640px){
-  .app{padding:18px 12px 44px;gap:14px}
-  h1{font-size:1.2rem}
-  .card{padding:14px;border-radius:18px}
-  .row{grid-template-columns:minmax(0,1fr) 90px;gap:10px;padding:12px 10px 12px 14px}
-  .row-plant-box{width:90px;min-width:90px}
-  .plant{height:88px}.plant svg{max-width:80px;height:88px}
-  .row-inputs{gap:10px 14px}
-  input[type=time]{min-width:96px}
-}
-/* critters & props */
-.sprite-wrap{animation:breathe 2.6s ease-in-out infinite}
-@keyframes breathe{50%{transform:scale(1.015,1.045)}}
-.prop{position:absolute;right:-16px;top:30px;font-size:34px;line-height:1;transform-origin:80% 90%;animation:propWave .5s ease-in-out infinite alternate;pointer-events:none}
-.prop.sweep{animation:propSweep .3s ease-in-out infinite alternate}
-@keyframes propWave{to{transform:rotate(-18deg) translateY(-4px)}}
-@keyframes propSweep{from{transform:rotate(-30deg)}to{transform:rotate(20deg)}}
 </style>
 </head>
 <body>
@@ -691,9 +662,9 @@ function growGarden(vals, friLeaveMin){
 }
 
 /* =====================================================================
-   PART 3 — SURPRISE: Garden critters mischief layer
-   Animals from Kenney's Animal Pack Redux & Gardener from Kenney Toon Characters (CC0)
-   Visual only, never touches calculation or saved data. Max 10 s.
+   PART 3 — SURPRISE: garden critters (visual only; never touches the
+   calculation or saved data). Eight shuffled stories, four gardener endings.
+   Art: Kenney Animal Pack Redux + Toon Characters (CC0), under assets/.
    ===================================================================== */
 const WATERING_CAN_SVG = `<svg viewBox="0 0 60 45" width="46" height="34" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.25))">
   <ellipse cx="28" cy="28" rx="18" ry="14" fill="#589a50" stroke="#2d5225" stroke-width="2.2"/>
@@ -704,82 +675,29 @@ const WATERING_CAN_SVG = `<svg viewBox="0 0 60 45" width="46" height="34" style=
 </svg>`;
 
 const CRITTERS = {
-  goat: {
-    name: "Billy the Goat",
-    img: "assets/animals/goat.png",
-    w: 104, h: 96,
-    banner: "🐐 A hungry goat trotted into the garden! Tap him 3× to call the gardener — or press Cancel.",
-    sfx: ["Munch munch! 🌿", "Yum yum!", "Crunch!"]
-  },
-  rabbit: {
-    name: "Barnaby Bunny",
-    img: "assets/animals/rabbit.png",
-    w: 96, h: 96,
-    banner: "🐇 A speedy bunny is hopping across your buttons! Tap him 3× to call the gardener — or press Cancel.",
-    sfx: ["Hop hop! 🥕", "Nibble nibble!", "Boing!"]
-  },
-  frog: {
-    name: "Hoppy Frog",
-    img: "assets/animals/frog.png",
-    w: 92, h: 88,
-    banner: "🐸 A bouncy frog leaped onto your workspace! Tap him 3× to call the gardener — or press Cancel.",
-    sfx: ["Ribbit! 🐸", "Croak!", "Wheeee!"]
-  },
-  chicken: {
-    name: "Clucky Chicken",
-    img: "assets/animals/chicken.png",
-    w: 88, h: 88,
-    banner: "🐔 A curious chicken is pecking your icons loose! Tap her 3× to call the gardener — or press Cancel.",
-    sfx: ["Bawk bawk! 🐔", "Peck peck!", "Cluck!"]
-  },
-  pig: {
-    name: "Barnaby Piglet",
-    img: "assets/animals/pig.png",
-    w: 96, h: 92,
-    banner: "🐷 A playful piglet is rolling in the flowerbeds! Tap him 3× to call the gardener — or press Cancel.",
-    sfx: ["Oink oink! 🐽", "Muddy fun!", "Wheee!"]
-  },
-  monkey: {
-    name: "Momo the Monkey",
-    img: "assets/animals/monkey.png",
-    w: 94, h: 92,
-    banner: "🐒 A sneaky monkey swung down to borrow icons! Tap him 3× to call the gardener — or press Cancel.",
-    sfx: ["Ooh ooh aah aah! 🍌", "Hehehe!", "Got it!"]
-  },
-  elephant: {
-    name: "Ellie Elephant",
-    img: "assets/animals/elephant.png",
-    w: 125, h: 105,
-    banner: "🐘 A gentle elephant is stomping through! Tap him 3× to call the gardener — or press Cancel.",
-    sfx: ["PAWOOO! 🎺", "Stomp stomp!", "Rumble!"]
-  }
+  goat:     { name: "Billy the Goat",   img: "assets/animals/goat.png",     w: 104, h: 96,  sfx: ["Munch munch! 🌿", "Yum yum!", "Crunch!"] },
+  rabbit:   { name: "Barnaby Bunny",    img: "assets/animals/rabbit.png",   w: 96,  h: 96,  sfx: ["Hop hop! 🥕", "Nibble nibble!", "Boing!"] },
+  frog:     { name: "Hoppy Frog",       img: "assets/animals/frog.png",     w: 92,  h: 88,  sfx: ["Ribbit! 🐸", "Croak!", "Wheeee!"] },
+  chicken:  { name: "Clucky Chicken",   img: "assets/animals/chicken.png",  w: 88,  h: 88,  sfx: ["Bawk bawk! 🐔", "Peck peck!", "Cluck!"] },
+  pig:      { name: "Barnaby Piglet",   img: "assets/animals/pig.png",      w: 96,  h: 92,  sfx: ["Oink oink! 🐽", "Muddy fun!", "Wheee!"] },
+  monkey:   { name: "Momo the Monkey",  img: "assets/animals/monkey.png",   w: 94,  h: 92,  sfx: ["Ooh ooh aah aah! 🍌", "Hehehe!", "Got it!"] },
+  elephant: { name: "Ellie Elephant",   img: "assets/animals/elephant.png", w: 125, h: 105, sfx: ["PAWOOO! 🎺", "Stomp stomp!", "Rumble!"] }
 };
-const CAST_KEYS = ["goat", "rabbit", "frog", "chicken", "pig", "monkey", "elephant"];
 
-const TARGETS = ".logo,.header h1,.hint,.day,.toggle,.cluster,.right,.btn,#total,.plant,.cap,.row";
 const rnd = (a, b) => a + Math.random() * (b - a);
 const pick = a => a[Math.floor(Math.random() * a.length)];
 const shuffle = a => a.slice().sort(() => Math.random() - .5);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const stage = document.getElementById("stage"), banner = document.getElementById("banner");
-const S = { on: false, tok: 0, mom: false, clicks: 0, anims: new Set(), hard: 0, eatenPlants: new Set() };
+const S = { on: false, tok: 0, mom: false, clicks: 0, anims: new Set(), hard: 0, eatenPlants: new Set(), cast: [], look: {}, mud: [], pool: null };
 
 const setBanner = t => { document.getElementById("bmsg").textContent = t; banner.classList.add("show"); };
 const set = (el, x, y) => { el._x = x; el._y = y; el.style.transform = `translate(${x}px,${y}px)`; };
-const face = (el, dir) => {
-  el._faceDir = dir;
-  const fl = el.querySelector(".fl");
-  if (fl) fl.style.transform = `scaleX(${dir})`;
-};
+const face = (el, dir) => { el._faceDir = dir; const fl = el.querySelector(".fl"); if (fl) fl.style.transform = `scaleX(${dir})`; };
 function say(el, txt, ms) {
-  const b = el.querySelector(".bub");
-  if (!b) return;
-  b.textContent = txt;
-  b.classList.remove("on");
-  void b.offsetWidth;
-  b.classList.add("on");
-  clearTimeout(b._t);
-  b._t = setTimeout(() => b.classList.remove("on"), ms);
+  const b = el.querySelector(".bub"); if (!b) return;
+  b.textContent = txt; b.classList.remove("on"); void b.offsetWidth; b.classList.add("on");
+  clearTimeout(b._t); b._t = setTimeout(() => b.classList.remove("on"), ms);
 }
 function off(edge, w, h) {
   const W = innerWidth, H = innerHeight;
@@ -789,111 +707,78 @@ const randEdge = () => Math.floor(rnd(0, 4));
 
 function mkPuppet(id, imgPath, w, h, isGardener = false) {
   const d = document.createElement("div");
-  d.className = "puppet";
-  d.id = id;
-  d.style.width = w + "px";
-  d.style.height = h + "px";
-  d.innerHTML = `
-    <div class="bub"></div>
-    <div class="shadow"></div>
-    <div class="fl">
-      <div class="sprite-wrap">
-        <img class="p-img" src="${imgPath}" alt="">
-        ${isGardener ? `<div class="gardener-can">${WATERING_CAN_SVG}</div>` : ""}
-      </div>
-    </div>`;
-  stage.appendChild(d);
-  set(d, 0, 0);
-  d._faceDir = 1;
-  return d;
+  d.className = "puppet"; d.id = id; d.style.width = w + "px"; d.style.height = h + "px";
+  d.innerHTML = `<div class="bub"></div><div class="shadow"></div><div class="fl"><div class="sprite-wrap"><img class="p-img" src="${imgPath}" alt="">${isGardener ? `<div class="gardener-can">${WATERING_CAN_SVG}</div>` : ""}</div></div>`;
+  stage.appendChild(d); set(d, 0, 0); d._faceDir = 1; return d;
 }
-
 function go(el, x, y, ms, ease = "ease-in-out") {
   return new Promise(res => {
-    const a = el.animate(
-      [{ transform: `translate(${el._x}px,${el._y}px)` }, { transform: `translate(${x}px,${y}px)` }],
-      { duration: ms, easing: ease, fill: "forwards" }
-    );
+    const a = el.animate([{ transform: `translate(${el._x}px,${el._y}px)` }, { transform: `translate(${x}px,${y}px)` }], { duration: ms, easing: ease, fill: "forwards" });
     S.anims.add(a);
     const done = () => { S.anims.delete(a); res(); };
     a.onfinish = () => { set(el, x, y); a.cancel(); done(); };
     a.oncancel = done;
   });
 }
+const nap = ms => new Promise(r => { const t = Date.now(), iv = setInterval(() => { if (S.mom || Date.now() - t >= ms) { clearInterval(iv); r(); } }, 40); });
 
-const nap = ms => new Promise(r => {
-  const t = Date.now(), iv = setInterval(() => {
-    if (S.mom || Date.now() - t >= ms) { clearInterval(iv); r(); }
-  }, 40);
-});
-
-/* Particles */
+/* particles */
 function crumb(x, y, color = "#4a8f4a") {
-  const el = document.createElement("div");
-  el.className = "particle";
-  el.style.left = x + "px"; el.style.top = y + "px";
-  el.style.width = rnd(4, 9) + "px"; el.style.height = rnd(4, 9) + "px";
-  el.style.borderRadius = "50%";
-  el.style.background = color;
-  stage.appendChild(el);
-  const a = rnd(0, 6.28), d = rnd(20, 55);
-  el.animate([
-    { transform: "translate(0, 0) scale(1)", opacity: 1 },
-    { transform: `translate(${Math.cos(a) * d}px, ${Math.sin(a) * d + 22}px) scale(0)`, opacity: 0 }
-  ], { duration: rnd(400, 650), easing: "ease-out" }).onfinish = () => el.remove();
+  const el = document.createElement("div"); el.className = "particle";
+  el.style.cssText = `left:${x}px;top:${y}px;width:${rnd(4, 9)}px;height:${rnd(4, 9)}px;border-radius:50%;background:${color}`;
+  stage.appendChild(el); const a = rnd(0, 6.28), d = rnd(20, 55);
+  el.animate([{ transform: "translate(0,0) scale(1)", opacity: 1 }, { transform: `translate(${Math.cos(a) * d}px,${Math.sin(a) * d + 22}px) scale(0)`, opacity: 0 }], { duration: rnd(400, 650), easing: "ease-out" }).onfinish = () => el.remove();
 }
-
 function dustPuff(x, y) {
   for (let k = 0; k < 6; k++) {
-    const el = document.createElement("div");
-    el.className = "particle";
-    el.style.left = x + "px"; el.style.top = y + "px";
-    el.style.width = rnd(8, 16) + "px"; el.style.height = rnd(8, 16) + "px";
-    el.style.borderRadius = "50%";
-    el.style.background = "rgba(180, 165, 140, 0.6)";
-    stage.appendChild(el);
-    const dir = k % 2 === 0 ? 1 : -1, dist = rnd(15, 35);
-    el.animate([
-      { transform: "translate(0, 0) scale(0.4)", opacity: 0.8 },
-      { transform: `translate(${dir * dist}px, ${rnd(-10, -2)}px) scale(1.4)`, opacity: 0 }
-    ], { duration: rnd(350, 500), easing: "ease-out" }).onfinish = () => el.remove();
+    const el = document.createElement("div"); el.className = "particle";
+    el.style.cssText = `left:${x}px;top:${y}px;width:${rnd(8, 16)}px;height:${rnd(8, 16)}px;border-radius:50%;background:rgba(180,165,140,.6)`;
+    stage.appendChild(el); const dir = k % 2 === 0 ? 1 : -1, dist = rnd(15, 35);
+    el.animate([{ transform: "translate(0,0) scale(.4)", opacity: .8 }, { transform: `translate(${dir * dist}px,${rnd(-10, -2)}px) scale(1.4)`, opacity: 0 }], { duration: rnd(350, 500), easing: "ease-out" }).onfinish = () => el.remove();
   }
 }
-
 function waterDrop(x, y) {
-  const el = document.createElement("div");
-  el.className = "particle";
-  el.style.left = x + "px"; el.style.top = y + "px";
-  el.style.width = "4px"; el.style.height = "10px";
-  el.style.borderRadius = "50%";
-  el.style.background = "#5cc5ff";
+  const el = document.createElement("div"); el.className = "particle";
+  el.style.cssText = `left:${x}px;top:${y}px;width:4px;height:10px;border-radius:50%;background:#5cc5ff`;
   stage.appendChild(el);
-  el.animate([
-    { transform: "translate(0, 0) scale(0.6)", opacity: 0.9 },
-    { transform: `translate(${rnd(-6, 6)}px, ${rnd(40, 80)}px) scale(1.2)`, opacity: 0 }
-  ], { duration: rnd(350, 500), easing: "ease-in" }).onfinish = () => el.remove();
+  el.animate([{ transform: "translate(0,0) scale(.6)", opacity: .9 }, { transform: `translate(${rnd(-6, 6)}px,${rnd(40, 80)}px) scale(1.2)`, opacity: 0 }], { duration: rnd(350, 500), easing: "ease-in" }).onfinish = () => el.remove();
 }
-
 function fixer(cx, cy) {
-  const ring = document.createElement("div");
-  ring.className = "ring";
-  ring.style.left = cx - 40 + "px"; ring.style.top = cy - 40 + "px";
-  stage.appendChild(ring);
+  const ring = document.createElement("div"); ring.className = "ring";
+  ring.style.left = cx - 40 + "px"; ring.style.top = cy - 40 + "px"; stage.appendChild(ring);
   ring.animate([{ transform: "scale(0)", opacity: .95 }, { transform: "scale(32)", opacity: 0 }], { duration: 900, easing: "ease-out" }).onfinish = () => ring.remove();
-
   for (let k = 0; k < 14; k++) {
-    const s = document.createElement("div");
-    s.className = "sp";
-    s.textContent = pick(["✨", "⭐", "💫"]);
-    s.style.left = cx + "px"; s.style.top = cy + "px";
-    stage.appendChild(s);
+    const s = document.createElement("div"); s.className = "sp"; s.textContent = pick(["✨", "⭐", "💫"]);
+    s.style.left = cx + "px"; s.style.top = cy + "px"; stage.appendChild(s);
     const a = rnd(0, 6.28), d = rnd(80, 260);
-    s.animate([
-      { transform: "translate(0,0) scale(.4)", opacity: 1 },
-      { transform: `translate(${Math.cos(a) * d}px,${Math.sin(a) * d}px) scale(1.4) rotate(200deg)`, opacity: 0 }
-    ], { duration: rnd(700, 1100), easing: "ease-out" }).onfinish = () => s.remove();
+    s.animate([{ transform: "translate(0,0) scale(.4)", opacity: 1 }, { transform: `translate(${Math.cos(a) * d}px,${Math.sin(a) * d}px) scale(1.4) rotate(200deg)`, opacity: 0 }], { duration: rnd(700, 1100), easing: "ease-out" }).onfinish = () => s.remove();
   }
   document.querySelectorAll(".plant").forEach((p, i) => setTimeout(() => hop(p), i * 80));
+}
+
+/* stage props that stay on screen until the gardener cleans up (mud, holes, puddles) */
+function fxEl(cls, html, x, y, keep) {
+  const d = document.createElement("div"); d.className = "fx " + cls;
+  if (html) d.innerHTML = html;
+  d.style.left = x + "px"; d.style.top = y + "px"; stage.appendChild(d);
+  if (keep) S.mud.push(d); return d;
+}
+function cleanMud() {
+  S.mud.forEach((d, i) => setTimeout(() => { d.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: "forwards" }).onfinish = () => d.remove(); }, i * 60));
+  S.mud = [];
+}
+function splat(x, y, s = rnd(22, 56)) {
+  const d = fxEl("mud", "", x - s / 2, y - s / 2, 1), r = rnd(0, 360);
+  d.style.width = s + "px"; d.style.height = s * rnd(.7, 1) + "px"; d.style.transform = `rotate(${r}deg)`;
+  d.animate([{ transform: `rotate(${r}deg) scale(0)` }, { transform: `rotate(${r}deg) scale(1.25)`, offset: .6 }, { transform: `rotate(${r}deg) scale(1)` }], { duration: 420, easing: "ease-out" });
+}
+function jet(x0, y0, x1, y1, n = 26) {
+  for (let k = 0; k < n; k++) {
+    const d = document.createElement("div"); d.className = "particle";
+    d.style.cssText = `left:${x0}px;top:${y0}px;width:7px;height:7px;border-radius:50%;background:#5cc5ff`; stage.appendChild(d);
+    const dx = x1 - x0 + rnd(-26, 26), dy = y1 - y0 + rnd(-20, 20);
+    d.animate([{ transform: "translate(0,0)", opacity: 1 }, { transform: `translate(${dx * .55}px,${dy * .55 - 70}px)`, opacity: 1, offset: .5 }, { transform: `translate(${dx}px,${dy}px) scale(.5)`, opacity: 0 }], { duration: rnd(550, 800), delay: k * 28, easing: "ease-in-out", fill: "both" }).onfinish = () => d.remove();
+  }
 }
 
 function restore(mode = "stagger") {
@@ -905,27 +790,24 @@ function restore(mode = "stagger") {
     setTimeout(() => { e.style.transition = ""; }, d + 1000);
   });
 }
-
 function finish() {
   if (!S.on) return;
   S.on = false; S.tok++; clearTimeout(S.hard);
   S.anims.forEach(a => a.cancel()); S.anims.clear();
   restore("pop");
-  banner.classList.remove("show");
-  document.body.classList.remove("busy");
+  banner.classList.remove("show"); document.body.classList.remove("busy");
   document.querySelector(".app").classList.remove("shake");
-  Object.entries(S.look || {}).forEach(([i, l]) => { cancelAnimationFrame(PS[i].raf); PS[i].h = l.h; PS[i].m = l.m; drawP(+i, l.h, l.m); });
-  S.look = {}; S.eatenPlants.clear(); S.cast = []; stage.innerHTML = "";
+  Object.entries(S.look).forEach(([i, l]) => { cancelAnimationFrame(PS[i].raf); PS[i].h = l.h; PS[i].m = l.m; drawP(+i, l.h, l.m); });
+  S.look = {}; S.eatenPlants.clear(); S.cast = []; S.mud = []; stage.innerHTML = "";
 }
 
-/* ---- v2: episode engine (replaces the single-animal mischief) ---- */
+/* ---- engine helpers ---- */
 const PAD = 46, vw = () => innerWidth, vh = () => innerHeight;
 const ok = t => S.on && S.tok === t && !S.mom;      // critters keep playing
 const live = t => S.on && S.tok === t;              // gardener phase
 const BAG = {};
 const nextOf = (k, list) => (BAG[k] && BAG[k].length ? BAG[k] : (BAG[k] = shuffle(list))).pop();   // shuffled bag: no repeats until all used
 const fitX = (x, w) => clamp(x, 6, vw() - w - 6), fitY = (y, h) => clamp(y, PAD, vh() - h - 6);
-
 const anim = (el, kf, o) => new Promise(r => { const a = el.animate(kf, o); S.anims.add(a); const d = () => { S.anims.delete(a); r(); }; a.onfinish = d; a.oncancel = d; });
 function arc(el, x, y, ms, h) {
   return new Promise(res => {
@@ -940,8 +822,7 @@ function arc(el, x, y, ms, h) {
   });
 }
 async function trot(el, x, y, ms) {
-  face(el, x < el._x ? -1 : 1);
-  el.classList.add("trot");
+  face(el, x < el._x ? -1 : 1); el.classList.add("trot");
   await go(el, x, y, ms ?? clamp(Math.hypot(x - el._x, y - el._y) / 0.28, 450, 2600), "ease-in-out");
   el.classList.remove("trot");
 }
@@ -956,7 +837,7 @@ async function hopTo(el, x, y, ms = 540, h = 58) {
 const startle = c => { anim(c.querySelector(".sprite-wrap"), [{ transform: "translateY(0) scale(1)" }, { transform: "translateY(-26px) scale(.92,1.15)", offset: .45 }, { transform: "translateY(0) scale(1.12,.88)", offset: .8 }, { transform: "scale(1)" }], { duration: 520 }); say(c, "!?", 700); };
 function shake() { const a = document.querySelector(".app"); a.classList.remove("shake"); void a.offsetWidth; a.classList.add("shake"); setTimeout(() => a.classList.remove("shake"), 350); }
 
-/* UI mess: six different ways an element can get messed up */
+/* six ways an element can get messed up */
 const MESS = [
   () => `rotate(${pick([-1, 1]) * rnd(8, 22)}deg) translateY(${rnd(6, 20)}px)`,
   () => `translate(${rnd(-70, 70)}px,${rnd(-30, 50)}px) rotate(${rnd(-25, 25)}deg)`,
@@ -970,19 +851,15 @@ function take() {
   if (!S.pool || !S.pool.length) S.pool = shuffle([...document.querySelectorAll(".logo,.hint,.day,.toggle,.cluster,.row-over,.btn,#total,.glabel")].filter(e => { const r = e.getBoundingClientRect(); return r.width && r.bottom > PAD && r.top < vh() - 20; }));
   return S.pool.pop() || document.getElementById("total");
 }
-
 function mkCrit(key) {
   const c = CRITTERS[key], el = mkPuppet("critter-" + key, c.img, c.w, c.h);
   el._k = key; el._c = c; el.onclick = () => onCritterClick(el);
   const [x, y] = off(randEdge(), c.w, c.h); set(el, x, y); S.cast.push(el); return el;
 }
-function onCritterClick(c) {
-  S.clicks++; say(c, pick(["Hey!", "Boop!", "Hehe!", "Eek!"]), 500);
-  if (S.clicks >= 3) callGardener();
-}
+function onCritterClick(c) { S.clicks++; say(c, pick(["Hey!", "Boop!", "Hehe!", "Eek!"]), 500); if (S.clicks >= 3) callGardener(); }
 function callGardener() {
   if (S.mom || !S.on) return;
-  S.cast.forEach(c => { if (c.isConnected) { const r = c.getBoundingClientRect(); set(c, r.left, r.top); } });
+  S.cast.forEach(c => { if (c.isConnected) { const r = c.getBoundingClientRect(); set(c, r.left, r.top); c.style.opacity = ""; } });
   S.mom = true; S.anims.forEach(a => a.cancel()); S.anims.clear();
 }
 function regrow(i, delay = 0) {
@@ -999,7 +876,7 @@ function regrow(i, delay = 0) {
 }
 const regrowEaten = (d = 0) => [...S.eatenPlants].forEach((i, k) => regrow(i, d + k * 300));
 
-/* gardener locomotion (same as before) */
+/* gardener locomotion */
 function walkGardener(rd) {
   let f = 0; const img = rd.querySelector(".p-img");
   const iv = setInterval(() => { if (!S.on) { clearInterval(iv); return; } f = (f + 1) % 8; if (img) img.src = `assets/gardener/walk${f}.png`; }, 85);
@@ -1017,7 +894,9 @@ function pourWater(rd, x, y) {
 }
 function addProp(gd, emoji) { const p = document.createElement("div"); p.className = "prop"; p.textContent = emoji; gd.querySelector(".sprite-wrap").appendChild(p); return p; }
 
-/* ---------- critter behaviours ---------- */
+/* ===================== critter behaviours ===================== */
+
+/* GOAT (unchanged): eats three plants bite by bite, plants shrink and cry */
 async function eatPlant(el, i, t) {
   const pb = plantBox(i); if (!el || !pb) return;
   const c = el._c; S.look[i] ??= { h: PS[i].h, m: PS[i].m }; S.eatenPlants.add(i);
@@ -1035,13 +914,161 @@ async function eatPlant(el, i, t) {
     await nap(650); el.classList.remove("chew-crit");
   }
 }
-async function peck(el, t) {
-  if (!el || !ok(t)) return; const e = take(), r = e.getBoundingClientRect(), c = el._c;
-  await trot(el, fitX(r.left + r.width / 2 - c.w / 2, c.w), fitY(r.top - c.h * .55, c.h)); if (!ok(t)) return;
-  el.classList.add("peck-crit"); say(el, pick(c.sfx), 800);
-  for (let k = 0; k < 6; k++) { crumb(r.left + r.width / 2 + rnd(-12, 12), r.top + 10, "#e0b84a"); await nap(150); }
-  el.classList.remove("peck-crit"); mess(e); await nap(400);
+const goatFeast = async (g, t) => {
+  if (!g) return;
+  for (const i of shuffle([0, 1, 2, 3, 4]).slice(0, 3)) { if (!ok(t)) return; await eatPlant(g, i, t); }
+  if (ok(t)) { say(g, "BURRRP! 💨🌿", 1200); dustPuff(g._x + g._c.w / 2, g._y + g._c.h - 6); await nap(900); }
+};
+
+/* CHICKEN: pecks an element, squats, lays an egg that bounces, cracks, and a chick hops away */
+async function layEggs(el, t, n = 3) {
+  if (!el) return; const c = el._c, w = el.querySelector(".sprite-wrap");
+  for (let k = 0; k < n && ok(t); k++) {
+    const e = take(), r = e.getBoundingClientRect();
+    await trot(el, fitX(r.left + r.width / 2 - c.w / 2, c.w), fitY(r.top - c.h * .5, c.h)); if (!ok(t)) return;
+    el.classList.add("peck-crit"); say(el, "Bawk bawk!", 700); await nap(850); el.classList.remove("peck-crit"); mess(e);
+    say(el, "BAWK-AWK-AWK! 🥚", 1000);
+    await anim(w, [{ transform: "scale(1)" }, { transform: "scale(1.15,.8) translateY(6px)", offset: .4 }, { transform: "scale(.95,1.1) translateY(-8px)", offset: .7 }, { transform: "scale(1)" }], { duration: 950 });
+    if (!ok(t)) return;
+    const dir = el._faceDir || 1, gx = el._x + c.w * .5 - dir * 34, sy = el._y + c.h * .6, drop = c.h * .4 - 6;
+    const egg = fxEl("egg", "🥚", gx, sy);
+    await anim(egg, [{ transform: "translate(0,0)" }, { transform: `translate(${-dir * 8}px,${drop}px)`, offset: .45, easing: "ease-out" }, { transform: `translate(${-dir * 16}px,${drop - 18}px)`, offset: .66, easing: "ease-in" }, { transform: `translate(${-dir * 22}px,${drop}px)` }], { duration: 950, easing: "ease-in", fill: "forwards" });
+    if (!ok(t)) return;
+    say(el, "Look, an egg!", 800); await nap(700);
+    for (let i = 0; i < 8; i++) crumb(gx - dir * 22 + 12, sy + drop + 14, "#fff6d9");
+    egg.textContent = "🐥"; egg.style.fontSize = "28px";
+    anim(egg, [{ transform: `translate(${-dir * 22}px,${drop}px)` }, { transform: `translate(${-dir * 50}px,${drop - 24}px)` }, { transform: `translate(${-dir * 80}px,${drop}px)` }, { transform: `translate(${-dir * 110}px,${drop - 20}px)` }, { transform: `translate(${-dir * 150}px,${drop}px)`, opacity: .0 }], { duration: 2200, fill: "forwards" }).then(() => egg.remove());
+    await nap(900);
+  }
 }
+
+/* RABBIT: digs a hole next to one element, dives in, then pops out of a new hole on top of another */
+async function burrow(el, t, n = 2) {
+  if (!el) return; const c = el._c, w = el.querySelector(".sprite-wrap");
+  for (let k = 0; k < n && ok(t); k++) {
+    const A = take(), ra = A.getBoundingClientRect(), B = take(), rb = B.getBoundingClientRect();
+    const ax = fitX(ra.left + ra.width / 2 - c.w / 2, c.w), ay = fitY(ra.bottom + 10, c.h);
+    await hopTo(el, ax, ay); if (!ok(t)) return;
+    say(el, "Digging! 🕳️", 1100); el.classList.add("chew-crit");
+    fxEl("hole", "", ax + c.w / 2 - 38, ay + c.h - 20, 1).animate([{ transform: "scale(0)" }, { transform: "scale(1)" }], { duration: 900, easing: "ease-out" });
+    for (let i = 0; i < 10; i++) setTimeout(() => crumb(ax + c.w / 2 + rnd(-25, 25), ay + c.h - 10, "#8a6645"), i * 90);
+    await nap(1200); el.classList.remove("chew-crit"); if (!ok(t)) return;
+    say(el, "Bye! 👋", 600);
+    await anim(w, [{ transform: "scale(1)" }, { transform: "scale(1.1,.5) translateY(18px)" }, { transform: "scale(.4,.1) translateY(50px)" }], { duration: 520, easing: "ease-in" });
+    el.style.opacity = 0; if (!ok(t)) return;
+    await nap(1300); if (!ok(t)) return;
+    const bx = fitX(rb.left + rb.width / 2 - c.w / 2, c.w), hy = fitY(rb.bottom + 10, c.h), by = fitY(rb.top - c.h * .5, c.h);
+    fxEl("hole", "", bx + c.w / 2 - 38, hy + c.h - 20, 1).animate([{ transform: "scale(0)" }, { transform: "scale(1)" }], { duration: 500, easing: "ease-out" });
+    dustPuff(bx + c.w / 2, hy + c.h - 10); set(el, bx, hy); el.style.opacity = 1; face(el, rnd(0, 1) < .5 ? 1 : -1);
+    anim(w, [{ transform: "scale(.5,.3)" }, { transform: "scale(.85,1.3)", offset: .35 }, { transform: "scale(1.15,.85)", offset: .92 }, { transform: "scale(1)" }], { duration: 760 });
+    await arc(el, bx, by, 760, 110); if (!ok(t)) return;
+    mess(B); dustPuff(bx + c.w / 2, by + c.h); say(el, "Surprise! 🥕", 1000); await nap(1100);
+  }
+}
+
+/* FROG: lines up a target, shoots its tongue, reels the element in and swallows it */
+async function tongue(el, t, n = 3) {
+  if (!el) return; const c = el._c, w = el.querySelector(".sprite-wrap");
+  for (let k = 0; k < n && ok(t); k++) {
+    const e = take(), r = e.getBoundingClientRect(), tx = r.left + r.width / 2, ty = r.top + r.height / 2;
+    await hopTo(el, fitX(tx - c.w / 2 + pick([-1, 1]) * rnd(150, 230), c.w), fitY(r.bottom + 36, c.h)); if (!ok(t)) return;
+    const dir = tx < el._x + c.w / 2 ? -1 : 1; face(el, dir);
+    say(el, "Ribbit… 👀", 900); await anim(w, [{ transform: "scale(1)" }, { transform: "scale(1.12,.88)" }], { duration: 650 }); if (!ok(t)) return;
+    const mx = el._x + c.w / 2 + dir * c.w * .34, my = el._y + c.h * .5, dx = tx - mx, dy = ty - my, dist = Math.hypot(dx, dy), ang = Math.atan2(dy, dx) * 57.3;
+    const tg = fxEl("tongue", "", mx, my - 4); tg.style.width = dist + "px"; tg.style.transformOrigin = "0 50%";
+    const base = `rotate(${ang}deg)`, fx = mx - tx, fy = my - ty;
+    const fl = e.animate([{ transform: "translate(0,0) scale(1)" }, { transform: `translate(${fx}px,${fy}px) scale(.2) rotate(${rnd(-120, 120)}deg)` }], { duration: 520, delay: 170, easing: "ease-in", fill: "forwards" });
+    S.anims.add(fl); fl.onfinish = () => { e.style.transition = ""; e.style.transform = `translate(${fx}px,${fy}px) scale(.2)`; e.style.opacity = "0"; fl.cancel(); }; fl.oncancel = () => S.anims.delete(fl);
+    await anim(tg, [{ transform: `${base} scaleX(0)` }, { transform: `${base} scaleX(1)`, offset: .25 }, { transform: `${base} scaleX(1)`, offset: .35 }, { transform: `${base} scaleX(0)` }], { duration: 720, easing: "ease-out" });
+    tg.remove(); if (!ok(t)) return;
+    el.classList.add("chew-crit"); say(el, "Gulp! 😋", 1000); await nap(1000); el.classList.remove("chew-crit");
+    if (k === n - 1) { say(el, "Burp! 🫧", 900); await nap(800); }
+  }
+}
+
+/* PIG: waddles (leaving footprints) to mud puddles, rolls, flings mud that sticks to the page, shakes off */
+async function mudBath(el, t) {
+  if (!el) return; const c = el._c, rows = shuffle([...document.querySelectorAll(".row")]).slice(0, 3); if (!rows.length) return;
+  const print = (x, y) => { const p = fxEl("print", "", x, y); p.animate([{ opacity: .6 }, { opacity: 0 }], { duration: 4200 }); setTimeout(() => p.remove(), 4200); };
+  const iv = setInterval(() => { if (ok(t) && el.classList.contains("trot")) print(el._x + c.w / 2 + rnd(-14, 14), el._y + c.h - 6); }, 170);
+  for (const row of rows) {
+    if (!ok(t)) break;
+    const r = row.getBoundingClientRect(), px = fitX(r.left + rnd(20, r.width - c.w - 20), c.w), py = fitY(r.top + r.height / 2 - c.h / 2, c.h);
+    await trot(el, px, py); if (!ok(t)) break;
+    const pud = fxEl("puddle", "", px + c.w / 2 - 65, py + c.h - 24, 1); pud.animate([{ transform: "scale(0)" }, { transform: "scale(1)" }], { duration: 600, easing: "ease-out" });
+    say(el, "Wheee! Rolling in the mud! 🐷", 1500); await nap(500);
+    el.classList.add("roll-crit");
+    for (let k = 0; k < 14 && ok(t); k++) { splat(px + c.w / 2 + rnd(-150, 150), py + c.h / 2 + rnd(-70, 60)); if (k === 5) mess(row, 0); await nap(130); }
+    el.classList.remove("roll-crit"); if (!ok(t)) break;
+    el.classList.add("wobble-crit"); say(el, "Shake it off!", 900);
+    for (let k = 0; k < 8; k++) splat(px + c.w / 2 + pick([-1, 1]) * rnd(60, 170), py + c.h / 2 + rnd(-50, 30), rnd(14, 34));
+    await nap(1000); el.classList.remove("wobble-crit");
+  }
+  clearInterval(iv);
+}
+
+/* MONKEY: grabs three elements, juggles them in an orbit over its head, then throws them away */
+async function juggle(el, t) {
+  if (!el) return; const c = el._c, es = [...new Set([take(), take(), take()])];
+  const bc = es.map(e => { const r = e.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; });
+  await trot(el, fitX(vw() / 2 - c.w / 2, c.w), fitY(vh() * .5, c.h)); if (!ok(t)) return;
+  say(el, "Ooh ooh! Juggling time! 🤹", 1500); el.classList.add("wobble-crit");
+  const cx = el._x + c.w / 2, cy = el._y - 10, t0 = performance.now();
+  await new Promise(res => {
+    const tick = n => {
+      if (!ok(t)) { res(); return; } const p = n - t0; if (p > 4800) { res(); return; }
+      const k = Math.min(1, p / 700), ph = p / 360;
+      es.forEach((e, i) => { const a = ph + i * 2.094, tx = cx + Math.cos(a) * 78, ty = cy - 26 - Math.abs(Math.sin(a)) * 70 + Math.sin(a) * 8; e.style.transition = "none"; e.style.transform = `translate(${(tx - bc[i][0]) * k}px,${(ty - bc[i][1]) * k}px) rotate(${a * 57}deg) scale(${1 - .25 * k})`; });
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+  el.classList.remove("wobble-crit"); if (!ok(t)) return;
+  say(el, "Ta-da! 🎩", 1000);
+  es.forEach(e => { e.style.transition = "transform .7s cubic-bezier(.34,1.56,.64,1)"; e.style.transform = `translate(${rnd(-90, 90) + (cx - e.getBoundingClientRect().left) * 0}px,${rnd(-30, 60)}px) rotate(${rnd(-40, 40)}deg)`; });
+  await nap(900);
+}
+/* MONKEY: banana barrage — bananas arc onto elements and knock them about */
+async function bananas(el, t, n = 4) {
+  if (!el) return; const c = el._c, w = el.querySelector(".sprite-wrap"); say(el, "Banana barrage! 🍌", 1300);
+  for (let k = 0; k < n && ok(t); k++) {
+    const e = take(), r = e.getBoundingClientRect(), sx = el._x + c.w / 2, sy = el._y + c.h * .3, tx = r.left + r.width / 2, ty = r.top + r.height / 2;
+    const b = fxEl("emo", "🍌", sx, sy);
+    await anim(w, [{ transform: "rotate(0)" }, { transform: "rotate(-14deg) scale(1.05)" }, { transform: "rotate(10deg) scale(.95,1.05)" }], { duration: 380 });
+    await anim(b, [{ transform: "translate(0,0) rotate(0)" }, { transform: `translate(${(tx - sx) / 2}px,${Math.min(ty - sy, 0) - 110}px) rotate(300deg)`, offset: .5 }, { transform: `translate(${tx - sx}px,${ty - sy}px) rotate(640deg)` }], { duration: 700, easing: "linear", fill: "forwards" });
+    if (!ok(t)) { b.remove(); return; }
+    for (let i = 0; i < 6; i++) crumb(tx, ty, "#ffe27a"); mess(e, pick([1, 3, 4])); say(el, pick(["Bullseye!", "Got it!", "Hehehe!"]), 700);
+    anim(b, [{ transform: `translate(${tx - sx}px,${ty - sy}px) rotate(640deg)` }, { transform: `translate(${tx - sx + rnd(-90, 90)}px,${ty - sy - 60}px) rotate(900deg)`, opacity: 1 }, { transform: `translate(${tx - sx + rnd(-140, 140)}px,${ty - sy + 80}px) rotate(1200deg)`, opacity: 0 }], { duration: 800, fill: "forwards" }).then(() => b.remove());
+    await nap(450);
+  }
+}
+
+/* ELEPHANT: trumpets, then blasts elements across the screen with a water jet and leaves puddles */
+async function spray(el, t) {
+  if (!el) return; const W = vw(), H = vh(), c = el._c, dir = Math.random() < .5 ? 1 : -1, y = fitY(H * .5, c.h);
+  set(el, dir > 0 ? -c.w - 30 : W + 30, y); await trot(el, dir > 0 ? 10 : W - c.w - 10, y, 1900); if (!ok(t)) return;
+  el.classList.add("stomp-crit"); say(el, "PAWOOO! 🎺", 1000); shake(); await nap(900); el.classList.remove("stomp-crit");
+  for (let k = 0; k < 3 && ok(t); k++) {
+    const e = take(), r = e.getBoundingClientRect(), tx = r.left + r.width / 2, ty = r.top + r.height / 2, nx = el._x + (dir > 0 ? c.w : 0), ny = el._y + c.h * .38;
+    await anim(el.querySelector(".sprite-wrap"), [{ transform: "rotate(0)" }, { transform: `rotate(${-dir * 8}deg) scale(1.04)` }], { duration: 380 });
+    jet(nx, ny, tx, ty, 26); await nap(520); if (!ok(t)) return;
+    e.style.transition = "transform .8s cubic-bezier(.2,.9,.3,1)"; e.style.transform = `translate(${dir * rnd(90, 220)}px,${rnd(-20, 50)}px) rotate(${dir * rnd(12, 40)}deg)`;
+    fxEl("puddle water", "", tx - 65, ty + 10, 1).animate([{ transform: "scale(0)" }, { transform: "scale(1)" }], { duration: 500, easing: "ease-out" });
+    say(el, pick(["Splash! 💦", "Whoosh!", "Take that!"]), 800); await nap(800);
+  }
+  el.classList.add("wobble-crit"); say(el, "Ahh, refreshing! 💦", 1200); await nap(1200); el.classList.remove("wobble-crit");
+}
+async function stompThrough(el, t) {
+  if (!el) return; const W = vw(), H = vh(), c = el._c, y = fitY(rnd(H * .3, H * .65), c.h), dir = Math.random() < .5 ? 1 : -1;
+  set(el, dir > 0 ? -c.w - 30 : W + 30, y);
+  for (let s = 1; s <= 3 && ok(t); s++) {
+    await trot(el, fitX(dir > 0 ? -c.w + (W + c.w) * s / 4 : W - (W + c.w) * s / 4, c.w), y, 950); if (!ok(t)) return;
+    el.classList.add("stomp-crit"); await nap(650); el.classList.remove("stomp-crit");
+    shake(); dustPuff(el._x + c.w / 2, el._y + c.h - 6); say(el, pick(c.sfx), 700); mess(take(), 4); mess(take(), 1); await nap(300);
+  }
+}
+
+/* older shared behaviours (used by Stampede / Peekaboo / Easter) */
 async function steal(el, t) {
   if (!el || !ok(t)) return; const e = take(), r = e.getBoundingClientRect(), c = el._c, W = vw(), H = vh();
   await trot(el, fitX(r.left + r.width / 2 - c.w / 2, c.w), fitY(r.top + r.height / 2 - c.h / 2, c.h)); if (!ok(t)) return;
@@ -1068,28 +1095,6 @@ async function nibble(el, t) {
   el.classList.add("chew-crit"); say(el, "Mmm, crunchy button! 🥕", 900);
   for (let k = 0; k < 8; k++) crumb(r.left + 30, r.top + 14, "#e0956b");
   mess(b, 0); await nap(900); el.classList.remove("chew-crit");
-}
-async function mud(el, t) {
-  if (!el) return; const rows = [...document.querySelectorAll(".row")], c = el._c; if (!rows.length) return;
-  const r0 = rows[0].getBoundingClientRect();
-  await trot(el, fitX(r0.left + 10, c.w), fitY(r0.top + 10, c.h)); if (!ok(t)) return;
-  el.classList.add("roll-crit"); say(el, "Wheee! Rolling in the dirt! 🐷", 1300);
-  for (let i = 0; i < rows.length && ok(t); i++) {
-    const r = rows[i].getBoundingClientRect(), tx = fitX(i % 2 ? r.right - c.w - 10 : r.left + 10, c.w);
-    const p = go(el, tx, fitY(r.top + r.height / 2 - c.h / 2, c.h), 900, "ease-in-out");
-    setTimeout(() => { if (!ok(t)) return; rows[i].style.transition = "transform .55s cubic-bezier(.34,1.56,.64,1)"; rows[i].style.transform = `rotate(${pick([-1, 1]) * rnd(2.5, 5)}deg) translate(${rnd(-14, 14)}px,${rnd(-4, 6)}px)`; for (let k = 0; k < 6; k++) crumb(tx + c.w / 2, el._y + c.h / 2, "#8a6645"); }, 450);
-    await p;
-  }
-  el.classList.remove("roll-crit");
-}
-async function stompThrough(el, t) {
-  if (!el) return; const W = vw(), H = vh(), c = el._c, y = fitY(rnd(H * .3, H * .65), c.h), dir = Math.random() < .5 ? 1 : -1;
-  set(el, dir > 0 ? -c.w - 30 : W + 30, y);
-  for (let s = 1; s <= 3 && ok(t); s++) {
-    await trot(el, fitX(dir > 0 ? -c.w + (W + c.w) * s / 4 : W - (W + c.w) * s / 4, c.w), y, 950); if (!ok(t)) return;
-    el.classList.add("stomp-crit"); await nap(650); el.classList.remove("stomp-crit");
-    shake(); dustPuff(el._x + c.w / 2, el._y + c.h - 6); say(el, pick(c.sfx), 700); mess(take(), 4); mess(take(), 1); await nap(300);
-  }
 }
 async function dash(el, t) {
   if (!el) return; const W = vw(), H = vh(), c = el._c, y = fitY(rnd(H * .2, H * .75), c.h), dir = Math.random() < .5 ? 1 : -1;
@@ -1120,33 +1125,30 @@ async function dance(cast, t) {
   }
   cast.forEach(el => cls.forEach(k => el.classList.remove(k)));
 }
-const goatFeast = async (g, t) => {
-  if (!g) return;
-  for (const i of shuffle([0, 1, 2, 3, 4]).slice(0, 3)) { if (!ok(t)) return; await eatPlant(g, i, t); }
-  if (ok(t)) { say(g, "BURRRP! 💨🌿", 1200); dustPuff(g._x + g._c.w / 2, g._y + g._c.h - 6); await nap(900); }
-};
 
-/* ---------- episodes: 7 different stories, shuffled so none repeats until all have played ---------- */
+/* ---------- eight stories, shuffled so none repeats until all have played ---------- */
 const spawn = async (key, delay, t) => { await nap(delay); return ok(t) ? mkCrit(key) : null; };
 const EPISODES = [
-  { banner: "🐐🐔 A hungry goat and a pecky chicken broke in!", run: async t => { const g = await spawn("goat", 0, t), h = await spawn("chicken", 0, t);
-      await Promise.all([goatFeast(g, t), (async () => { await nap(1600); for (let i = 0; i < 3 && ok(t); i++) await peck(h, t); })()]); } },
-  { banner: "🐇🐸 A bunny and a frog are bouncing on your buttons!", run: async t => { const r = await spawn("rabbit", 0, t), f = await spawn("frog", 0, t);
-      await Promise.all([hopAround(r, 3, t).then(() => nibble(r, t)), nap(900).then(() => hopAround(f, 3, t))]); } },
-  { banner: "🐷🐸 Mud party! A piglet and a frog are splashing about!", run: async t => { const p = await spawn("pig", 0, t), f = await spawn("frog", 0, t);
-      await Promise.all([mud(p, t), nap(1500).then(() => hopAround(f, 2, t))]); } },
-  { banner: "🐒🐘 A sneaky monkey is stealing icons — and an elephant is on the way!", run: async t => { const m = await spawn("monkey", 0, t), e = await spawn("elephant", 0, t);
-      await Promise.all([(async () => { for (let i = 0; i < 3 && ok(t); i++) await steal(m, t); })(), nap(3500).then(() => stompThrough(e, t))]); } },
+  { banner: "🐐🐔 A hungry goat and an egg-laying chicken broke in!", run: async t => { const g = await spawn("goat", 0, t), h = await spawn("chicken", 0, t);
+      await Promise.all([goatFeast(g, t), nap(1600).then(() => layEggs(h, t, 3))]); } },
+  { banner: "🐇🐸 A burrowing bunny and a tongue-flicking frog are loose!", run: async t => { const r = await spawn("rabbit", 0, t), f = await spawn("frog", 0, t);
+      await Promise.all([burrow(r, t, 2), nap(1200).then(() => tongue(f, t, 3))]); } },
+  { banner: "🐷🐘 Mud party! A muddy piglet — and an elephant with a trunk full of water!", run: async t => { const p = await spawn("pig", 0, t), e = await spawn("elephant", 0, t);
+      await Promise.all([mudBath(p, t), nap(5500).then(() => spray(e, t))]); } },
+  { banner: "🐒🐘 Circus time! A juggling monkey… and a stomping elephant!", run: async t => { const m = await spawn("monkey", 0, t), e = await spawn("elephant", 0, t);
+      await Promise.all([juggle(m, t).then(() => bananas(m, t, 4)), nap(6500).then(() => stompThrough(e, t))]); } },
+  { banner: "🐣🐇 Easter morning! Eggs everywhere — and a bunny on the hunt!", run: async t => { const h = await spawn("chicken", 0, t), r = await spawn("rabbit", 0, t);
+      await Promise.all([layEggs(h, t, 4), nap(1500).then(() => hopAround(r, 3, t)).then(() => nibble(r, t))]); } },
   { banner: "🐐🐷🐘 Stampede! Everyone is running through the garden!", run: async t => {
       await Promise.all(["goat", "pig", "elephant"].map((k, i) => spawn(k, i * 900, t).then(async el => { await dash(el, t); await dash(el, t); }))); } },
   { banner: "👀 Peekaboo! Someone is hiding in your garden…", run: async t => { const r = await spawn("rabbit", 0, t), m = await spawn("monkey", 600, t), f = await spawn("frog", 1200, t);
-      await Promise.all([peekOut(r, t).then(() => hopAround(r, 2, t)), peekOut(m, t).then(() => steal(m, t)), peekOut(f, t).then(() => hopAround(f, 2, t))]); } },
+      await Promise.all([peekOut(r, t).then(() => burrow(r, t, 1)), peekOut(m, t).then(() => steal(m, t)), peekOut(f, t).then(() => tongue(f, t, 2))]); } },
   { banner: "💃 Dance party! The critters are grooving!", run: async t => { const cast = [];
       for (const k of shuffle(Object.keys(CRITTERS)).slice(0, 3)) { const c = await spawn(k, 200, t); if (c) cast.push(c); }
       if (cast.length) await dance(cast, t); } }
 ];
 
-/* ---------- gardener: 4 different ways to fix things ---------- */
+/* ---------- gardener: four ways to fix things ---------- */
 const fleeAll = cast => Promise.all(cast.map(async (c, i) => { await sleep(i * 250); const [x, y] = off(randEdge(), c._c.w, c._c.h); say(c, pick(["Eek!", "Run!", "Bye!"]), 600); await trot(c, x, y, 1300); c.remove(); }));
 async function closer(tok) {
   const kind = nextOf("cl", ["can", "whistle", "sweep", "carrot"]), W = vw(), H = vh();
@@ -1170,17 +1172,17 @@ async function closer(tok) {
       await goGardener(gd, fitX(r.left - 92, 88), fitY(r.top - 14, 120), 650, "ease-out"); face(gd, 1); img.src = "assets/gardener/hold.png";
       await pourWater(gd, r.left + r.width / 2 - 10, r.top + 30); if (S.eatenPlants.has(i)) regrow(i); else hop(pb);
     }
-    restore("stagger"); await sleep(1000); can.classList.remove("show");
+    restore("stagger"); cleanMud(); await sleep(1000); can.classList.remove("show");
   } else if (kind === "sweep") {
     const p = addProp(gd, "🧹"); p.classList.add("sweep"); fleeAll(cast);
     const y = fitY(H * .5 - 60, 120); await goGardener(gd, fitX(12, 88), y, 1000); if (!live(tok)) return;
-    restore("sweep"); regrowEaten(500); await goGardener(gd, W - 100, y, 2600, "linear"); p.remove();
+    restore("sweep"); cleanMud(); regrowEaten(500); await goGardener(gd, W - 100, y, 2600, "linear"); p.remove();
   } else if (kind === "whistle") {
     say(gd, "♪ ♫ ♪ (whistles)", 1700); await gather(); cast.forEach(c => say(c, "Sorry… 🥺", 1200)); await sleep(1500); if (!live(tok)) return;
-    restore("pop"); regrowEaten(200); await sleep(1100);
+    restore("pop"); cleanMud(); regrowEaten(200); await sleep(1100);
   } else {
     addProp(gd, "🥕"); say(gd, "Who wants a carrot? 🥕", 1500); await gather(); if (!live(tok)) return;
-    restore("pop"); regrowEaten(200); await sleep(1100);
+    restore("pop"); cleanMud(); regrowEaten(200); await sleep(1100);
   }
   if (!live(tok)) return;
   img.src = "assets/gardener/cheer0.png"; gd.classList.add("celebrate"); fixer(gd._x + 44, gd._y + 60);
@@ -1193,11 +1195,11 @@ async function closer(tok) {
 
 async function launch() {
   if (S.on) return;
-  S.on = true; S.mom = false; S.clicks = 0; S.cast = []; S.look = {}; S.pool = null; S.eatenPlants.clear();
+  S.on = true; S.mom = false; S.clicks = 0; S.cast = []; S.look = {}; S.mud = []; S.pool = null; S.eatenPlants.clear();
   const tok = ++S.tok, ep = nextOf("ep", EPISODES);
   document.body.classList.add("busy");
   setBanner(ep.banner + " Tap any animal 3× to call the gardener — or press Cancel.");
-  S.hard = setTimeout(finish, 60000);               // safety net only; the Cancel button is always there
+  S.hard = setTimeout(finish, 75000);               // safety net only; the Cancel button is always there
   try { await ep.run(tok); } catch (e) { console.error("[garden]", e); }
   if (!live(tok)) return;
   await closer(tok);
@@ -1205,35 +1207,22 @@ async function launch() {
 
 document.getElementById("bx").addEventListener("click", finish);
 
-// Plant taps: giggle. Tapping plants 5× summons a random animal!
+// Plant taps: giggle. Tapping plants 5× summons a random story!
 let mc = 0, mt = 0;
 rowsEl.addEventListener("click", e => {
   const p = e.target.closest(".plant");
   if (!p) return;
   const i = +p.dataset.i, b = p.querySelector(".pbub");
   hop(p);
-  if (b) {
-    b.textContent = SAY[PS[i].m];
-    b.classList.remove("on");
-    void b.offsetWidth;
-    b.classList.add("on");
-  }
-  mc++;
-  clearTimeout(mt);
-  mt = setTimeout(() => mc = 0, 2500);
-  if (mc >= 5) {
-    mc = 0;
-    launch(); // randomly picks from all animals
-  }
+  if (b) { b.textContent = SAY[PS[i].m]; b.classList.remove("on"); void b.offsetWidth; b.classList.add("on"); }
+  mc++; clearTimeout(mt); mt = setTimeout(() => mc = 0, 2500);
+  if (mc >= 5) { mc = 0; launch(); }
 });
 
 // Little garden visitors (butterfly, bee, ladybug, snail) drift by now and then
 function critter() {
   const c = document.createElement("div"), em = pick(["🦋", "🐝", "🐞", "🐌"]), snail = em === "🐌", L = Math.random() < .5, W = innerWidth, H = innerHeight;
-  c.className = "crit";
-  c.textContent = em;
-  c.style.fontSize = snail ? "26px" : "30px";
-  document.body.appendChild(c);
+  c.className = "crit"; c.textContent = em; c.style.fontSize = snail ? "26px" : "30px"; document.body.appendChild(c);
   const pts = snail ? [[L ? -40 : W + 40, H - 34], [L ? W + 40 : -40, H - 34]] : Array.from({ length: 6 }, (_, i) => [(L ? i / 5 : 1 - i / 5) * (W + 80) - 40, rnd(40, H * .7)]);
   c.animate(pts.map(([x, y]) => ({ transform: `translate(${x}px,${y}px) scaleX(${L ? -1 : 1}) rotate(${snail ? 0 : rnd(-20, 20)}deg)` })), { duration: snail ? 16000 : 9000, easing: "ease-in-out" }).onfinish = () => c.remove();
 }
