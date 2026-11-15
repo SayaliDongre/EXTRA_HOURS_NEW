@@ -86,7 +86,7 @@ body[data-theme="garden"] .rows{display:flex;flex-direction:column;gap:14px}
 
 /* ===== Row ===== */
 body[data-theme="normal"] .row{display:grid;grid-template-columns:1fr auto;gap:8px;padding:10px;border:1px solid var(--sep);border-radius:12px;background:#fff}
-body[data-theme="garden"] .row{display:grid;grid-template-columns:minmax(0,1fr) 116px;align-items:center;gap:18px;padding:16px 16px 16px 20px;border:1px solid var(--sep);border-radius:18px;background:linear-gradient(135deg,#fff,#fbfdf6);border-left:6px solid var(--accent-strong);transition:box-shadow .25s,border-color .25s}
+body[data-theme="garden"] .row{display:grid;grid-template-columns:minmax(0,1fr) 116px;align-items:stretch;gap:18px;padding:16px 16px 16px 20px;border:1px solid var(--sep);border-radius:18px;background:linear-gradient(135deg,#fff,#fbfdf6);border-left:6px solid var(--accent-strong);transition:box-shadow .25s,border-color .25s}
 body[data-theme="garden"] .row:hover{box-shadow:0 10px 24px rgba(60,80,30,.1);border-color:#cfe3bf}
 
 /* ===== Row head ===== */
@@ -130,18 +130,18 @@ body[data-theme="normal"] .subtle{background:#f4f5f9;color:#333}
 .placeholder{color:var(--muted);font-style:italic;padding:6px 0;font-size:.85rem}
 
 /* ===== Plant panel (garden only) ===== */
-.row-plant-box{display:flex;flex-direction:column;align-items:center;justify-content:center;width:116px;min-width:116px;padding:6px 4px;border-radius:16px;background:radial-gradient(ellipse at 50% 100%,#e4f2d6,transparent 72%);text-align:center}
+.row-plant-box{display:flex;flex-direction:column;align-items:center;justify-content:space-between;width:116px;min-width:116px;padding:6px 4px;border-radius:16px;background:radial-gradient(ellipse at 50% 100%,#e4f2d6,transparent 72%);text-align:center}
 body[data-theme="normal"] .row-plant-box{display:none!important}
 .plant{position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;height:104px;width:100%;display:flex;align-items:flex-end;justify-content:center}
 .plant svg{width:100%;max-width:96px;height:104px;display:block;margin:0 auto;overflow:visible}
-.row-over{display:inline-flex;align-items:center;justify-content:center;padding:6px 14px;border-radius:999px;background:var(--chip);font-size:.84rem;font-weight:800;color:var(--muted);white-space:nowrap;line-height:1.2;text-align:center;margin-left:auto;transition:background .2s,color .2s;flex-shrink:0}
+.row-over{display:inline-flex;align-items:center;justify-content:center;padding:4px 10px;border-radius:999px;background:var(--chip);font-size:.78rem;font-weight:800;color:var(--muted);white-space:nowrap;line-height:1.2;text-align:center;margin-top:auto;transition:background .2s,color .2s;flex-shrink:0}
 .row-over.ok{background:#e1f3dc;color:var(--ok)}
 .row-over.bad{background:#fbe4de;color:var(--bad)}
 body[data-theme="normal"] .row-over{display:none!important}
 
 /* ===== Controls & Footer ===== */
-body[data-theme="normal"] .controls{display:flex;gap:10px;flex-wrap:wrap}
-body[data-theme="garden"] .controls{display:flex;gap:12px;flex-wrap:wrap}
+body[data-theme="normal"] .controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+body[data-theme="garden"] .controls{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 body[data-theme="normal"] .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--sep);background:var(--accent);color:#1f1a1a;font-weight:700;cursor:pointer;font:inherit}
 body[data-theme="garden"] .btn{padding:12px 22px;border-radius:14px;border:1px solid var(--sep);background:linear-gradient(135deg,#b6dca6,#8fc77d);color:#1f2a1a;font:inherit;font-weight:800;cursor:pointer;box-shadow:0 6px 16px rgba(60,80,30,.12);transition:transform .15s,box-shadow .15s}
 body[data-theme="normal"] .btn.secondary{background:#f1f2f8}
@@ -159,13 +159,13 @@ body[data-theme="garden"] #total{font-size:1.4rem;font-weight:900;letter-spacing
   body[data-theme="garden"] .app{padding:18px 12px 44px;gap:14px}
   body[data-theme="garden"] h1{font-size:1.2rem}
   body[data-theme="garden"] .card{padding:14px;border-radius:18px}
-  body[data-theme="garden"] .row{grid-template-columns:minmax(0,1fr) 96px;gap:12px;padding:12px 10px 12px 14px}
+  body[data-theme="garden"] .row{grid-template-columns:minmax(0,1fr) 96px;gap:12px;padding:12px 10px 12px 14px;align-items:stretch}
   body[data-theme="garden"] .row-plant-box{width:96px;min-width:96px}
   body[data-theme="garden"] .plant{height:92px}
   body[data-theme="garden"] .plant svg{max-width:88px;height:92px}
   body[data-theme="garden"] .row-inputs{gap:10px 14px}
   body[data-theme="garden"] input[type=time]{min-width:96px}
-  .row-over{font-size:.78rem;padding:5px 11px;margin-left:auto}
+  .row-over{font-size:.74rem;padding:3px 8px;margin-top:auto}
 }
 
 /* ===== Occasional Autumn Leaves & Caterpillar Visitor (Garden Only) ===== */
@@ -199,29 +199,7 @@ body[data-theme="garden"] #total{font-size:1.4rem;font-weight:900;letter-spacing
   font-size:28px;
   filter:drop-shadow(0 2px 4px rgba(90,50,20,.18));
 }
-.cat-bubble{
-  position:fixed;
-  left:0;
-  top:0;
-  background:#fff;
-  border:1px solid var(--sep, #d8ccb8);
-  border-radius:10px;
-  padding:2px 8px;
-  font-size:.74rem;
-  font-weight:800;
-  color:#37362b;
-  white-space:nowrap;
-  box-shadow:0 3px 8px rgba(0,0,0,.15);
-  pointer-events:none;
-  z-index:85;
-  opacity:0;
-  transform:scale(0);
-  transition:transform .2s cubic-bezier(.34,1.56,.64,1),opacity .18s;
-}
-.cat-bubble.show{
-  opacity:1;
-  transform:scale(1);
-}
+
 body[data-theme="normal"] .autumn-leaf,
 body[data-theme="normal"] .critter-cat,
 body[data-theme="normal"] .critter-cat-leaf,
@@ -692,15 +670,11 @@ function renderGardenRow(r, idx) {
     outTime.disabled = !r.work;
     outCluster.append(outTime,outPick);
   }
-  const overEl = document.createElement("div");
-  overEl.className = "row-over";
-  overEl.dataset.idx = idx;
-  overEl.textContent = "--";
 
-  inputs.append(inCluster, outCluster, overEl);
+  inputs.append(inCluster, outCluster);
   main.append(head, inputs);
 
-  // Right side: Plant
+  // Right side: Plant on top, Over badge neatly below on the far right
   const plantSide = document.createElement("div");
   plantSide.className = "row-plant-box";
   plantSide.innerHTML = `
@@ -708,6 +682,7 @@ function renderGardenRow(r, idx) {
       <div class="sv"></div>
       <div class="pbub"></div>
     </div>
+    <div class="row-over" data-idx="${idx}">--</div>
   `;
 
   row.append(main, plantSide);
@@ -1614,27 +1589,19 @@ async function caterpillarEvent() {
   if (!isAlive()) { cleanup(); return; }
 
   // 3. Caterpillar crawls in along the bottom from the screen edge
+  // In Unicode fonts, 🐛 naturally has its head/mouth on the LEFT and tail on the RIGHT.
+  // When walking RIGHT (fromLeft=true), we flip it with scaleX(-1) so head faces RIGHT.
+  // When walking LEFT (fromLeft=false), scaleX(1) keeps head facing LEFT.
   const fromLeft = Math.random() < 0.5;
-  const dir = fromLeft ? 1 : -1;
-  const startX = fromLeft ? -45 : W + 45;
-  const stopX = fromLeft ? leafX - 30 : leafX + 30;
+  const face = fromLeft ? -1 : 1;
+  const startX = fromLeft ? -50 : W + 50;
+  const stopX = fromLeft ? leafX - 28 : leafX + 28;
+  const biteDelta = fromLeft ? 7 : -7;
 
   const cat = document.createElement("div");
   cat.className = "critter-cat";
   cat.textContent = "🐛";
   stageEl.appendChild(cat);
-
-  const bubble = document.createElement("div");
-  bubble.className = "cat-bubble";
-  stageEl.appendChild(bubble);
-
-  const sayCat = (text, ms = 1100) => {
-    if (!isAlive()) return;
-    bubble.textContent = text;
-    bubble.style.transform = `translate3d(${Math.max(10, Math.min(W - 90, stopX - 10))}px, ${Math.max(10, groundY - 28)}px, 0) scale(1)`;
-    bubble.classList.add("show");
-    setTimeout(() => { bubble.classList.remove("show"); }, ms);
-  };
 
   const puff = () => {
     for (let k = 0; k < 6; k++) {
@@ -1645,55 +1612,52 @@ async function caterpillarEvent() {
     }
   };
 
-  // Crawl to the leaf with rhythmic inchworm steps
+  // Crawl to the leaf with head leading forward
   const dist = Math.abs(stopX - startX);
   const steps = Math.max(6, Math.min(14, Math.round(dist / 38)));
   for (let s = 1; s <= steps; s++) {
-    if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
+    if (!isAlive()) { cat.remove(); cleanup(); return; }
     const curX = startX + (stopX - startX) * (s / steps);
-    cat.style.transform = `translate3d(${curX - dir * 10}px, ${groundY - 3}px, 0) scaleX(${dir * 0.85}) scaleY(1.22)`;
+    cat.style.transform = `translate3d(${curX}px, ${groundY - 3}px, 0) scaleX(${face * 0.85}) scaleY(1.22)`;
     await sleep(150);
-    if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
-    cat.style.transform = `translate3d(${curX}px, ${groundY}px, 0) scaleX(${dir * 1.2}) scaleY(0.85)`;
+    if (!isAlive()) { cat.remove(); cleanup(); return; }
+    cat.style.transform = `translate3d(${curX}px, ${groundY}px, 0) scaleX(${face * 1.2}) scaleY(0.85)`;
     await sleep(180);
-    if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
-    cat.style.transform = `translate3d(${curX}px, ${groundY}px, 0) scaleX(${dir * 1}) scaleY(1)`;
+    if (!isAlive()) { cat.remove(); cleanup(); return; }
+    cat.style.transform = `translate3d(${curX}px, ${groundY}px, 0) scaleX(${face}) scaleY(1)`;
     await sleep(90);
   }
 
-  // Caterpillar spots the leaf
-  sayCat("👀 a leaf!", 1000);
-  await sleep(1100);
-  if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
+  // Brief pause before eating (no wordings / text bubbles)
+  await sleep(400);
+  if (!isAlive()) { cat.remove(); cleanup(); return; }
 
-  // Bite 1
-  cat.style.transform = `translate3d(${stopX + dir * 6}px, ${groundY}px, 0) scaleX(${dir * 1.25}) scaleY(0.9)`;
+  // Bite 1: Mouth stretches into leaf
+  cat.style.transform = `translate3d(${stopX + biteDelta}px, ${groundY}px, 0) scaleX(${face * 1.26}) scaleY(0.9)`;
   await sleep(180);
   puff();
   leaf.animate([
     { transform: `translate3d(${leafX}px, ${groundY}px, 0) rotate(${rotLanding}deg) scale(1)` },
     { transform: `translate3d(${leafX}px, ${groundY}px, 0) rotate(${rotLanding - 10}deg) scale(0.68)` }
   ], { duration: 250, fill: "forwards" });
-  sayCat("crunch! 🍂", 850);
-  cat.style.transform = `translate3d(${stopX}px, ${groundY}px, 0) scaleX(${dir * 0.95}) scaleY(1.12)`;
-  await sleep(750);
-  if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
+  cat.style.transform = `translate3d(${stopX}px, ${groundY}px, 0) scaleX(${face * 0.95}) scaleY(1.12)`;
+  await sleep(650);
+  if (!isAlive()) { cat.remove(); cleanup(); return; }
 
-  // Bite 2
-  cat.style.transform = `translate3d(${stopX + dir * 8}px, ${groundY}px, 0) scaleX(${dir * 1.28}) scaleY(0.88)`;
+  // Bite 2: Mouth stretches into leaf
+  cat.style.transform = `translate3d(${stopX + biteDelta * 1.2}px, ${groundY}px, 0) scaleX(${face * 1.28}) scaleY(0.88)`;
   await sleep(180);
   puff();
   leaf.animate([
     { transform: `translate3d(${leafX}px, ${groundY}px, 0) rotate(${rotLanding - 10}deg) scale(0.68)` },
     { transform: `translate3d(${leafX}px, ${groundY}px, 0) rotate(${rotLanding - 24}deg) scale(0.32)` }
   ], { duration: 250, fill: "forwards" });
-  sayCat("nom nom! 😋", 850);
-  cat.style.transform = `translate3d(${stopX}px, ${groundY}px, 0) scaleX(${dir * 0.92}) scaleY(1.14)`;
-  await sleep(750);
-  if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
+  cat.style.transform = `translate3d(${stopX}px, ${groundY}px, 0) scaleX(${face * 0.92}) scaleY(1.14)`;
+  await sleep(650);
+  if (!isAlive()) { cat.remove(); cleanup(); return; }
 
-  // Bite 3 - Finished!
-  cat.style.transform = `translate3d(${stopX + dir * 10}px, ${groundY}px, 0) scaleX(${dir * 1.3}) scaleY(0.85)`;
+  // Bite 3: Final chomp, leaf disappears completely
+  cat.style.transform = `translate3d(${stopX + biteDelta * 1.4}px, ${groundY}px, 0) scaleX(${face * 1.3}) scaleY(0.85)`;
   await sleep(180);
   puff();
   leaf.animate([
@@ -1703,32 +1667,30 @@ async function caterpillarEvent() {
   await sleep(260);
   leaf.remove();
 
-  // Happy wiggle & burp
-  cat.style.transform = `translate3d(${stopX}px, ${groundY - 10}px, 0) scaleX(${dir * 1.25}) scaleY(1.2)`;
-  sayCat("burp! 💚", 1400);
-  await sleep(400);
-  cat.style.transform = `translate3d(${stopX}px, ${groundY}px, 0) scaleX(${dir * 1}) scaleY(1)`;
-  await sleep(1000);
-  if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
+  // Happy celebration bounce
+  cat.style.transform = `translate3d(${stopX}px, ${groundY - 10}px, 0) scaleX(${face * 1.2}) scaleY(1.2)`;
+  await sleep(350);
+  cat.style.transform = `translate3d(${stopX}px, ${groundY}px, 0) scaleX(${face}) scaleY(1)`;
+  await sleep(600);
+  if (!isAlive()) { cat.remove(); cleanup(); return; }
 
-  // Crawl off-screen in the same direction
+  // Crawl off-screen in the same forward direction (head leading all the way)
   const exitX = fromLeft ? W + 50 : -50;
   const exitSteps = Math.max(6, Math.min(14, Math.round(Math.abs(exitX - stopX) / 38)));
   for (let s = 1; s <= exitSteps; s++) {
-    if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
+    if (!isAlive()) { cat.remove(); cleanup(); return; }
     const curX = stopX + (exitX - stopX) * (s / exitSteps);
-    cat.style.transform = `translate3d(${curX - dir * 10}px, ${groundY - 3}px, 0) scaleX(${dir * 0.85}) scaleY(1.22)`;
+    cat.style.transform = `translate3d(${curX}px, ${groundY - 3}px, 0) scaleX(${face * 0.85}) scaleY(1.22)`;
     await sleep(150);
-    if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
-    cat.style.transform = `translate3d(${curX}px, ${groundY}px, 0) scaleX(${dir * 1.2}) scaleY(0.85)`;
+    if (!isAlive()) { cat.remove(); cleanup(); return; }
+    cat.style.transform = `translate3d(${curX}px, ${groundY}px, 0) scaleX(${face * 1.2}) scaleY(0.85)`;
     await sleep(180);
-    if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
-    cat.style.transform = `translate3d(${curX}px, ${groundY}px, 0) scaleX(${dir * 1}) scaleY(1)`;
+    if (!isAlive()) { cat.remove(); cleanup(); return; }
+    cat.style.transform = `translate3d(${curX}px, ${groundY}px, 0) scaleX(${face}) scaleY(1)`;
     await sleep(90);
   }
 
   cat.remove();
-  bubble.remove();
   catEventRunning = false;
 }
 
