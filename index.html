@@ -168,84 +168,65 @@ body[data-theme="garden"] #total{font-size:1.4rem;font-weight:900;letter-spacing
   .row-over{font-size:.78rem;padding:5px 11px;margin-left:auto}
 }
 
-/* ===== Falling Autumn Leaves (garden only) ===== */
+/* ===== Occasional Autumn Leaves & Caterpillar Visitor (Garden Only) ===== */
 .autumn-leaf{
   position:fixed;
-  top:-50px;
+  left:0;
+  top:0;
   pointer-events:none;
   user-select:none;
-  z-index:2;
-  font-size:26px;
+  z-index:70;
   line-height:1;
-  opacity:0.85;
   filter:drop-shadow(0 3px 6px rgba(120,60,20,0.18));
   will-change:transform,opacity;
 }
-body[data-theme="normal"] .autumn-leaf{display:none!important}
-
-/* ===== Caterpillar Vignette (Garden Footer) ===== */
-.caterpillar-stage{
-  margin:12px auto 0;
-  width:100%;
-  max-width:280px;
-  height:44px;
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:visible;
+.critter-cat, .critter-cat-leaf{
+  position:fixed;
+  left:0;
+  top:0;
   pointer-events:none;
-}
-body[data-theme="normal"] .caterpillar-stage{display:none!important}
-.caterpillar-track{
-  position:relative;
-  width:240px;
-  height:36px;
-  display:flex;
-  align-items:center;
-}
-.cat-leaf{
-  position:absolute;
-  right:26px;
-  bottom:3px;
-  font-size:26px;
+  user-select:none;
   line-height:1;
-  transform-origin:50% 80%;
-  transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .35s;
-  filter:drop-shadow(0 2px 4px rgba(90,50,20,.15));
+  will-change:transform,opacity;
 }
-.caterpillar{
-  position:absolute;
-  left:8px;
-  bottom:4px;
+.critter-cat{
+  z-index:82;
   font-size:28px;
-  line-height:1;
-  transform-origin:50% 90%;
-  filter:drop-shadow(0 2px 4px rgba(40,80,20,.2));
-  will-change:transform,left;
+  filter:drop-shadow(0 2px 4px rgba(40,80,20,.22));
+}
+.critter-cat-leaf{
+  z-index:81;
+  font-size:28px;
+  filter:drop-shadow(0 2px 4px rgba(90,50,20,.18));
 }
 .cat-bubble{
-  position:absolute;
-  top:-22px;
-  right:16px;
-  transform:scale(0);
+  position:fixed;
+  left:0;
+  top:0;
   background:#fff;
-  border:1px solid var(--sep);
+  border:1px solid var(--sep, #d8ccb8);
   border-radius:10px;
   padding:2px 8px;
-  font-size:.72rem;
+  font-size:.74rem;
   font-weight:800;
   color:#37362b;
   white-space:nowrap;
-  box-shadow:0 3px 8px rgba(0,0,0,.1);
-  opacity:0;
-  transition:transform .22s cubic-bezier(.34,1.56,.64,1),opacity .2s;
+  box-shadow:0 3px 8px rgba(0,0,0,.15);
   pointer-events:none;
-  z-index:5;
+  z-index:85;
+  opacity:0;
+  transform:scale(0);
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1),opacity .18s;
 }
 .cat-bubble.show{
   opacity:1;
   transform:scale(1);
+}
+body[data-theme="normal"] .autumn-leaf,
+body[data-theme="normal"] .critter-cat,
+body[data-theme="normal"] .critter-cat-leaf,
+body[data-theme="normal"] .cat-bubble{
+  display:none!important;
 }
 
 /* ===== Plant animations ===== */
@@ -424,13 +405,6 @@ body[data-theme="normal"] .arcade-pill{display:none!important}
   <section class="footer card">
     <div id="total" class="over ok">Total Extra: +0h 0m</div>
     <div id="suggest" class="note"></div>
-    <div class="caterpillar-stage" id="caterpillarStage" aria-hidden="true" title="Little garden caterpillar">
-      <div class="caterpillar-track">
-        <div class="cat-leaf" id="catLeaf">🍂</div>
-        <div class="caterpillar" id="caterpillar">🐛</div>
-        <div class="cat-bubble" id="catBubble"></div>
-      </div>
-    </div>
   </section>
 </main>
 <div id="stage"></div>
@@ -511,7 +485,7 @@ function toggleTheme() {
   // Stop any running garden critter events when switching to normal
   if (next === "normal") {
     if (typeof finish === "function" && S && S.on) finish();
-    document.querySelectorAll('.autumn-leaf').forEach(e => e.remove());
+    document.querySelectorAll('.autumn-leaf, .critter-cat, .critter-cat-leaf, .cat-bubble').forEach(e => e.remove());
   }
   // Re-render to switch row layout
   render();
@@ -1538,159 +1512,233 @@ function critter() {
 }
 (function loop() { setTimeout(() => { if (!S.on) critter(); loop(); }, rnd(12000, 30000)); })();
 
-/* ===== Falling Autumn Leaves (garden only) ===== */
+/* ===== Occasional Autumn Leaves (garden only) ===== */
+let activeLeaves = 0;
 function autumnLeaf() {
-  if (getTheme() !== "garden" || S.on) return;
+  if (getTheme() !== "garden" || S.on || activeLeaves >= 1) return;
+  const stageEl = document.getElementById("stage") || document.body;
   const leaf = document.createElement("div");
   leaf.className = "autumn-leaf";
-  const em = pick(["🍂", "🍁", "🍂", "🍁", "🍃"]);
-  leaf.textContent = em;
-  const size = rnd(22, 34);
+  leaf.textContent = pick(["🍂", "🍁", "🍂", "🍁", "🍃"]);
+  const size = rnd(22, 30);
   leaf.style.fontSize = size + "px";
-  document.body.appendChild(leaf);
+  stageEl.appendChild(leaf);
+  activeLeaves++;
 
   const W = window.innerWidth, H = window.innerHeight;
-  const startX = rnd(20, W - 60);
-  const driftX = rnd(-100, 100);
-  const endX = clamp(startX + driftX + rnd(-60, 60), 10, W - 40);
-  const rot0 = rnd(-50, 50);
-  const rot1 = rot0 + pick([-1, 1]) * rnd(180, 420);
-  const swayMid = startX + pick([-1, 1]) * rnd(40, 90);
-  const dur = rnd(8000, 14000);
+  const startX = rnd(30, W - 50);
+  const drift = rnd(-80, 80);
+  const endX = clamp(startX + drift, 20, W - 40);
+  const sway1 = startX + rnd(-40, 40);
+  const sway2 = startX + rnd(-50, 50);
+  const rot0 = rnd(-35, 35);
+  const rot1 = rot0 + pick([-1, 1]) * rnd(180, 360);
+  const dur = rnd(11000, 16000);
 
-  const a = leaf.animate([
-    { transform: `translate(${startX}px, -45px) rotate(${rot0}deg)`, opacity: 0 },
-    { transform: `translate(${swayMid}px, ${H * 0.45}px) rotate(${rot0 + (rot1 - rot0) * 0.5}deg)`, opacity: 0.88, offset: 0.45 },
-    { transform: `translate(${endX}px, ${H + 45}px) rotate(${rot1}deg)`, opacity: 0 }
+  const anim = leaf.animate([
+    { transform: `translate3d(${startX}px, -45px, 0) rotate(${rot0}deg)`, opacity: 0 },
+    { transform: `translate3d(${sway1}px, ${H * 0.35}px, 0) rotate(${rot0 + 65}deg)`, opacity: 0.9, offset: 0.35 },
+    { transform: `translate3d(${sway2}px, ${H * 0.7}px, 0) rotate(${rot0 + 150}deg)`, opacity: 0.9, offset: 0.7 },
+    { transform: `translate3d(${endX}px, ${H + 50}px, 0) rotate(${rot1}deg)`, opacity: 0 }
   ], {
     duration: dur,
-    easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+    easing: "ease-in-out"
   });
 
-  a.onfinish = () => leaf.remove();
-  a.oncancel = () => leaf.remove();
+  const done = () => {
+    leaf.remove();
+    activeLeaves = Math.max(0, activeLeaves - 1);
+  };
+  anim.onfinish = done;
+  anim.oncancel = done;
 }
 
 (function leafLoop() {
   setTimeout(() => {
     if (getTheme() === "garden" && !S.on) autumnLeaf();
     leafLoop();
-  }, rnd(2500, 5000));
+  }, rnd(18000, 35000));
 })();
 
-/* ===== Caterpillar Vignette (Garden Theme Footer) ===== */
-let catRunning = false;
-async function runCaterpillar() {
-  if (catRunning || getTheme() !== "garden" || S.on) return;
-  const stageEl = document.getElementById("caterpillarStage");
-  const cat = document.getElementById("caterpillar");
-  const leaf = document.getElementById("catLeaf");
-  const bub = document.getElementById("catBubble");
-  if (!stageEl || !cat || !leaf || !bub) return;
+/* ===== Caterpillar Random Visitor Event (Garden Theme) ===== */
+let catEventRunning = false;
+async function caterpillarEvent() {
+  if (catEventRunning || getTheme() !== "garden" || S.on) return;
+  catEventRunning = true;
 
-  catRunning = true;
+  const stageEl = document.getElementById("stage") || document.body;
+  const W = window.innerWidth, H = window.innerHeight;
+  const groundY = Math.max(70, H - 36);
 
-  cat.style.transition = "none";
-  cat.style.left = "8px";
-  cat.style.transform = "scaleX(1) scaleY(1)";
-  leaf.style.transition = "transform .5s ease, opacity .5s ease";
-  leaf.style.transform = "scale(1) rotate(0deg)";
-  leaf.style.opacity = "1";
-  bub.classList.remove("show");
+  // 1. Choose leaf landing spot (somewhere in 25% - 75% of screen width)
+  const leafX = rnd(Math.max(60, Math.floor(W * 0.25)), Math.min(W - 60, Math.floor(W * 0.75)));
 
-  const sayCat = (text, ms = 1200) => {
-    bub.textContent = text;
-    bub.classList.add("show");
-    setTimeout(() => bub.classList.remove("show"), ms);
+  // 2. Spawn the falling leaf
+  const leaf = document.createElement("div");
+  leaf.className = "critter-cat-leaf";
+  leaf.textContent = pick(["🍂", "🍁"]);
+  stageEl.appendChild(leaf);
+
+  const isAlive = () => getTheme() === "garden" && !S.on && document.body.contains(stageEl);
+  const cleanup = () => {
+    leaf.remove();
+    catEventRunning = false;
   };
 
-  await sleep(1500);
-  if (getTheme() !== "garden") { catRunning = false; return; }
+  const leafStartX = clamp(leafX + rnd(-60, 60), 20, W - 40);
+  const rot0 = rnd(-35, 35);
+  const rotLanding = rnd(0, 360);
+  const fallDur = rnd(3500, 4300);
 
-  // 1. Inch forward toward the leaf
-  const steps = 8;
-  const startX = 8, targetX = 148;
-  for (let s = 1; s <= steps; s++) {
-    if (getTheme() !== "garden") { catRunning = false; return; }
-    const x = startX + (targetX - startX) * (s / steps);
-    cat.style.transition = "transform .18s ease-in";
-    cat.style.transform = "scaleX(0.8) scaleY(1.22) translateY(-2px)";
-    await sleep(190);
-    cat.style.transition = "transform .22s ease-out, left .22s ease-out";
-    cat.style.left = x + "px";
-    cat.style.transform = "scaleX(1.18) scaleY(0.82)";
-    await sleep(240);
-    cat.style.transform = "scaleX(1) scaleY(1)";
-    await sleep(140);
-  }
+  const leafFall = leaf.animate([
+    { transform: `translate3d(${leafStartX}px, -45px, 0) rotate(${rot0}deg)`, opacity: 0 },
+    { transform: `translate3d(${leafX + rnd(-25, 25)}px, ${groundY * 0.45}px, 0) rotate(${rot0 + 120}deg)`, opacity: 0.95, offset: 0.5 },
+    { transform: `translate3d(${leafX}px, ${groundY}px, 0) rotate(${rotLanding}deg)`, opacity: 0.95 }
+  ], {
+    duration: fallDur,
+    easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+    fill: "forwards"
+  });
 
-  sayCat("👀 a leaf!", 1000);
-  await sleep(1200);
+  await new Promise(r => { leafFall.onfinish = r; leafFall.oncancel = r; });
+  if (!isAlive()) { cleanup(); return; }
 
-  const puffCrumbs = () => {
-    const r = leaf.getBoundingClientRect();
-    for (let k = 0; k < 5; k++) {
-      setTimeout(() => crumb(r.left + rnd(4, 18), r.top + rnd(4, 18), pick(["#d97706", "#b45309", "#78350f", "#84cc16"])), k * 45);
+  // Leaf landing settling bounce
+  leaf.animate([
+    { transform: `translate3d(${leafX}px, ${groundY}px, 0) rotate(${rotLanding}deg) scale(1)` },
+    { transform: `translate3d(${leafX}px, ${groundY - 5}px, 0) rotate(${rotLanding + 4}deg) scale(1.15, 0.85)` },
+    { transform: `translate3d(${leafX}px, ${groundY}px, 0) rotate(${rotLanding}deg) scale(1)` }
+  ], { duration: 320, easing: "ease-out", fill: "forwards" });
+
+  await sleep(400);
+  if (!isAlive()) { cleanup(); return; }
+
+  // 3. Caterpillar crawls in along the bottom from the screen edge
+  const fromLeft = Math.random() < 0.5;
+  const dir = fromLeft ? 1 : -1;
+  const startX = fromLeft ? -45 : W + 45;
+  const stopX = fromLeft ? leafX - 30 : leafX + 30;
+
+  const cat = document.createElement("div");
+  cat.className = "critter-cat";
+  cat.textContent = "🐛";
+  stageEl.appendChild(cat);
+
+  const bubble = document.createElement("div");
+  bubble.className = "cat-bubble";
+  stageEl.appendChild(bubble);
+
+  const sayCat = (text, ms = 1100) => {
+    if (!isAlive()) return;
+    bubble.textContent = text;
+    bubble.style.transform = `translate3d(${Math.max(10, Math.min(W - 90, stopX - 10))}px, ${Math.max(10, groundY - 28)}px, 0) scale(1)`;
+    bubble.classList.add("show");
+    setTimeout(() => { bubble.classList.remove("show"); }, ms);
+  };
+
+  const puff = () => {
+    for (let k = 0; k < 6; k++) {
+      setTimeout(() => {
+        if (!isAlive()) return;
+        crumb(leafX + rnd(4, 18), groundY + rnd(4, 16), pick(["#d97706", "#b45309", "#78350f", "#84cc16"]));
+      }, k * 40);
     }
   };
 
-  // 3. Bite 1
-  cat.style.transition = "transform .2s ease-in";
-  cat.style.transform = "scaleX(1.25) scaleY(0.9) translateX(4px)";
-  await sleep(220);
-  puffCrumbs();
-  leaf.style.transform = "scale(0.82) rotate(-8deg)";
-  sayCat("crunch! 🍃", 900);
-  cat.style.transform = "scaleX(0.9) scaleY(1.15)";
-  await sleep(750);
-
-  // 4. Bite 2
-  cat.style.transform = "scaleX(1.28) scaleY(0.88) translateX(6px)";
-  await sleep(220);
-  puffCrumbs();
-  leaf.style.transform = "scale(0.55) rotate(-16deg)";
-  sayCat("munch munch! 😋", 900);
-  cat.style.transform = "scaleX(0.92) scaleY(1.12)";
-  await sleep(750);
-
-  // 5. Bite 3 - Finished!
-  cat.style.transform = "scaleX(1.3) scaleY(0.85) translateX(8px)";
-  await sleep(220);
-  puffCrumbs();
-  leaf.style.transform = "scale(0) rotate(-30deg)";
-  leaf.style.opacity = "0";
-  sayCat("burp! 💚", 1400);
-
-  cat.style.transition = "transform .3s cubic-bezier(.34,1.56,.64,1)";
-  cat.style.transform = "scale(1.25) translateY(-8px)";
-  await sleep(350);
-  cat.style.transform = "scale(1) translateY(0)";
-  await sleep(900);
-
-  // 6. Sleepy nap
-  sayCat("zzz… 🍃", 2200);
-  await sleep(10000);
-
-  // 7. A new leaf floats down and resets
-  if (getTheme() === "garden" && !S.on) {
-    leaf.style.transition = "none";
-    leaf.style.transform = "translateY(-30px) scale(0) rotate(90deg)";
-    leaf.style.opacity = "0";
-    void leaf.offsetWidth;
-    leaf.style.transition = "transform .9s cubic-bezier(.34,1.56,.64,1), opacity .8s ease";
-    leaf.style.transform = "translateY(0) scale(1) rotate(0deg)";
-    leaf.style.opacity = "1";
-    await sleep(1000);
+  // Crawl to the leaf with rhythmic inchworm steps
+  const dist = Math.abs(stopX - startX);
+  const steps = Math.max(6, Math.min(14, Math.round(dist / 38)));
+  for (let s = 1; s <= steps; s++) {
+    if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
+    const curX = startX + (stopX - startX) * (s / steps);
+    cat.style.transform = `translate3d(${curX - dir * 10}px, ${groundY - 3}px, 0) scaleX(${dir * 0.85}) scaleY(1.22)`;
+    await sleep(150);
+    if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
+    cat.style.transform = `translate3d(${curX}px, ${groundY}px, 0) scaleX(${dir * 1.2}) scaleY(0.85)`;
+    await sleep(180);
+    if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
+    cat.style.transform = `translate3d(${curX}px, ${groundY}px, 0) scaleX(${dir * 1}) scaleY(1)`;
+    await sleep(90);
   }
 
-  catRunning = false;
+  // Caterpillar spots the leaf
+  sayCat("👀 a leaf!", 1000);
+  await sleep(1100);
+  if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
+
+  // Bite 1
+  cat.style.transform = `translate3d(${stopX + dir * 6}px, ${groundY}px, 0) scaleX(${dir * 1.25}) scaleY(0.9)`;
+  await sleep(180);
+  puff();
+  leaf.animate([
+    { transform: `translate3d(${leafX}px, ${groundY}px, 0) rotate(${rotLanding}deg) scale(1)` },
+    { transform: `translate3d(${leafX}px, ${groundY}px, 0) rotate(${rotLanding - 10}deg) scale(0.68)` }
+  ], { duration: 250, fill: "forwards" });
+  sayCat("crunch! 🍂", 850);
+  cat.style.transform = `translate3d(${stopX}px, ${groundY}px, 0) scaleX(${dir * 0.95}) scaleY(1.12)`;
+  await sleep(750);
+  if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
+
+  // Bite 2
+  cat.style.transform = `translate3d(${stopX + dir * 8}px, ${groundY}px, 0) scaleX(${dir * 1.28}) scaleY(0.88)`;
+  await sleep(180);
+  puff();
+  leaf.animate([
+    { transform: `translate3d(${leafX}px, ${groundY}px, 0) rotate(${rotLanding - 10}deg) scale(0.68)` },
+    { transform: `translate3d(${leafX}px, ${groundY}px, 0) rotate(${rotLanding - 24}deg) scale(0.32)` }
+  ], { duration: 250, fill: "forwards" });
+  sayCat("nom nom! 😋", 850);
+  cat.style.transform = `translate3d(${stopX}px, ${groundY}px, 0) scaleX(${dir * 0.92}) scaleY(1.14)`;
+  await sleep(750);
+  if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
+
+  // Bite 3 - Finished!
+  cat.style.transform = `translate3d(${stopX + dir * 10}px, ${groundY}px, 0) scaleX(${dir * 1.3}) scaleY(0.85)`;
+  await sleep(180);
+  puff();
+  leaf.animate([
+    { transform: `translate3d(${leafX}px, ${groundY}px, 0) rotate(${rotLanding - 24}deg) scale(0.32)`, opacity: 0.95 },
+    { transform: `translate3d(${leafX}px, ${groundY}px, 0) rotate(${rotLanding - 40}deg) scale(0)`, opacity: 0 }
+  ], { duration: 250, fill: "forwards" });
+  await sleep(260);
+  leaf.remove();
+
+  // Happy wiggle & burp
+  cat.style.transform = `translate3d(${stopX}px, ${groundY - 10}px, 0) scaleX(${dir * 1.25}) scaleY(1.2)`;
+  sayCat("burp! 💚", 1400);
+  await sleep(400);
+  cat.style.transform = `translate3d(${stopX}px, ${groundY}px, 0) scaleX(${dir * 1}) scaleY(1)`;
+  await sleep(1000);
+  if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
+
+  // Crawl off-screen in the same direction
+  const exitX = fromLeft ? W + 50 : -50;
+  const exitSteps = Math.max(6, Math.min(14, Math.round(Math.abs(exitX - stopX) / 38)));
+  for (let s = 1; s <= exitSteps; s++) {
+    if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
+    const curX = stopX + (exitX - stopX) * (s / exitSteps);
+    cat.style.transform = `translate3d(${curX - dir * 10}px, ${groundY - 3}px, 0) scaleX(${dir * 0.85}) scaleY(1.22)`;
+    await sleep(150);
+    if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
+    cat.style.transform = `translate3d(${curX}px, ${groundY}px, 0) scaleX(${dir * 1.2}) scaleY(0.85)`;
+    await sleep(180);
+    if (!isAlive()) { cat.remove(); bubble.remove(); cleanup(); return; }
+    cat.style.transform = `translate3d(${curX}px, ${groundY}px, 0) scaleX(${dir * 1}) scaleY(1)`;
+    await sleep(90);
+  }
+
+  cat.remove();
+  bubble.remove();
+  catEventRunning = false;
 }
 
-(function catLoop() {
+(function catVisitorLoop() {
   setTimeout(() => {
-    if (getTheme() === "garden" && !S.on && !catRunning) runCaterpillar();
-    catLoop();
-  }, rnd(8000, 16000));
+    if (getTheme() === "garden" && !S.on && !catEventRunning) {
+      caterpillarEvent();
+    }
+    catVisitorLoop();
+  }, rnd(26000, 48000));
 })();
 
 /* =====================================================================
