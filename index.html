@@ -130,11 +130,11 @@ body[data-theme="normal"] .subtle{background:#f4f5f9;color:#333}
 .placeholder{color:var(--muted);font-style:italic;padding:6px 0;font-size:.85rem}
 
 /* ===== Plant panel (garden only) ===== */
-.row-plant-box{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;width:116px;min-width:116px;padding:6px 4px 10px;border-radius:16px;background:radial-gradient(ellipse at 50% 100%,#e4f2d6,transparent 72%);text-align:center}
+.row-plant-box{display:flex;align-items:center;justify-content:center;width:96px;min-width:96px;padding:4px;border-radius:16px;background:radial-gradient(ellipse at 50% 100%,#e4f2d6,transparent 72%);text-align:center}
 body[data-theme="normal"] .row-plant-box{display:none!important}
-.plant{position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;height:104px;width:100%;display:flex;align-items:flex-end;justify-content:center}
-.plant svg{width:100%;max-width:96px;height:104px;display:block;margin:0 auto;overflow:visible}
-.row-over{margin-top:8px;padding:3px 10px;border-radius:999px;background:var(--chip);font-size:.76rem;font-weight:800;color:var(--muted);white-space:nowrap;line-height:1.2;text-align:center}
+.plant{position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;height:84px;width:100%;display:flex;align-items:flex-end;justify-content:center}
+.plant svg{width:100%;max-width:80px;height:84px;display:block;margin:0 auto;overflow:visible}
+.row-over{display:inline-flex;align-items:center;justify-content:center;padding:5px 12px;border-radius:999px;background:var(--chip);font-size:.82rem;font-weight:800;color:var(--muted);white-space:nowrap;line-height:1.2;text-align:center;transition:background .2s,color .2s;align-self:center}
 .row-over.ok{background:#e1f3dc;color:var(--ok)}
 .row-over.bad{background:#fbe4de;color:var(--bad)}
 body[data-theme="normal"] .row-over{display:none!important}
@@ -159,12 +159,13 @@ body[data-theme="garden"] #total{font-size:1.4rem;font-weight:900;letter-spacing
   body[data-theme="garden"] .app{padding:18px 12px 44px;gap:14px}
   body[data-theme="garden"] h1{font-size:1.2rem}
   body[data-theme="garden"] .card{padding:14px;border-radius:18px}
-  body[data-theme="garden"] .row{grid-template-columns:minmax(0,1fr) 90px;gap:10px;padding:12px 10px 12px 14px}
-  body[data-theme="garden"] .row-plant-box{width:90px;min-width:90px}
-  body[data-theme="garden"] .plant{height:88px}
-  body[data-theme="garden"] .plant svg{max-width:80px;height:88px}
-  body[data-theme="garden"] .row-inputs{gap:10px 14px}
+  body[data-theme="garden"] .row{grid-template-columns:minmax(0,1fr) 76px;gap:10px;padding:12px 10px 12px 14px}
+  body[data-theme="garden"] .row-plant-box{width:76px;min-width:76px}
+  body[data-theme="garden"] .plant{height:72px}
+  body[data-theme="garden"] .plant svg{max-width:68px;height:72px}
+  body[data-theme="garden"] .row-inputs{gap:8px 12px}
   body[data-theme="garden"] input[type=time]{min-width:96px}
+  .row-over{font-size:.76rem;padding:4px 9px}
 }
 
 /* ===== Plant animations ===== */
@@ -627,10 +628,15 @@ function renderGardenRow(r, idx) {
     outTime.disabled = !r.work;
     outCluster.append(outTime,outPick);
   }
-  inputs.append(inCluster, outCluster);
+  const overEl = document.createElement("div");
+  overEl.className = "row-over";
+  overEl.dataset.idx = idx;
+  overEl.textContent = "--";
+
+  inputs.append(inCluster, outCluster, overEl);
   main.append(head, inputs);
 
-  // Right side: Plant + Over
+  // Right side: Plant
   const plantSide = document.createElement("div");
   plantSide.className = "row-plant-box";
   plantSide.innerHTML = `
@@ -638,7 +644,6 @@ function renderGardenRow(r, idx) {
       <div class="sv"></div>
       <div class="pbub"></div>
     </div>
-    <div class="row-over" data-idx="${idx}">--</div>
   `;
 
   row.append(main, plantSide);
